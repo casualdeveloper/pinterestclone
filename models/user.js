@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true},
+    pins: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
     creationDate: { type: Date, required: true, default: Date.now() }
 });
 

@@ -1,13 +1,13 @@
 import React from "react";
 
-class NotFound extends React.Component {
+class MyPins extends React.Component {
     render(){
         return (
             <div>
-                New Pic
+                My Pins
             </div>
         );
     }
 }
 
-export default NotFound;
+export default MyPins;

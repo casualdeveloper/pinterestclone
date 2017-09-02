@@ -11,15 +11,15 @@ const defaultState = {
 
 export function userReducer (state = defaultState, action) {
     switch(action.type){
-        case USER_LOGIN+SUCCESS: return ( auth.userLogin(state, action) );
+        case USER_LOGIN: return ( auth.userLogin(state, action) );
         case USER_LOGIN+PENDING: return ( auth.userLoginPending(state, action) );
         case USER_LOGIN+FAILED:  return ( auth.userLoginError(state, action) );
 
         case USER_LOGOUT: return ( auth.userLogout(state, action) );
 
+        case USER_SIGNUP: return ( auth.userLogin(state, action) ); // since successfull acount creation ends up returning same info as signing in we finnish it off with same reducer
         case USER_SIGNUP+PENDING: return ( auth.userSignupPending(state, action) );
         case USER_SIGNUP+FAILED:  return ( auth.userSignupError(state, action) );
-        case USER_SIGNUP+SUCCESS: return ( auth.userLogin(state, action) ); // since successfull acount creation ends up returning same info as signing in we finnish it off with same reducer
 
         default: return state
     }

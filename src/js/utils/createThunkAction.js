@@ -7,6 +7,7 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
         TYPE_SUCCESS = type + SUCCESS,
         TYPE_FAILED  = type + FAILED;
 
+    const typeAction  = createAction(type);
     const typePending = createAction(TYPE_PENDING);
     const typeSuccess = createAction(TYPE_SUCCESS, data => data);
     const typeFailed  = createAction(TYPE_FAILED, data => data);
@@ -18,7 +19,11 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
             .then(response => {
                 let data = response.data;
                 dispatch(typePending(false));
-                dispatch(typeSuccess(data));
+                dispatch(typeAction(data));
+
+                //dispatch success messages if there are any
+                if(data && data.message)
+                    dispatch(typeSuccess(data.message));
 
                 if(successCallback && typeof(successCallback === "function"))
                     successCallback(response)

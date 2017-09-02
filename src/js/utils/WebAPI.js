@@ -11,6 +11,12 @@ export const WebAPI = {
         if(AUTH_TOKEN)
             setAxiosAuthHeader(AUTH_TOKEN);
         return axios.post("/api/user/JWTLogin");
+    },
+    newPin(data) {
+        return axios.post("/api/pin/newPin", {...data});
+    },
+    deletePin(data) {
+        return axios.post("/api/pin/deletePin", {...data});
     }
 }
 

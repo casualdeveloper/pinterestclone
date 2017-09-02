@@ -63,7 +63,6 @@ class Signup extends React.Component {
                             </form>
                         </Col>
                     </Grid>
-                    
                 </div>
             </div>
         );

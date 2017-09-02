@@ -6,8 +6,8 @@ import Home from "./components/Home";
 import NotFound from "./components/NotFound";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import MyPics from "./components/MyPics";
-import NewPic from "./components/NewPic";
+import MyPins from "./components/MyPins";
+import NewPin from "./components/NewPin";
 
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 
@@ -31,8 +31,8 @@ class App extends React.Component {
                     <Route exact path="/" component={Home}/>
                     <PublicOnlyRoute exact path="/login" component={Login} {...this.props}/>
                     <PublicOnlyRoute exact path="/signup" component={Signup} {...this.props}/>
-                    <PrivateRoute exact path="/mypics" component={MyPics} {...this.props}/>
-                    <PrivateRoute exact path="/newpic" component={NewPic} {...this.props}/>
+                    <PrivateRoute exact path="/mypins" component={MyPins} {...this.props}/>
+                    <PrivateRoute exact path="/newpin" component={NewPin} {...this.props}/>
                     <Route component={NotFound} />
                 </Switch>
             </div>
@@ -117,11 +117,11 @@ const PrivateNav = (props) => {
     const { userLogout } = props;
     return (
         <Nav pullRight>
-            <LinkContainer to="/mypics">
-                <NavItem>My pics</NavItem>
+            <LinkContainer to="/mypins">
+                <NavItem>My pins</NavItem>
             </LinkContainer>
-            <LinkContainer to="/newpic">
-                <NavItem>New pic</NavItem>
+            <LinkContainer to="/newpin">
+                <NavItem>New pin</NavItem>
             </LinkContainer>
             <NavItem onClick={() => { userLogout() }}>Logout</NavItem>
         </Nav>
