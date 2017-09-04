@@ -25,10 +25,25 @@ class ImageWrapper extends React.Component {
             errorImage: props.errorImage || defaultErrorImage(this.width, this.height),
             src: props.src || defaultFallbackImage(this.width, this.height),
             imageLoadingError: false,
-            imageLoading: false
+            imageLoading: false,
+            usePictureForLoader: props.usePictureForLoader || false
+
         }
 
+        if(this.usePictureForLoader)
+            this.preloadImage(this.state.loadingImage, this.props.onImageLoaded);
+
+        this.preloadImage(this.state.errorImage, this.props.onImageLoaded);
+
         this.loadImage = this.loadImage.bind(this);
+        this.loadImage(this.state.src);
+    }
+
+    preloadImage(src, cb){
+        let newImage = new Image();
+        newImage.src = src;
+        newImage.addEventListener("load", cb);
+        newImage.addEventListener("error", cb);
     }
 
     loadImage(src){
@@ -47,10 +62,16 @@ class ImageWrapper extends React.Component {
 
         newImage.addEventListener("load", function() {
             this2.setState({imageLoading: false, imageLoadingError: false});
+            if(this2.props.onImageLoaded){
+                this2.props.onImageLoaded();
+            }
         }, false);
 
         newImage.addEventListener("error", function() {
             this2.setState({ imageLoadingError: true, imageLoading: false });
+            if(this2.props.onImageLoaded){
+                this2.props.onImageLoaded();
+            }
         }, false);
     }
 
@@ -61,10 +82,14 @@ class ImageWrapper extends React.Component {
         }
     }
 
+
+
     render(){
         let src = this.state.src;
-
-        if(this.state.imageLoading)
+        
+        if(this.state.imageLoading && !this.state.usePictureForLoader)
+            return (<LoadingIndicator height={this.state.height} width={this.state.width} id={this.props.id} />)
+        if(this.state.imageLoading && this.state.usePictureForLoader)
             src = this.state.loadingImage;
         if(this.state.imageLoadingError)
             src = this.state.errorImage;
@@ -73,6 +98,17 @@ class ImageWrapper extends React.Component {
             <BootstrapImage id={this.props.id} className={this.props.className} width={this.props.width} height={this.props.height} src={src} responsive></BootstrapImage>
         );
     }
+}
+
+const LoadingIndicator = (props) =>{
+    return (
+        <div id={props.id} className="loading-image-parent" style={{width: props.width, height: props.height, lineHeight: props.height+21+"px"}} > 
+        {/* we add extra 20 to line height as offset for loader (half of its height) for it to be perfectly in center (should be adjusted if loader changes) */}
+            <div className="loading-image" style={{width: props.width, height: props.height}}>
+            </div>
+            <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+        </div>
+    )
 }
 
 export default ImageWrapper;
