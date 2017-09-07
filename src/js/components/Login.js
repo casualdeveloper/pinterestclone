@@ -42,13 +42,13 @@ class Login extends React.Component {
                             <form>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroup.Addon><i className="glyphicon glyphicon-user"></i></InputGroup.Addon>
+                                        <InputGroup.Addon><i className="fa fa-user"></i></InputGroup.Addon>
                                         <FormControl id="username" placeholder="Username" type="text" onChange={this.handleInputChange} value={this.state.username} />
                                     </InputGroup>                                
                                 </FormGroup>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroup.Addon><i className="glyphicon glyphicon-lock"></i></InputGroup.Addon>
+                                        <InputGroup.Addon><i className="fa fa-lock"></i></InputGroup.Addon>
                                         <FormControl id="password" placeholder="Password" type="password" onChange={this.handleInputChange} value={this.state.password} />
                                     </InputGroup>                                
                                 </FormGroup>

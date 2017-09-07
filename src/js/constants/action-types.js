@@ -4,6 +4,7 @@ export const USER_SIGNUP = "USER_SIGNUP";
 
 export const PIN_NEW = "PIN_NEW";
 export const PIN_DELETE = "PIN_DELETE";
+export const PINS_FETCH = "PINS_FETCH";
 
 export const PENDING = "_PENDING";
 export const SUCCESS = "_SUCCESS";

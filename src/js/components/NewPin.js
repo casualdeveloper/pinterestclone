@@ -1,9 +1,9 @@
 import React from "react";
 import { PageHeader, Grid, Col, Button, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import ImageWrapper from "./Image";
+import Message from "./Message";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Message from "./Message";
 import { newPin, newPinError, newPinMessage } from "../actions/pinActions";
 
 class NewPin extends React.Component {
@@ -12,7 +12,6 @@ class NewPin extends React.Component {
 
         this.state = {
             url: "",
-            title: "",
             description: ""
         }
 
@@ -54,23 +53,17 @@ class NewPin extends React.Component {
                             <form>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroup.Addon><i className="glyphicon glyphicon-link"></i></InputGroup.Addon>
+                                        <InputGroup.Addon><i className="fa fa-link"></i></InputGroup.Addon>
                                         <FormControl id="url" placeholder="Image url" type="text" onChange={this.handleInputChange} value={this.state.url}/>
                                     </InputGroup>
                                 </FormGroup>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroup.Addon><i className="glyphicon glyphicon-tag"></i></InputGroup.Addon>
-                                        <FormControl id="title" placeholder="Title" type="text" onChange={this.handleInputChange} value={this.state.title}/>
-                                    </InputGroup>
-                                </FormGroup>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroup.Addon><i className="glyphicon glyphicon-file"></i></InputGroup.Addon>
+                                        <InputGroup.Addon><i className="fa fa-file-text-o"></i></InputGroup.Addon>
                                         <FormControl id="description" placeholder="Description" type="text" onChange={this.handleInputChange} value={this.state.description}/>
                                     </InputGroup>
                                 </FormGroup>
-                                <Button bsStyle="success" onClick={this.submitHandler} disabled={loading}>{loading?"Loading...":(<span><i className="glyphicon glyphicon-plus"></i> Save </span>)}</Button>
+                                <Button bsStyle="success" onClick={this.submitHandler} disabled={loading}>{loading?"Loading...":(<span><i className="fa fa-plus"></i> Save </span>)}</Button>
                             </form>
                         </Col>
                     </Grid>

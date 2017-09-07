@@ -10,5 +10,8 @@ router.post("/newPin", AuthController.JWTLogin, PinController.new, UserControlle
 router.post("/deletePin", AuthController.JWTLogin, UserController.deletePin, PinController.delete, (req, res) => {
     res.status(200).json({message:"Pin deleted successfully!"});
 });
+router.post("/fetchAll", PinController.fetch, (req, res) => {
+    res.status(200).json({pins: req.fetchedPins});
+});
 
 module.exports = router;

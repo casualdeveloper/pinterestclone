@@ -17,6 +17,9 @@ export const WebAPI = {
     },
     deletePin(data) {
         return axios.post("/api/pin/deletePin", {...data});
+    },
+    fetchPins(data) {
+        return axios.post("/api/pin/fetchAll", {...data});
     }
 }
 

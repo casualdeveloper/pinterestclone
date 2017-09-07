@@ -1,6 +1,6 @@
 export const newPin = (state, action) => {
     let pins = state.pins.slice(0);
-    pins.push(action.payload.pin);
+    pins.splice(0,0,action.payload.pin);
     return {
         ...state,
         pins
