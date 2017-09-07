@@ -13,6 +13,9 @@ const defaultErrorImage = (width = 180, height = 180) => {
     return `https://dummyimage.com/${width}x${height}/c4c4c4/666666.jpg&text=Error`;
 }
 
+let loadingImage;
+let errorImage;
+
 class ImageWrapper extends React.Component {
     constructor(props){
         super(props);
@@ -33,10 +36,12 @@ class ImageWrapper extends React.Component {
             imageFinishedLoading: false //to determine if current image finished loading and we can call our callbacks
         }
 
+        //callbacks save preloaded image to variable 
+        //in case if its not use browser wouldn't delete it
         if(this.usePictureForLoader)
-            this.preloadImage(this.state.loadingImage);
+            this.preloadImage(this.state.loadingImage, (img) => {loadingImage = img});
 
-        this.preloadImage(this.state.errorImage);
+        this.preloadImage(this.state.errorImage, (img) => {errorImage = img});
 
         this.loadImage = this.loadImage.bind(this);
         this.loadImage(this.state.src);
@@ -45,28 +50,8 @@ class ImageWrapper extends React.Component {
     preloadImage(src, cb){
         let newImage = new Image();
         newImage.src = src;
-        newImage.addEventListener("load", cb);
-        newImage.addEventListener("error", cb);
-    }
-
-    componentDidUpdate(){
-        //once image ends rendering
-        //we set imageFinishedLading to false to prevent endless loop
-        //here we call all callbacks because only now
-        //we are sure that image is downloaded and loaded
-        if(this.state.imageFinishedLoading){
-            this.setState({ imageFinishedLoading: false }, () => {
-                if(this.props.onImageLoaded){
-                    this.props.onImageLoaded();
-                    return;
-                }
-
-                if(this.props.onImageError){
-                    this.props.onImageError();
-                    return;
-                }
-            });
-        }
+        newImage.addEventListener("load", cb(newImage));
+        newImage.addEventListener("error", cb(newImage));
     }
 
     loadImage(src){
@@ -80,16 +65,24 @@ class ImageWrapper extends React.Component {
         this.setState({imageLoading: true, imageLoadingError: false});
 
         let newImage = new Image();
-        let this2 = this;
+
+        newImage.onload = () => {
+            this.setState({imageLoading: false, imageLoadingError: false, imageFinishedLoading: true},() => {
+                if(this.props.onImageLoaded)
+                    this.props.onImageLoaded();
+            })
+        };
+        
+
+        newImage.onerror = () => {
+            this.setState({ imageLoadingError: true, imageLoading: false, imageFinishedLoading: true }, () => {
+                if(this.props.onImageError)
+                    this.props.onImageError();
+            });
+        }
+        
         newImage.src = src;
-
-        newImage.addEventListener("load", function() {
-            this2.setState({imageLoading: false, imageLoadingError: false, imageFinishedLoading: true});
-        }, false);
-
-        newImage.addEventListener("error", function() {
-            this2.setState({ imageLoadingError: true, imageLoading: false, imageFinishedLoading: true });
-        }, false);
+        
     }
 
     componentWillReceiveProps(nextProps){
