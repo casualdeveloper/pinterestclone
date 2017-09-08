@@ -15,6 +15,11 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
     return (data) => {
         return dispatch => {
             dispatch(typePending(true));
+            //dispatch failed and success actions
+            //to delete currently active messages
+            dispatch(typeSuccess(null));
+            dispatch(typeFailed(null));
+            
             promise(data)
             .then(response => {
                 let data = response.data;

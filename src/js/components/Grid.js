@@ -1,6 +1,7 @@
 import React from "react";
 import Masonry from "masonry-layout";
 
+
 //passed prop "gridItem" will receive props:
 //1. callback prop that should be called once item is ready to be appended to grid
 //2. data = object/value of array iteration
@@ -9,14 +10,19 @@ class Grid extends React.Component {
         super(props);
         this.state = {
             initialized: false,
+            lastAppended: -1, // last appended item used for sequential loading and deciding if finishedLoading callback should be called
+            sequentialLoad: props.sequentialLoad || false, // items should be loaded in sequence, not randomly
+            finishedLoading: props.finishedLoading || false
         }
         this.masonry;
+        this.appended = 0;
         //forces to realign items (eg. if image size changed);
         this.resetMasonryLayout = this.resetMasonryLayout.bind(this);
         //recollects items (eg. more images have been added to dom after initial masonry collection)
         this.reloadItems = this.reloadItems.bind(this);
         //appends element
         this.appendElement = this.appendElement.bind(this);
+        //destryos grid
         this.destroyGrid = this.destroyGrid.bind(this);
     }
 
@@ -24,9 +30,18 @@ class Grid extends React.Component {
         this.initializeMasonry();
     }
 
-    appendElement(el) {
-        if(this.masonry)
+    appendElement(el, index) {
+        if(!this.masonry)
+            return;
+
+        if(this.state.sequentialLoad){
             this.masonry.appended(el);
+            //set index of recently loaded image 
+            this.setState({lastAppended: index});
+        }else{
+            this.masonry.appended(el);
+        }
+
     }
 
     resetMasonryLayout() {
@@ -34,12 +49,10 @@ class Grid extends React.Component {
             this.masonry.layout();
         
     }
-
     reloadItems() {
         if(this.masonry)
             this.masonry.reloadItems();
     }
-
     destroyGrid(){
         if(this.masonry)
             this.masonry.destroy();
@@ -48,20 +61,36 @@ class Grid extends React.Component {
     initializeMasonry() {
         this.masonry = new Masonry( this.grid, {
             itemSelector: ".grid-item",
-            columnWidth: 200,
+            columnWidth: ".grid-sizer",
             transitionDuration: "0.3s",
-            gutter: 15
+            gutter: 15,
+            fitWidth: true,
         });
         this.setState({ initialized: true });
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        if(this.props.data.length !== nextProps.data.length || this.state.lastAppended !== nextState.lastAppended)
+            return true;
+        return false;
+    }
+
+
     render() {
         let data = this.props.data;
+
+        if(this.state.finishedLoading){
+            if(this.state.lastAppended + 1 === this.props.data.length && this.state.lastAppended >= 0)
+                this.state.finishedLoading();
+        }
+
         return (
             <div className="grid" ref={(grid) => { this.grid = grid }}>
+                <div className="grid-sizer"></div>
                 {data.map((data, index) => {
+                    let canBeAppended = (this.state.sequentialLoad)?(index <= this.state.lastAppended+1):true;
                     return (
-                        <GridItemWrapper data={data} key={index} gridItem={this.props.gridItem} append={this.appendElement}/>
+                        <GridItemWrapper data={data} key={index} gridItem={this.props.gridItem} canBeAppended={canBeAppended} append={(el) => { this.appendElement(el, index) }}/>
                     );
                 })}
             </div>
@@ -69,7 +98,7 @@ class Grid extends React.Component {
     }
 }
 
-// requires props data, gridItem, append function
+// requires props data, gridItem, append function, canBeAppended
 class GridItemWrapper extends React.Component {
     constructor(props){
         super(props);
@@ -84,25 +113,19 @@ class GridItemWrapper extends React.Component {
         this.setState({ finishedLoading: true });
     }
 
-    componentDidMount(){
-        if(this.state.finishedLoading && !this.state.appended && this.props.append){
-            this.setState({ appended: true }, () => {
-                this.props.append(this.el);
-            });
-        }  
-    }
-
     componentDidUpdate(){
-        if(this.state.finishedLoading && !this.state.appended && this.props.append){
+        if(this.state.finishedLoading && this.props.canBeAppended && !this.state.appended && this.props.append){
             this.setState({ appended: true }, () => {
                 this.props.append(this.el);
             });
-        }  
+        }
     }
 
     render(){
-        let style = (!this.state.finishedLoading)?{display:"none"}:{};
-        let className = (this.state.finishedLoading)?"grid-item":"";
+        //set display to none so item wouldn't appear until appended
+        //set className to empty so masonry wouldn't add item itself
+        let style = (!this.state.finishedLoading || !this.props.canBeAppended)?{display:"none"}:{};
+        let className = (this.state.finishedLoading && this.props.canBeAppended)?"grid-item":"";
 
         let GridItem = this.props.gridItem;
         return(

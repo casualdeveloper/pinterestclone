@@ -35,6 +35,7 @@ class App extends React.Component {
                     <PrivateRoute exact path="/newpin" component={NewPin} {...this.props}/>
                     <Route component={NotFound} />
                 </Switch>
+                <Footbar />
             </div>
         );
     }
@@ -125,6 +126,13 @@ const PrivateNav = (props) => {
             </LinkContainer>
             <NavItem onClick={() => { userLogout() }}>Logout</NavItem>
         </Nav>
+    );
+}
+
+const Footbar = () => {
+    return (
+        <div className="footbar">
+        </div>
     );
 }
 

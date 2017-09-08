@@ -10,23 +10,40 @@ import { fetchPins } from "../actions/pinActions";
 class Home extends React.Component {
     constructor(props){
         super(props);
+
+        this.state = {
+            loadingImages: (props.pins.length > 0) // if there already preloaded pins show loading indicator while images are being downloaded
+        }
+        
         if(!this.props.lastPinId)
             this.props.fetchPins();
         
         this.handleLoadMore = this.handleLoadMore.bind(this);
+        this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
     }
 
     handleLoadMore(){
         const { lastPinId } = this.props;
         this.props.fetchPins({ lastPinId });
+        
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.pins.length !== nextProps.pins.length)
+            this.setState({ loadingImages: true });
+    }
+
+    handleFinishedLoadingImages(){
+        this.setState({ loadingImages: false });
     }
 
     render(){
         const pins = this.props.pins;
+        const isLoading = (this.props.loading || this.state.loadingImages);
         return(
-            <div className="container">
-                <Grid gridItem={GridItem} data={pins} />
-                <Button onClick={this.handleLoadMore}>Load More</Button>
+            <div className="text-center">
+                <Grid gridItem={GridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
+                <Button onClick={this.handleLoadMore} disabled={isLoading} >{isLoading?"Loading...":"Load More"}</Button>
             </div>
         )
     }
@@ -39,7 +56,7 @@ class GridItem extends React.Component {
         const finishedLoading = this.props.finishedLoading;
         return (
             <div className="thumbnail custom-thumbnail">
-                <ImageWrapper width={200} height={200} src={url} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
+                <ImageWrapper width={230} height={230} src={url} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
                 <div className="caption">
                     <h4>{description}</h4>
                 </div>
