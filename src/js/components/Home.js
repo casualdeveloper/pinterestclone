@@ -1,6 +1,7 @@
 import React from "react";
 import ImageWrapper from "./Image";
 import Grid from "./Grid";
+import Loader from "./Loader";
 import { Button } from "react-bootstrap";
 
 import { connect } from "react-redux";
@@ -12,7 +13,7 @@ class Home extends React.Component {
         super(props);
 
         this.state = {
-            loadingImages: (props.pins.length > 0) // if there already preloaded pins show loading indicator while images are being downloaded
+            loadingImages: (props.pins.length > 0) // if there already preloaded pins show loading indicator while images are loading up
         }
         
         if(!this.props.lastPinId)
@@ -43,7 +44,8 @@ class Home extends React.Component {
         return(
             <div className="text-center">
                 <Grid gridItem={GridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
-                <Button onClick={this.handleLoadMore} disabled={isLoading} >{isLoading?"Loading...":"Load More"}</Button>
+                <Loader disabled={!isLoading}/>
+                {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
             </div>
         )
     }

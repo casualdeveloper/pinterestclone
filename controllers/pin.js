@@ -31,7 +31,7 @@ exports.delete = (req, res, next) => {
 }
 
 exports.fetch = (req, res, next) => {
-    const PINS_IN_PAGE = 24;
+    const PINS_IN_PAGE = 12;
     const lastPinId = req.body.lastPinId;
     //if there is no lastpin sent that means we are on first page
     //thus we keep query find params empty
