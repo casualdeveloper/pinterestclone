@@ -36,7 +36,7 @@ exports.fetch = (req, res, next) => {
     //if there is no lastpin sent that means we are on first page
     //thus we keep query find params empty
     //otherwise we set query params to
-    //look only for pins whose id is greater
+    //look only for pins whose id is lesser (was created before)
     //than the last pin's
     let queryFindParams = {};
     if(lastPinId){
@@ -47,6 +47,35 @@ exports.fetch = (req, res, next) => {
     Pin.find(queryFindParams).sort({ $natural: -1 }).limit(PINS_IN_PAGE).exec((err, results) => {
         if(err) return next(err);
         req.fetchedPins = results;
+        return next();
+    });
+}
+
+exports.fetchUserPins = (req, res, next) => {
+    const PINS_IN_PAGE = 12;
+    const lastPinId = req.body.lastPinId;
+    const userId = req.body.userId;
+    //if no userId provided send error
+    if(!userId) { return res.status(422).json({error: "Invalid user id!"}) };
+    
+    //see comment about pages in exports.fetch function
+
+    let matchParams = {};
+    if(lastPinId){
+        let oid = mongoose.Types.ObjectId(lastPinId);
+        matchParams = {_id: {$lt: oid}};
+    }
+
+    User.findById(userId).populate({
+        path: "pins",
+        match: matchParams,
+        options: { 
+            limit: PINS_IN_PAGE,
+            sort: { $natural: -1 }
+         }
+    }).lean().exec((err, results) => {
+        if(err) return next(err);
+        req.fetchedPins = results.pins;
         return next();
     });
 }
