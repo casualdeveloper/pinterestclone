@@ -6,7 +6,8 @@ import { getLocalJWT } from "../../utils/localData";
 
 const defaultState = { 
     isAuth: false,
-    JWT: getLocalJWT()
+    JWT: getLocalJWT(),
+    pins: []
 };
 
 export function userReducer (state = defaultState, action) {

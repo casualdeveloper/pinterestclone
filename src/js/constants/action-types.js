@@ -9,3 +9,5 @@ export const PINS_FETCH = "PINS_FETCH";
 export const PENDING = "_PENDING";
 export const SUCCESS = "_SUCCESS";
 export const FAILED = "_FAILED";
+
+export const USERS_FETCH_PINS = "USERS_FETCH_PINS";

@@ -5,7 +5,7 @@ import * as deletePin from "./pin-delete";
 import * as fetchPins from "./pins-fetch";
 
 const defaultState = {
-    pins: []
+    pins: [],
 };
 
 export function pinReducer (state = defaultState, action) {

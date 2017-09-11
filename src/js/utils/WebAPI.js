@@ -20,6 +20,9 @@ export const WebAPI = {
     },
     fetchPins(data) {
         return axios.post("/api/pin/fetchAll", {...data});
+    },
+    fetchUserPins(data) {
+        return axios.post("/api/pin/userPins", {...data});
     }
 }
 
