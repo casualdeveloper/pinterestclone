@@ -2,8 +2,9 @@ import React from "react";
 import { PageHeader, Grid, Col, Button, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { userLogin } from "../actions";
+import { userLogin, twitterLogin } from "../actions";
 import Message from "./Message";
+import axios from "axios";
 
 class Login extends React.Component {
     constructor(props){
@@ -14,11 +15,19 @@ class Login extends React.Component {
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.loginHandler = this.loginHandler.bind(this);
+        this.twitterLoginHandler = this.twitterLoginHandler.bind(this);
     }
 
     loginHandler() {
         const { userLogin } = this.props;
         userLogin(this.state);
+    }
+
+    twitterLoginHandler() {
+        const { twitterLogin } = this.props;
+        //we have to open new window in button click callback to avoid popup block from browsers
+        let newWindow = window.open("", "_blank", "height: 600, width: 600");
+        twitterLogin(newWindow);
     }
 
     handleInputChange(e) {
@@ -53,6 +62,7 @@ class Login extends React.Component {
                                     </InputGroup>                                
                                 </FormGroup>
                                 <Button onClick={this.loginHandler} disabled={loading}>{loading?"Loading...":"Login"}</Button>
+                                <Button onClick={this.twitterLoginHandler} disabled={loading}>{loading?"Loading...":"Twitter"}</Button>
                             </form>
                         </Col>
                     </Grid>
@@ -71,7 +81,7 @@ function mapStateToProps(state){
     }
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ userLogin }, dispatch);
+    return bindActionCreators({ userLogin, twitterLogin }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -13,8 +13,7 @@ function generateToken(user) {
 
 function setUserInfo(user) {  
     return {
-        email: user.email,
-        username: user.username,
+        username: user.username || user.twitter.displayName,
         id: user._id
     };
 }
@@ -31,32 +30,28 @@ exports.login = function(req, res, next) {
     User.findById(userId, function(err, foundUser){
         if(err) { return next(err); }
         userInfo = setUserInfo(foundUser);
-        res.status(200).json({
-            token: "JWT " + generateToken({id: userId}),
-            user: userInfo
-        });
+        req.responseObj.JWT = "JWT " + generateToken({id: userId});
+        req.responseObj.user = userInfo;
+        return next();
     });
 
     
 };
 
 //========================================
-// Login without generating new JWT route
+// Login without generating new JWT
 //========================================
 exports.loginNoJWT = function(req, res, next) {
     if(!req.user) return next();
+
     let userId = req.user.id;
-
     let userInfo;
-
 
     User.findById(userId, function(err, foundUser){
         if(err) { return next(err); }
         userInfo = setUserInfo(foundUser);
-
-        res.status(200).json({
-            user: userInfo
-        });
+        req.responseObj.user = userInfo;
+        return next();
     });
 
     
@@ -167,3 +162,27 @@ exports.localLogin = function(req,res,next){
         return next();
     })(req, res, next);
 };
+
+//========================================
+// TwitterLogin Middleware
+//========================================
+exports.twitterLogin = function(req, res, next){
+    let twitterResponse = req.twitterResponse;
+    User.findOne({ "twitter.id" : twitterResponse.user_id }, function(err, user) {
+        if(err) { return next(err) };
+        if(user) { req.user = user; return next(); };
+        let newUser = new User({
+            twitter: {
+                displayName: twitterResponse.screen_name,
+                id: twitterResponse.user_id,
+                token: twitterResponse.oauth_token,
+                tokenSecret: twitterResponse.oauth_token_secret
+            }
+        });
+        newUser.save(function(err, user){
+            if(err) return next(err);
+            req.user = user;
+            return next();
+        });
+    });
+}

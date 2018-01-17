@@ -23,6 +23,12 @@ export const WebAPI = {
     },
     fetchUserPins(data) {
         return axios.post("/api/pin/userPins", {...data});
+    },
+    getTwitterRequestToken() {
+        return axios.get("/api/user/twitterAuthRequest");
+    },
+    loginTwitter(twitterCallback) {
+        return axios.get("/api/user/twitterAuth"+twitterCallback);
     }
 }
 

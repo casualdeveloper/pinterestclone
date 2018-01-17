@@ -26,8 +26,9 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
         return {
             payload,
             meta: { 
-                passedData,
-                ...metadata
+                ...metadata,
+                passedData
+                
             }
         }
     }

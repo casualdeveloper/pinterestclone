@@ -11,6 +11,7 @@ const jwtOptions = {
     secretOrKey: config.JWT_SECRET
 };
 
+
 const localLogin = new LocalStrategy(function(username, password, done) {  
     User.findOne({ username: username }, function(err, user) {
         if(err) { return done(err); }
@@ -25,7 +26,7 @@ const localLogin = new LocalStrategy(function(username, password, done) {
     });
 });
 
-const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {  
+const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
     User.findById(payload.id, function(err, user) {
         if (err) { return done(err, false); }
 
@@ -45,4 +46,3 @@ const jwtVerify = new JwtStrategy(jwtOptions, function(payload, done) {
 passport.use("jwtVerify", jwtVerify);
 passport.use(jwtLogin); 
 passport.use(localLogin);
-

@@ -5,9 +5,15 @@ const Schema = mongoose.Schema;
 const SALT_FACTOR = 10;
 
 const userSchema = mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    email: { type: String, required: true, unique: true},
+    username: { type: String, unique: true },
+    password: { type: String, },
+    email: { type: String, unique: true },
+    twitter: {
+        id: { type: String, unique: true },
+        displayName: { type: String },
+        token: { type: String },
+        tokenSecret: { type: String }
+    },
     pins: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
     creationDate: { type: Date, required: true, default: Date.now() }
 });

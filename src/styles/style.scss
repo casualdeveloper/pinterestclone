@@ -44,3 +44,10 @@
 .loader{
     margin: 10px;
 }
+.loading_screen{
+    height:100%;
+    width:100%;
+    position:absolute;
+    background-color: rgba(0,0,0,0.04);
+    z-index:3;
+}
