@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
         tokenSecret: { type: String }
     },
     pins: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
-    creationDate: { type: Date, required: true, default: Date.now() }
+    creationDate: { type: Date, required: true, default: Date.now }
 });
 
 
