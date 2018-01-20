@@ -1,9 +1,12 @@
 export const newPin = (state, action) => {
     let pins = state.pins.slice(0);
-    pins.splice(0,0,action.payload.pin);
+    let pin = action.payload.pin;
+    pins.splice(0, 0, pin);
+    let lastPinId = state.lastPinId || pin._id;
     return {
         ...state,
-        pins
+        pins,
+        lastPinId
     }
 }
 

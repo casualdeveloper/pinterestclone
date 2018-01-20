@@ -15,12 +15,16 @@ class Home extends React.Component {
         this.state = {
             loadingImages: (props.pins.length > 0) // if there already preloaded pins show loading indicator while images are loading up
         }
+
+        this.handleLoadMore = this.handleLoadMore.bind(this);
+        this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
         
         if(!this.props.lastPinId)
             this.props.fetchPins();
         
-        this.handleLoadMore = this.handleLoadMore.bind(this);
-        this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
+        if(this.props.lastPinId && this.props.pins.length < 12)
+            this.handleLoadMore();
+
     }
 
     handleLoadMore(){

@@ -45,11 +45,14 @@ class UserPins extends React.Component {
             loadingImages: (user.pins.length > 0) // if there already preloaded pins show loading indicator while images are loading up
         }
         
+        this.handleLoadMore = this.handleLoadMore.bind(this);
+        this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
+
         if(!this.state.lastPinId)
             this.props.fetchUserPins({userId: this.state.userId});
         
-        this.handleLoadMore = this.handleLoadMore.bind(this);
-        this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
+        if(this.state.lastPinId && this.state.pins.length < 12)
+            this.handleLoadMore();
     }
 
     handleLoadMore(){

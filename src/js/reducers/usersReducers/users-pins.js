@@ -49,11 +49,13 @@ export const fetchPinsFailed = (state, action) => {
 }
 
 export const newPin = (state, action) => {
-    let userId = action.payload.pin.owner;
+    let pin = action.payload.pin;
+    let userId = pin.owner;
     let pins = getPins(state, userId);
-    pins.splice(0, 0, action.payload.pin);
+    pins.splice(0, 0, pin);
+    let lastPinId = pins[pins.length - 1]._id;
     return {
         ...state,
-        [userId]: updateUser(state, userId, {pins})
+        [userId]: updateUser(state, userId, {pins, lastPinId})
     }
 }
