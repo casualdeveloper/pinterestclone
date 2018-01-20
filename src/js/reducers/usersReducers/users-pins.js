@@ -21,10 +21,10 @@ const updateUser = (state, userId, data) => {
 
 export const fetchPins = (state, action) => {
     let userId = getUserId(action);
-    //get users pins, if there are none or if user is only now being added function will return empty array
+    //get users pins
     let oldPins = getPins(state, userId);
     let pins = oldPins.concat(action.payload.pins);
-    //get last pins id
+    //get last pin id
     let lastPinId = action.payload.pins[action.payload.pins.length - 1]._id;
     return {
         ...state,
@@ -45,5 +45,15 @@ export const fetchPinsFailed = (state, action) => {
     return {
         ...state,
         [userId]: updateUser(state, userId, {fetchPinsFailed: action.payload})
+    }
+}
+
+export const newPin = (state, action) => {
+    let userId = action.payload.pin.owner;
+    let pins = getPins(state, userId);
+    pins.splice(0, 0, action.payload.pin);
+    return {
+        ...state,
+        [userId]: updateUser(state, userId, {pins})
     }
 }

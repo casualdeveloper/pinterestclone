@@ -28,7 +28,6 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
             meta: { 
                 ...metadata,
                 passedData
-                
             }
         }
     }
@@ -57,8 +56,8 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
                 dispatch(typeAction(dispatchActionDataWrapper(payload)));
 
                 //dispatch success messages if there are any
-                if(data && data.message)
-                    dispatch(typeSuccess(dispatchActionDataWrapper(data.message)));
+                if(payload && payload.message)
+                    dispatch(typeSuccess(dispatchActionDataWrapper(payload.message)));
 
                 //call sucess callback if there is one
                 if(successCallback && typeof(successCallback === "function"))
