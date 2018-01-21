@@ -33,7 +33,10 @@ class ImageWrapper extends React.Component {
             onImageLoaded: props.onImageLoaded,
             onImageError: props.onImageError,
             onImageLoading: props.onImageLoading,
-            imageFinishedLoading: false //to determine if current image finished loading and we can call our callbacks
+            imageFinishedLoading: false, //to determine if current image finished loading and we can call our callbacks
+            useImagePlaceholder: props.useImagePlaceholder || false,
+            orgWidth: 0,
+            orgHeight: 0
         }
 
         //callbacks save preloaded image to variable 
@@ -67,7 +70,13 @@ class ImageWrapper extends React.Component {
         let newImage = new Image();
 
         newImage.onload = () => {
-            this.setState({imageLoading: false, imageLoadingError: false, imageFinishedLoading: true},() => {
+            this.setState({
+                imageLoading: false, 
+                imageLoadingError: false, 
+                imageFinishedLoading: true,
+                orgHeight: newImage.naturalHeight,
+                orgWidth: newImage.naturalWidth
+            },() => {
                 if(this.props.onImageLoaded)
                     this.props.onImageLoaded();
             })
@@ -75,14 +84,19 @@ class ImageWrapper extends React.Component {
         
 
         newImage.onerror = () => {
-            this.setState({ imageLoadingError: true, imageLoading: false, imageFinishedLoading: true }, () => {
+            this.setState({
+                imageLoadingError: true,
+                imageLoading: false,
+                imageFinishedLoading: true,
+                orgHeight: this.state.height,
+                orgWidth: this.state.width
+            }, () => {
                 if(this.props.onImageError)
                     this.props.onImageError();
             });
         }
         
         newImage.src = src;
-        
     }
 
     componentWillReceiveProps(nextProps){
@@ -107,9 +121,29 @@ class ImageWrapper extends React.Component {
             src = this.state.errorImage;
 
         return (
-            <BootstrapImage id={this.props.id} className={this.props.className} width={this.props.width} height={this.props.height} src={src} responsive></BootstrapImage>
+            <ImagePlaceholder {...this.state}>
+                <BootstrapImage id={this.props.id} className={this.props.className} src={src} responsive></BootstrapImage>
+            </ImagePlaceholder>
         );
     }
+}
+
+const ImagePlaceholder = (props) => {
+    if(props.useImagePlaceholder){
+        const {orgHeight, orgWidth} = props;
+        let paddingPrecentage = orgHeight/orgWidth*100+"%";//we set padding at bottom to keep image aspect ration
+        let style = "width:"+orgWidth+"px; padding-bottom:"+paddingPrecentage+";";
+        return (
+            <div>
+                <div style="position:absolute">
+                    {props.children}
+                </div>
+                <div className="image-placeholder" style={style}>
+                </div>
+            </div>
+        );
+    }
+    return props.children;
 }
 
 const LoadingIndicator = (props) =>{

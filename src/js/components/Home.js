@@ -62,7 +62,7 @@ class GridItem extends React.Component {
         const finishedLoading = this.props.finishedLoading;
         return (
             <div className="thumbnail custom-thumbnail">
-                <ImageWrapper width={230} height={230} src={url} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
+                <ImageWrapper width={230} height={230} useImagePlaceholder={true} src={url} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
                 <div className="caption">
                     <h4>{description}</h4>
                 </div>
