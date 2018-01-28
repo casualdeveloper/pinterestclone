@@ -25,7 +25,7 @@ export const fetchPins = (state, action) => {
     let oldPins = getPins(state, userId);
     let pins = oldPins.concat(action.payload.pins);
     //get last pin id
-    let lastPinId = action.payload.pins[action.payload.pins.length - 1]._id;
+    let lastPinId = pins[pins.length - 1]._id;
     return {
         ...state,
         [userId]: updateUser(state, userId, {pins, lastPinId})

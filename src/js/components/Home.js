@@ -3,6 +3,7 @@ import ImageWrapper from "./Image";
 import Grid from "./Grid";
 import Loader from "./Loader";
 import { Button } from "react-bootstrap";
+import Message from "./Message";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -45,10 +46,12 @@ class Home extends React.Component {
     render(){
         const pins = this.props.pins;
         const isLoading = (this.props.loading || this.state.loadingImages);
+        const error = this.props.error;
         return(
             <div className="text-center">
                 <Grid gridItem={GridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
                 <Loader disabled={!isLoading}/>
+                <Message.Error active={!!error} title="Failed to retrieve pins" content={error} />
                 {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
             </div>
         )

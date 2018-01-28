@@ -2,7 +2,7 @@ export const fetchPins = (state, action) => {
     let oldPins = state.pins.slice(0);
     let pins = oldPins.concat(action.payload.pins);
     //get last pins id
-    let lastPinId = action.payload.pins[action.payload.pins.length - 1]._id;
+    let lastPinId = pins[pins.length - 1]._id;
     return {
         ...state,
         pins,

@@ -3,6 +3,7 @@ import ImageWrapper from "./Image";
 import Grid from "./Grid";
 import Loader from "./Loader";
 import { Button } from "react-bootstrap";
+import Message from "./Message";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -32,7 +33,7 @@ class UserPins extends React.Component {
     constructor(props){
         super(props);
 
-        let userId = props.userId;
+        let userId = props.userId || props.match.params.userId;
         let user = getUserData(props.users, userId);
 
         this.state = {
@@ -62,20 +63,26 @@ class UserPins extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        let user = getUserData(nextProps.users, nextProps.userId);
+        let nextUserId = nextProps.userId || nextProps.match.params.userId;
+        console.log(nextUserId);
+        let user = getUserData(nextProps.users, nextUserId);
+        
         this.setState({
             pins: user.pins,
             loading: user.loading,
-            error: user.loading,
+            error: user.error,
             lastPinId: user.lastPinId,
-            userId: nextProps.userId,
-            loadingImages: (nextProps.userId !== this.state.userId)?user.pins.length>0:this.state.loadingImages,
+            userId: nextUserId,
+            loadingImages: (nextUserId !== this.state.userId)
+                            ?user.pins.length>0 //if this is a different user we set same value as we usually would do
+                            :this.state.pins.length !== user.pins.length,//if this is a same user we check if we are fetching more pins
             gridItem: nextProps.gridItem || GridItem
         });
     }
 
     shouldComponentUpdate(nextProps, nextState){
-        if( nextState.userId !== this.state.userId ||
+        let nextUserId = nextProps.userId || nextProps.match.params.userId;
+        if( nextUserId !== this.state.userId ||
             nextState.pins.length !== this.state.pins.length ||
             nextState.loading !== this.state.loading ||
             nextState.error !== this.state.error ||
@@ -93,10 +100,12 @@ class UserPins extends React.Component {
     render(){
         const pins = this.state.pins;
         const isLoading = (this.state.loading || this.state.loadingImages);
+        const error = (this.state.error)?this.state.error:null;
         return(
             <div className="text-center">
                 <Grid gridItem={this.state.gridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
                 <Loader disabled={!isLoading}/>
+                <Message.Error active={!!error} title="Failed to retrieve pins" content={error} />
                 {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
             </div>
         )

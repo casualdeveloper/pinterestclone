@@ -8,12 +8,14 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import MyPins from "./components/MyPins";
 import NewPin from "./components/NewPin";
+import UserPins from "./components/UserPins";
 
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userJWTLogin, userLogout } from "./actions";
+
 
 
 class App extends React.Component {
@@ -29,6 +31,7 @@ class App extends React.Component {
                 <Menu isAuth={this.props.user.isAuth} userLogout={this.props.userLogout} />
                 <Switch>
                     <Route exact path="/" component={Home}/>
+                    <Route exact path="/user/:userId" component={UserPins}/>
                     <PublicOnlyRoute exact path="/login" component={Login} {...this.props}/>
                     <PublicOnlyRoute exact path="/signup" component={Signup} {...this.props}/>
                     <PrivateRoute exact path="/mypins" component={MyPins} {...this.props}/>
