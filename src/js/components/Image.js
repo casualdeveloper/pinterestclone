@@ -19,7 +19,6 @@ let errorImage;
 class ImageWrapper extends React.Component {
     constructor(props){
         super(props);
-
         this.state = {
             width: props.width || 180,
             height: props.height || 180,
@@ -119,7 +118,7 @@ class ImageWrapper extends React.Component {
             src = this.state.loadingImage;
         if(this.state.imageLoadingError)
             src = this.state.errorImage;
-
+        
         return (
             <ImagePlaceholder {...this.state}>
                 <BootstrapImage id={this.props.id} className={this.props.className} src={src} responsive></BootstrapImage>
@@ -131,14 +130,15 @@ class ImageWrapper extends React.Component {
 const ImagePlaceholder = (props) => {
     if(props.useImagePlaceholder){
         const {orgHeight, orgWidth} = props;
-        let paddingPrecentage = orgHeight/orgWidth*100+"%";//we set padding at bottom to keep image aspect ration
-        let style = "width:"+orgWidth+"px; padding-bottom:"+paddingPrecentage+";";
+        let paddingPrecentage = orgHeight / orgWidth * 100 + "%";//we set padding at bottom to keep image aspect ration
+        let widthCSS = "width: " + orgWidth + "px;";
+        let paddingCSS = "padding-bottom:" + paddingPrecentage + ";";
         return (
-            <div>
-                <div style="position:absolute">
+            <div style="position:relative;">
+                <div style="position:absolute; width:100%;">
                     {props.children}
                 </div>
-                <div className="image-placeholder" style={style}>
+                <div className="image-placeholder" style={widthCSS + paddingCSS}>
                 </div>
             </div>
         );
