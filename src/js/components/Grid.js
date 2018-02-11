@@ -90,7 +90,7 @@ class Grid extends React.Component {
                 {data.map((data, index) => {
                     let canBeAppended = (this.state.sequentialLoad)?(index <= this.state.lastAppended+1):true;
                     return (
-                        <GridItemWrapper data={data} key={index} gridItem={this.props.gridItem} canBeAppended={canBeAppended} append={(el) => { this.appendElement(el, index) }}/>
+                        <GridItemWrapper {...this.props} data={data} key={index} gridItem={this.props.gridItem} canBeAppended={canBeAppended} append={(el) => { this.appendElement(el, index) }}/>
                     );
                 })}
             </div>
@@ -130,7 +130,7 @@ class GridItemWrapper extends React.Component {
         let GridItem = this.props.gridItem;
         return(
             <div className={className} style={style} ref={(el)=>{this.el=el}}>
-                <GridItem finishedLoading={this.finishedLoadingCallback} data={this.props.data} />
+                <GridItem {...this.props} finishedLoading={this.finishedLoadingCallback} data={this.props.data} />
             </div>
         );
     }

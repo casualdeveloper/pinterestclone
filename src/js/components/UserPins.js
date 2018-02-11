@@ -64,7 +64,6 @@ class UserPins extends React.Component {
 
     componentWillReceiveProps(nextProps){
         let nextUserId = nextProps.userId || nextProps.match.params.userId;
-        console.log(nextUserId);
         let user = getUserData(nextProps.users, nextUserId);
         
         this.setState({

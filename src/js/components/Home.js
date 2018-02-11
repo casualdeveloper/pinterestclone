@@ -12,13 +12,13 @@ import { fetchPins } from "../actions/pinActions";
 class Home extends React.Component {
     constructor(props){
         super(props);
-
         this.state = {
             loadingImages: (props.pins.length > 0) // if there already preloaded pins show loading indicator while images are loading up
         }
 
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
+        this.onClickHandler = this.onClickHandler.bind(this);
         
         if(!this.props.lastPinId)
             this.props.fetchPins();
@@ -26,6 +26,11 @@ class Home extends React.Component {
         if(this.props.lastPinId && this.props.pins.length < 12)
             this.handleLoadMore();
 
+
+    }
+
+    onClickHandler(userId){
+        this.props.history.push("/user/"+userId);
     }
 
     handleLoadMore(){
@@ -49,7 +54,7 @@ class Home extends React.Component {
         const error = this.props.error;
         return(
             <div className="text-center">
-                <Grid gridItem={GridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
+                <Grid gridItem={GridItem} data={pins} onClickHandler={this.onClickHandler} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
                 <Loader disabled={!isLoading}/>
                 <Message.Error active={!!error} title="Failed to retrieve pins" content={error} />
                 {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
@@ -61,10 +66,11 @@ class Home extends React.Component {
 
 class GridItem extends React.Component {
     render(){
-        const { url, description } = this.props.data;
+        const { url, description, owner } = this.props.data;
         const finishedLoading = this.props.finishedLoading;
+        const onClickHandler = () => {this.props.onClickHandler(owner)};
         return (
-            <div className="thumbnail custom-thumbnail">
+            <div className="thumbnail custom-thumbnail" onClick={onClickHandler}>
                 <ImageWrapper className="grid-image" width={230} height={230} useImagePlaceholder={true} src={url} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
                 <div className="caption">
                     <h4>{description}</h4>
