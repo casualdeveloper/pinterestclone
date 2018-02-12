@@ -4,6 +4,7 @@ import Grid from "./Grid";
 import Loader from "./Loader";
 import { Button } from "react-bootstrap";
 import Message from "./Message";
+import { PINS_IN_PAGE_DEFAULT } from "../constants/defaults";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -23,20 +24,17 @@ class Home extends React.Component {
         if(!this.props.lastPinId)
             this.props.fetchPins();
         
-        if(this.props.lastPinId && this.props.pins.length < 12)
-            this.handleLoadMore();
-
-
+        if(this.props.lastPinId && this.props.pins.length < PINS_IN_PAGE_DEFAULT)
+            this.handleLoadMore(this, PINS_IN_PAGE_DEFAULT - this.props.pins.length);
     }
 
     onClickHandler(userId){
         this.props.history.push("/user/"+userId);
     }
 
-    handleLoadMore(){
+    handleLoadMore(e, amountOfPins){
         const { lastPinId } = this.props;
-        this.props.fetchPins({ lastPinId });
-        
+        this.props.fetchPins({ lastPinId, amountOfPins });
     }
 
     componentWillReceiveProps(nextProps){

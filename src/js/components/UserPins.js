@@ -4,6 +4,7 @@ import Grid from "./Grid";
 import Loader from "./Loader";
 import { Button } from "react-bootstrap";
 import Message from "./Message";
+import { PINS_IN_PAGE_DEFAULT } from "../constants/defaults";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -52,13 +53,13 @@ class UserPins extends React.Component {
         if(!this.state.lastPinId)
             this.props.fetchUserPins({userId: this.state.userId});
         
-        if(this.state.lastPinId && this.state.pins.length < 12)
-            this.handleLoadMore();
+        if(this.state.lastPinId && this.state.pins.length < PINS_IN_PAGE_DEFAULT)
+            this.handleLoadMore(this, PINS_IN_PAGE_DEFAULT - this.state.pins.length);
     }
 
-    handleLoadMore(){
+    handleLoadMore(e, amountOfPins){
         const { lastPinId, userId } = this.state;
-        this.props.fetchUserPins({ lastPinId, userId });
+        this.props.fetchUserPins({ lastPinId, userId, amountOfPins });
         
     }
 

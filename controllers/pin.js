@@ -1,6 +1,7 @@
 const Pin = require("../models/pin");
 const User = require("../models/user");
 const mongoose = require("mongoose");
+const PINS_IN_PAGE_DEFAULT = require("../defaults").PINS_IN_PAGE_DEFAULT;
 
 exports.new = (req, res, next) => {
     let data = {
@@ -31,8 +32,11 @@ exports.delete = (req, res, next) => {
 }
 
 exports.fetch = (req, res, next) => {
-    const PINS_IN_PAGE = 12;
     const lastPinId = req.body.lastPinId;
+    const requestedAmountOfPins = parseInt(req.body.amountOfPins, 10);
+    const PINS_IN_PAGE = (requestedAmountOfPins && requestedAmountOfPins <= PINS_IN_PAGE_DEFAULT)
+                         ?requestedAmountOfPins
+                         :PINS_IN_PAGE_DEFAULT;
     //if there is no lastpin sent that means we are on first page
     //thus we keep query find params empty
     //otherwise we set query params to
@@ -52,9 +56,12 @@ exports.fetch = (req, res, next) => {
 }
 
 exports.fetchUserPins = (req, res, next) => {
-    const PINS_IN_PAGE = 12;
     const lastPinId = req.body.lastPinId;
     const userId = req.body.userId;
+    const requestedAmountOfPins = parseInt(req.body.amountOfPins, 10);
+    const PINS_IN_PAGE = (requestedAmountOfPins && requestedAmountOfPins <= PINS_IN_PAGE_DEFAULT)
+                         ?requestedAmountOfPins
+                         :PINS_IN_PAGE_DEFAULT;
     //if no userId provided send error
     if(!userId) { return res.status(422).json({error: "Invalid user id!"}) };
     
