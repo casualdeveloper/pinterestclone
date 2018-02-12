@@ -74,7 +74,7 @@ class UserPins extends React.Component {
             userId: nextUserId,
             loadingImages: (nextUserId !== this.state.userId)
                             ?user.pins.length>0 //if this is a different user we set same value as we usually would do
-                            :this.state.pins.length !== user.pins.length,//if this is a same user we check if we are fetching more pins
+                            :this.state.pins.length < user.pins.length,//if this is a same user we check if we are fetching more pins
             gridItem: nextProps.gridItem || GridItem
         });
     }
@@ -125,7 +125,6 @@ class GridItem extends React.Component {
             </div>
         )
     }
-
 }
 
 

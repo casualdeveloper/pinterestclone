@@ -20,9 +20,9 @@ export function pinReducer (state = defaultState, action) {
         case PIN_DELETE+PENDING: return ( deletePin.deletePinPending(state, action) );
         case PIN_DELETE+FAILED:  return ( deletePin.deletePinFailed(state, action) );
 
-        case PINS_FETCH: return ( fetchPins.fetchPins(state, action) );
+        case PINS_FETCH:         return ( fetchPins.fetchPins(state, action) );
         case PINS_FETCH+PENDING: return ( fetchPins.fetchPinsPending(state, action) );
-        case PINS_FETCH+FAILED: return ( fetchPins.fetchPinsFailed(state, action) );
+        case PINS_FETCH+FAILED:  return ( fetchPins.fetchPinsFailed(state, action) );
 
         default: return state
     }

@@ -18,7 +18,7 @@ exports.deletePin = (req, res, next) => {
     let pinId = req.body.pinId;
 
     if(!pinId)
-        res.status(422).json({error:"Inavlid pin id!"});
+        return res.status(422).json({error:"Inavlid pin id!"});
 
     User.findById(req.user.id, (err, user) => {
         if(err) return next(err);
@@ -31,7 +31,7 @@ exports.deletePin = (req, res, next) => {
         if(pinIndex === -1)
             return res.status(401).json({error:"Unauthorized"});
             
-        user.splice(pinIndex, 1);
+        user.pins.splice(pinIndex, 1);
 
         user.save(err => {
             if(err) return next(err);

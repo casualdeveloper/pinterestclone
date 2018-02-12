@@ -40,7 +40,7 @@ class Home extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(this.props.pins.length !== nextProps.pins.length)
+        if(this.props.pins.length < nextProps.pins.length)
             this.setState({ loadingImages: true });
     }
 

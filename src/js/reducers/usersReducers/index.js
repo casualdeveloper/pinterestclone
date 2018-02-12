@@ -1,4 +1,4 @@
-import { USERS_FETCH_PINS,PIN_NEW, FAILED, SUCCESS, PENDING } from "../../constants/action-types";
+import { USERS_FETCH_PINS,PIN_NEW, PIN_DELETE, FAILED, SUCCESS, PENDING } from "../../constants/action-types";
 
 import * as pins from "./users-pins";
 
@@ -11,6 +11,7 @@ export function usersReducer (state = defaultState, action) {
         case USERS_FETCH_PINS+FAILED: return ( pins.fetchPinsFailed(state, action) );
 
         case PIN_NEW: return ( pins.newPin(state, action) );
+        case PIN_DELETE: return ( pins.deletePin(state, action) );
         default: return state
     }
 }
