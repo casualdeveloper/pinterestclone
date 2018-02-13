@@ -1,6 +1,6 @@
 import { USERS_FETCH_PINS,PIN_NEW, PIN_DELETE, FAILED, SUCCESS, PENDING } from "../../constants/action-types";
 
-import * as pins from "./users-pins";
+import * as pins from "./pins/";
 
 const defaultState = {};
 
