@@ -65,6 +65,7 @@ class Grid extends React.Component {
             transitionDuration: "0.3s",
             gutter: 15,
             fitWidth: true,
+            horizontalOrder: true
         });
         this.setState({ initialized: true });
     }
