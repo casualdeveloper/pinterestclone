@@ -2,9 +2,10 @@ import React from "react";
 import { PageHeader, Grid, Col, Button, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { userLogin, twitterLogin } from "../actions";
+import { userLogin, twitterLogin, userLoginPending, userLoginError } from "../actions";
 import Message from "./Message";
 import axios from "axios";
+import { usernameInputCheck, passowrdInputCheck } from "../utils/inputCheck";
 
 class Login extends React.Component {
     constructor(props){
@@ -19,8 +20,23 @@ class Login extends React.Component {
     }
 
     loginHandler() {
-        const { userLogin } = this.props;
-        userLogin(this.state);
+        const { userLoginPending, userLoginError, userLogin } = this.props;
+        let username = this.state.username;
+        let password = this.state.password;
+
+        userLoginPending(true);
+        let errorString = "";
+
+        errorString+=usernameInputCheck(username);
+        errorString+=passowrdInputCheck(password);
+        
+        if(errorString !== ""){
+            userLoginPending(false);
+            userLoginError(errorString);
+            return;
+        }
+    
+        return userLogin(this.state);
     }
 
     twitterLoginHandler() {
@@ -47,7 +63,7 @@ class Login extends React.Component {
                 <div className="container">
                     <Grid>
                         <Col lg={4} lgOffset={4} md={6} mdOffset={3} sm={8} smOffset={2} xs={12}>
-                            <Message.Error active={this.props.error} title="Failed to login" content={this.props.error} />
+                            <Message.Error active={this.props.error} title="Failed to login" >{this.props.error}</Message.Error>
                             <form>
                                 <FormGroup>
                                     <InputGroup>
@@ -81,7 +97,7 @@ function mapStateToProps(state){
     }
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ userLogin, twitterLogin }, dispatch);
+    return bindActionCreators({ userLogin, twitterLogin, userLoginPending, userLoginError }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

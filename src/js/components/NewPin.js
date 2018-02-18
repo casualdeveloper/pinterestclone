@@ -12,11 +12,16 @@ class NewPin extends React.Component {
 
         this.state = {
             url: "",
-            description: ""
+            description: "",
+            imageLoading: false,
+            imageLoadingError: false
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
+        this.handleImageLoading = this.handleImageLoading.bind(this);
+        this.handleImageLoadingError = this.handleImageLoadingError.bind(this);
+        this.handleImageLoadingSuccess = this.handleImageLoadingSuccess.bind(this);
     }
 
     handleInputChange(e) {
@@ -26,9 +31,33 @@ class NewPin extends React.Component {
         this.setState({ [id]:value });
     }
 
+    handleImageLoading(){
+        this.setState({ imageLoading: true, imageLoadingError: false });
+    }
+
+    handleImageLoadingError(){
+        this.setState({ imageLoadingError: true, imageLoading: false });
+    }
+
+    handleImageLoadingSuccess(){
+        this.setState({ imageLoading: false, imageLoadingError: false });
+    }
+
     submitHandler(e) {
-        e.preventDefault();
-        this.props.newPin({...this.state});
+        this.props.newPinError(false);
+        this.props.newPinMessage(false);
+
+        if(this.state.description === "" || this.state.description.replace(/\s/g, "") === "")
+            return this.props.newPinError("Please enter valid description.");
+
+        if(this.state.url === "" || this.state.url.replace(/\s/g, "") === "")
+            return this.props.newPinError("Please enter valid image url.");
+
+        if(this.state.imageLoadingError)
+            return this.props.newPinError("Sorry, image failed to load.");
+
+        const { url, description } = this.state;
+        return this.props.newPin({ url, description });
     }
 
     componentWillUnmount() {
@@ -37,8 +66,21 @@ class NewPin extends React.Component {
         this.props.newPinMessage(false);
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        if(this.state.description !== nextState.description
+        || this.state.url !== nextState.url
+        || this.props.loading !== nextProps.loading
+        || this.state.imageLoading !== nextState.imageLoading
+        || this.state.imageLoadingError !== nextState.imageLoadingError
+        || this.state.imageLoadingSuccess !== nextState.imageLoadingSuccess
+        || this.props.error !== nextProps.error
+        || this.props.successMessage !== nextProps.successMessage)
+            return true;
+        return false;
+    }
+
     render(){
-        const { loading } = this.props;
+        const loading = this.props.loading || this.state.imageLoading;
         return (
             <div>
                 <PageHeader classname="text-center">
@@ -49,7 +91,12 @@ class NewPin extends React.Component {
                         <Col lg={4} lgOffset={4} md={6} mdOffset={3} sm={8} smOffset={2} xs={12}>
                             <Message.Error active={this.props.error} title="Failed to create new pin" content={this.props.error} />
                             <Message.Success active={this.props.successMessage} title="New pin" content={this.props.successMessage} />
-                            <ImageWrapper id="newPicImage" src={this.state.url}></ImageWrapper>
+                            <ImageWrapper id="newPicImage" src={this.state.url}
+                                onImageError={this.handleImageLoadingError}
+                                onImageLoaded={this.handleImageLoadingSuccess}
+                                onImageLoading={this.handleImageLoading}
+                            >
+                            </ImageWrapper>
                             <form>
                                 <FormGroup>
                                     <InputGroup>

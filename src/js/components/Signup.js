@@ -2,8 +2,9 @@ import React from "react";
 import { PageHeader, Grid, Col, Button, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { userSignup } from "../actions";
+import { userSignup, userSignupError, userSignupPending } from "../actions";
 import Message from "./Message";
+import { usernameInputCheck, passowrdInputCheck, emailInputCheck } from "../utils/inputCheck";
 
 class Signup extends React.Component {
     constructor(props) {
@@ -18,8 +19,25 @@ class Signup extends React.Component {
     }
 
     signupHandler() {
-        const { userSignup } = this.props;
-        userSignup(this.state);
+        const { userSignupError, userSignupPending, userSignup } = this.props;
+        let username = this.state.username;
+        let password = this.state.password;
+        let email = this.state.email;
+
+        userSignupPending(true);
+        let errorString = "";
+
+        errorString+=emailInputCheck(email);
+        errorString+=usernameInputCheck(username);
+        errorString+=passowrdInputCheck(password);
+        
+        if(errorString !== ""){
+            userSignupPending(false);
+            userSignupError(errorString);
+            return;
+        }
+    
+        return userSignup(this.state);
     }
 
     handleInputChange(e) {
@@ -76,7 +94,7 @@ function mapStateToProps(state){
     }
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ userSignup }, dispatch);
+    return bindActionCreators({ userSignup, userSignupError, userSignupPending }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);

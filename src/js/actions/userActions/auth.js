@@ -29,13 +29,13 @@ export const userLogout = () => {
     }
 }
 
-//pass reference to window that will redirect user to twitter page
-//**we cannot open window here
-//**because window needs to be opened as immediate response to button click
-//**to avoid any pop up blockers
-const userLoginPending = createAction(USER_LOGIN+PENDING);
-const userLoginError = createAction(USER_LOGIN+FAILED);
-const userLoginSuccess = createAction(USER_LOGIN);
+export const userSignupPending = createAction(USER_SIGNUP + PENDING);
+export const userSignupError = createAction(USER_SIGNUP + FAILED);
+
+export const userLoginPending = createAction(USER_LOGIN+PENDING);
+export const userLoginError = createAction(USER_LOGIN+FAILED);
+export const userLoginSuccess = createAction(USER_LOGIN);
+
 const getErrorFromResponse = (error) => {
     let message = "Something went wrong, please try again later.";
 
@@ -45,7 +45,7 @@ const getErrorFromResponse = (error) => {
 
     return message;
 }
-
+//pass reference to window that will redirect user to twitter page
 export const twitterLogin = (windowRef) => {
     return dispatch => {
         dispatch(userLoginPending(true));
