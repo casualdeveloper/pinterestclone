@@ -105,6 +105,15 @@ class ImageWrapper extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        if(this.state.src !== nextState.src 
+        || this.state.imageLoading !== nextState.imageLoading
+        || this.state.imageLoadingError !== nextState.imageLoadingError
+        || this.state.imageFinishedLoading !== nextState.imageFinishedLoading)
+            return true;
+        return false;
+    }
+
     render(){
         let src = this.state.src;
 
