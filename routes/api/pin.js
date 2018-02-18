@@ -4,7 +4,7 @@ const AuthController = require("../../controllers/authentication");
 const PinController = require("../../controllers/pin");
 const UserController = require("../../controllers/user");
 
-router.post("/newPin", AuthController.JWTLogin, PinController.new, UserController.addNewPin, (req, res) => {
+router.post("/newPin", AuthController.JWTLogin, PinController.validateInput, PinController.new, UserController.addNewPin, (req, res) => {
     res.status(200).json({pin: req.pin, message: "Pin successfully saved!"});
 });
 router.post("/deletePin", AuthController.JWTLogin, UserController.deletePin, PinController.delete, (req, res) => {

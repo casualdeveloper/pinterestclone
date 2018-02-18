@@ -2,6 +2,29 @@ const Pin = require("../models/pin");
 const User = require("../models/user");
 const mongoose = require("mongoose");
 const PINS_IN_PAGE_DEFAULT = require("../defaults").PINS_IN_PAGE_DEFAULT;
+const request = require("request");
+
+exports.validateInput = (req, res, next) => {
+    const url = req.body.url;
+    const description = req.body.description;
+
+    // /\s/ matches whitespaces
+    if(!url || url.replace(/\s/g,"") === ""){
+        return res.status(422).send({ error: "Please provide valid url." });
+    }
+
+    if(!description || description.replace(/\s/g, "") === "") {
+        return res.status(422).send({ error: "Please provide valid description." })
+    }
+
+    //check if url actually exists by sending head request and checking if statusCode is 2xx
+    request({ url: url, method: "HEAD"}, function(err, urlRes){
+        if(err || /2\d\d/.test(urlRes.statusCode) === false) 
+            return res.status(422).send({ error: "Please provide valid url." });
+        return next();
+    });
+
+}
 
 exports.new = (req, res, next) => {
     let data = {

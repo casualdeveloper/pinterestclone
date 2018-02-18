@@ -70,8 +70,8 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
                 //default message
                 let message = "Something went wrong, please try again later.";
 
-                if(error.response && error.response.data && error.response.data.error){
-                    message = error.response.data.error;
+                if(error.response && error.response.data && ( error.response.data.error || error.response.data.message )){
+                    message = error.response.data.error || error.response.data.message;
                 }
 
                 //dispatch error message

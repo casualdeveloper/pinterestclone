@@ -4,6 +4,7 @@ const User = require("../models/user");
 const config = require("../config");
 const passportService = require("../setuppassport");
 const passport = require("passport");
+const inputValidation = require("../utils/inputValidation");
 
 function generateToken(user) {
     return jwt.sign(user, config.JWT_SECRET, {
@@ -68,19 +69,20 @@ exports.register = function(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
 
-    // Return error if no email provided
-    if (!email) {
-        return res.status(422).send({ error: "You must enter an email address."});
+    // Return error if invalid email provided
+    //note: its close to impossible to check if email address is valid with regex, preferably confirmation letter should be sent to email address
+    if (!email || !inputValidation.isEmailValid(email)) {
+        return res.status(422).send({ error: "Please provide valid email address."});
     }
 
-    // Return error if no username provided
-    if (!username) {
-        return res.status(422).send({ error: "You must enter your username."});
+    // Return error if invalid username provided
+    if (!username || !inputValidation.isUsernameValid(username)) {
+        return res.status(422).send({ error: "Please provide valid username."});
     }
 
-    // Return error if no password provided
-    if (!password) {
-        return res.status(422).send({ error: "You must enter a password." });
+    // Return error if invalid password provided
+    if (!password || !inputValidation.isPasswordValid(password)) {
+        return res.status(422).send({ error: "Please provide valid password." });
     }
 
     User.findOne({$or:[{ email: email}, {username: username}] }, function(err, existingUser) {
@@ -88,12 +90,12 @@ exports.register = function(req, res, next) {
 
         // If user is not unique, return errors
         if (existingUser && existingUser.email === email) {
-            return res.status(422).send({ error: "Email address is already in use." });
+            return res.status(422).send({ error: "Email address or username is already in use." });
         }
 
 
         if(existingUser && existingUser.username === username) {
-            return res.status(422).send({ error: "Username is already in use." });
+            return res.status(422).send({ error: "Email address or username is already in use." });
         }
 
         // If email and username is unique and password was provided, create account
@@ -155,6 +157,17 @@ exports.JWTVerify = function(req,res,next){
 // LocalLogin Middleware
 //========================================
 exports.localLogin = function(req,res,next){
+    const username = req.body.username;
+    const password = req.body.password;
+
+    if(!username || !inputValidation.isUsernameValid(username)){
+        return res.status(422).send({ error: "Please provide valid username."})
+    }
+
+    if(!password || !inputValidation.isPasswordValid(password)){
+        return res.status(422).send({ error: "Please provide valid password" });
+    }
+
     passport.authenticate("local", function(err, user, message){
         if(err) { return next(err); }
         if(!user) { return res.status(422).send(message); }
