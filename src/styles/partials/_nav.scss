@@ -1,0 +1,43 @@
+/*------------------------------------*\
+  #NAVIGATION
+\*------------------------------------*/
+
+.nav-bar {
+    position: relative;
+    background: $DARK;
+    max-height: 56px;
+    display: flex;
+    align-items: baseline;
+
+}
+
+.nav-bar .title {
+    font-weight: 500;
+    font-size: 20px;
+    text-transform: none;
+}
+
+.nav-bar .nav ul {
+	margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+.nav-bar .nav li {
+	padding: 0;
+	list-style: none;
+    display: inline-block;
+    text-transform: uppercase;
+}
+.nav-bar a {
+	padding: 3px 12px;
+	text-decoration: none;
+	color: #999;
+    line-height: 56px;
+    vertical-align: middle;
+}
+.nav-bar a:hover {
+	color: rgb(201, 201, 201);
+}
+.nav-bar .current a {
+	color: #fff;
+}

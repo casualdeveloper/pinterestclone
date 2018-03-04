@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Switch, Link, withRouter, Redirect } from "react-router-dom";
 import LinkContainer from "react-router-bootstrap/lib/LinkContainer";
 
@@ -10,7 +10,7 @@ import MyPins from "./components/MyPins";
 import NewPin from "./components/NewPin";
 import UserPins from "./components/UserPins";
 
-import { Navbar, Nav, NavItem } from "react-bootstrap";
+import { NavBar, Nav, NavItem, NavBrand } from "./style_components/Nav";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -83,36 +83,45 @@ const PrivateRoute = ({component:Component, user, location, ...props}) => {
     );
 }
 
+// const Menu = (props) => {
+//     const { isAuth } = props;
+//     return (
+//         <Navbar>
+//             <Navbar.Header>
+//                 <Navbar.Brand>
+//                     <Link to="/" style="font-family:Cookie, cursive;font-size:34px;" ><strong><em>techerest</em></strong></Link>
+//                 </Navbar.Brand>
+//                 <Navbar.Toggle />
+//             </Navbar.Header>
+//             <Navbar.Collapse>
+//                 {isAuth
+//                     ?<PrivateNav {...props} />
+//                     :<PublicNav />
+//                 }
+//             </Navbar.Collapse>
+//         </Navbar>
+            
+//     );
+// }
+
 const Menu = (props) => {
     const { isAuth } = props;
     return (
-        <Navbar>
-            <Navbar.Header>
-                <Navbar.Brand>
-                    <Link to="/" style="font-family:Cookie, cursive;font-size:34px;" ><strong><em>techerest</em></strong></Link>
-                </Navbar.Brand>
-                <Navbar.Toggle />
-            </Navbar.Header>
-            <Navbar.Collapse>
-                {isAuth
-                    ?<PrivateNav {...props} />
-                    :<PublicNav />
-                }
-            </Navbar.Collapse>
-        </Navbar>
-            
+        <NavBar>
+            <NavBrand><Link to="/" >Pinterest</Link></NavBrand>
+            {isAuth
+                ?<PrivateNav {...props} />
+                :<PublicNav />
+            }
+        </NavBar>
     );
 }
 
 const PublicNav = () => {
     return (
         <Nav pullRight>
-            <LinkContainer to="/login">
-                <NavItem>Sign in</NavItem>
-            </LinkContainer>
-            <LinkContainer to="/signup">
-                <NavItem>Sign up</NavItem>
-            </LinkContainer>
+            <NavItem><Link to="/login">Sign in</Link></NavItem>
+            <NavItem><Link to="/signup">sign up</Link></NavItem>
         </Nav>
     );
 }
@@ -121,13 +130,9 @@ const PrivateNav = (props) => {
     const { userLogout } = props;
     return (
         <Nav pullRight>
-            <LinkContainer to="/mypins">
-                <NavItem>My pins</NavItem>
-            </LinkContainer>
-            <LinkContainer to="/newpin">
-                <NavItem>New pin</NavItem>
-            </LinkContainer>
-            <NavItem onClick={() => { userLogout() }}>Logout</NavItem>
+            <NavItem><Link to="/mypins">My pins</Link></NavItem>
+            <NavItem><Link to="/newpin">New pin</Link></NavItem>
+            <NavItem ><Link to="#" onClick={() => { userLogout() }}>Logout</Link></NavItem>
         </Nav>
     );
 }

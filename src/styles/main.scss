@@ -1,9 +1,24 @@
+@import "./modules/all.scss";
+
+@import "./partials/nav.scss";
+
 @mixin gridItemSize(){
     width: 230px;
     @media only screen and (max-width: 600px) {
         width: 150px;
     }
 
+}
+
+html {
+    @import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+body{
+    margin: 0px;
 }
 
 #newPicImage{

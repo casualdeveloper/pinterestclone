@@ -10,7 +10,7 @@ const BundleAnalyzerPlugin      = require("webpack-bundle-analyzer").BundleAnaly
 
 const PATHS = {
     app:path.join(__dirname,"src/js/app.js"),
-    style:path.join(__dirname,"src/styles/style.scss"),
+    style:path.join(__dirname,"src/styles/main.scss"),
     build:path.join(__dirname, "/public") 
 };
 
