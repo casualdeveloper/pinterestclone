@@ -32,7 +32,7 @@ class NavItem extends React.Component {
         const { active } = this.props;
 
         if(active)
-            className += "current;";
+            className += "current ";
 
         return (
             <li className={className}>{this.props.children}</li>

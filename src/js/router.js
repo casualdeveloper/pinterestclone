@@ -25,9 +25,10 @@ class App extends React.Component {
     }
 
     render(){
+        let currentLocation = this.props.location.pathname;
         return(
             <div>
-                <Menu isAuth={this.props.user.isAuth} userLogout={this.props.userLogout} />
+                <Menu isAuth={this.props.user.isAuth} userLogout={this.props.userLogout} currentLocation={currentLocation} />
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/user/:userId" component={UserPins}/>
@@ -110,28 +111,30 @@ const Menu = (props) => {
             <NavBrand><Link to="/" >Pinterest</Link></NavBrand>
             {isAuth
                 ?<PrivateNav {...props} />
-                :<PublicNav />
+                :<PublicNav {...props} />
             }
         </NavBar>
     );
 };
 
-const PublicNav = () => {
+const PublicNav = (props) => {
+    const { currentLocation } = props;
+    console.log(currentLocation);
     return (
         <Nav pullRight>
-            <NavItem><Link to="/login">Sign in</Link></NavItem>
-            <NavItem><Link to="/signup">sign up</Link></NavItem>
+            <NavItem active={currentLocation == "/login"}><Link to="/login">Sign in</Link></NavItem>
+            <NavItem active={currentLocation == "/signup"}><Link to="/signup">sign up</Link></NavItem>
         </Nav>
     );
 };
 
 const PrivateNav = (props) => {
-    const { userLogout } = props;
+    const { userLogout, currentLocation } = props;
     return (
         <Nav pullRight>
-            <NavItem><Link to="/mypins">My pins</Link></NavItem>
-            <NavItem><Link to="/newpin">New pin</Link></NavItem>
-            <NavItem ><Link to="#" onClick={() => { userLogout(); }}>Logout</Link></NavItem>
+            <NavItem active={currentLocation == "/mypins"}><Link to="/mypins">My pins</Link></NavItem>
+            <NavItem active={currentLocation == "/newpin"}><Link to="/newpin">New pin</Link></NavItem>
+            <NavItem><Link to="#" onClick={() => { userLogout(); }}>Logout</Link></NavItem>
         </Nav>
     );
 };
