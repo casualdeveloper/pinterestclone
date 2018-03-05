@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userLogin, twitterLogin, userLoginPending, userLoginError } from "../actions";
 import Message from "./Message";
-import axios from "axios";
 import { usernameInputCheck, passowrdInputCheck } from "../utils/inputCheck";
 
 class Login extends React.Component {
@@ -13,7 +12,8 @@ class Login extends React.Component {
         this.state = {
             username: "",
             password: ""
-        }
+        };
+
         this.handleInputChange = this.handleInputChange.bind(this);
         this.loginHandler = this.loginHandler.bind(this);
         this.twitterLoginHandler = this.twitterLoginHandler.bind(this);
@@ -94,7 +94,7 @@ function mapStateToProps(state){
         user: state.user,
         loading: state.user.loginPending,
         error: state.user.loginError
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ userLogin, twitterLogin, userLoginPending, userLoginError }, dispatch);

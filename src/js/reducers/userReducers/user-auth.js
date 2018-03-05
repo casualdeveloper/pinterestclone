@@ -5,38 +5,38 @@ export const userLogin = (state, action) => {
         ...action.payload.user,
         isAuth: true
     };
-}
+};
 
-export const userLogout = (state, action) => {
+export const userLogout = () => {
     return {
         isAuth: false
-    }
-}
+    };
+};
 
 export const userLoginPending = (state, action) => {
     return {
         ...state,
         loginPending: action.payload
-    }
-}
+    };
+};
 
 export const userLoginError = (state, action) => {
     return {
         ...state,
         loginError: action.payload
-    }
-}
+    };
+};
 
 export const userSignupPending = (state, action) => {
     return {
         ...state,
         signupPending: action.payload
-    }
-}
+    };
+};
 
 export const userSignupError = (state, action) => {
     return {
         ...state,
         signupError: action.payload
-    }
-}
+    };
+};

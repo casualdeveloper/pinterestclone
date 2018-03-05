@@ -24,6 +24,6 @@ export function pinReducer (state = defaultState, action) {
         case PINS_FETCH+PENDING: return ( fetchPins.fetchPinsPending(state, action) );
         case PINS_FETCH+FAILED:  return ( fetchPins.fetchPinsFailed(state, action) );
 
-        default: return state
+        default: return state;
     }
 }

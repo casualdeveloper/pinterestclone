@@ -15,7 +15,7 @@ class Home extends React.Component {
         super(props);
         this.state = {
             loadingImages: (props.pins.length > 0) // if there already preloaded pins show loading indicator while images are loading up
-        }
+        };
 
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
@@ -57,7 +57,7 @@ class Home extends React.Component {
                 <Message.Error active={!!error} title="Failed to retrieve pins" content={error} />
                 {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
             </div>
-        )
+        );
     }
 }
 
@@ -66,15 +66,15 @@ class GridItem extends React.Component {
     render(){
         const { url, description, owner } = this.props.data;
         const finishedLoading = this.props.finishedLoading;
-        const onClickHandler = () => {this.props.onClickHandler(owner)};
+        const onClickHandler = () => {this.props.onClickHandler(owner);};
         return (
             <div className="thumbnail custom-thumbnail" onClick={onClickHandler}>
-                <ImageWrapper className="grid-image" width={230} height={230} useImagePlaceholder={true} src={url} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
+                <ImageWrapper className="grid-image" width={230} height={230} useImagePlaceholder={true} src={url} onImageLoaded={()=>{ finishedLoading(); }} onImageError={()=>{ finishedLoading(); }} ></ImageWrapper>
                 <div className="caption">
                     <h4>{description}</h4>
                 </div>
             </div>
-        )
+        );
     }
 
 }
@@ -86,7 +86,7 @@ function mapStateToProps(state){
         loading: state.pin.fetchingPins,
         error: state.pin.fetchPinsFailed,
         lastPinId: state.pin.lastPinId
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ fetchPins }, dispatch);

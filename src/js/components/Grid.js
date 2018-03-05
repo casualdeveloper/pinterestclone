@@ -13,7 +13,7 @@ class Grid extends React.Component {
             lastAppended: -1, // last appended item used for sequential loading and deciding if finishedLoading callback should be called
             sequentialLoad: props.sequentialLoad || false, // items should be loaded in sequence, not randomly
             finishedLoading: props.finishedLoading || false
-        }
+        };
         this.masonry;
         this.appended = 0;
         //forces to realign items (eg. if image size changed);
@@ -86,12 +86,12 @@ class Grid extends React.Component {
         }
 
         return (
-            <div className="grid" ref={(grid) => { this.grid = grid }}>
+            <div className="grid" ref={(grid) => { this.grid = grid; }}>
                 <div className="grid-sizer"></div>
                 {data.map((data, index) => {
                     let canBeAppended = (this.state.sequentialLoad)?(index <= this.state.lastAppended+1):true;
                     return (
-                        <GridItemWrapper {...this.props} data={data} key={index} gridItem={this.props.gridItem} canBeAppended={canBeAppended} append={(el) => { this.appendElement(el, index) }}/>
+                        <GridItemWrapper {...this.props} data={data} key={index} gridItem={this.props.gridItem} canBeAppended={canBeAppended} append={(el) => { this.appendElement(el, index); }}/>
                     );
                 })}
             </div>
@@ -106,7 +106,7 @@ class GridItemWrapper extends React.Component {
         this.state = {
             finishedLoading: false,
             appended: false
-        }
+        };
         this.finishedLoadingCallback = this.finishedLoadingCallback.bind(this);
     }
 
@@ -130,7 +130,7 @@ class GridItemWrapper extends React.Component {
 
         let GridItem = this.props.gridItem;
         return(
-            <div className={className} style={style} ref={(el)=>{this.el=el}}>
+            <div className={className} style={style} ref={(el)=>{this.el=el;}}>
                 <GridItem {...this.props} finishedLoading={this.finishedLoadingCallback} data={this.props.data} />
             </div>
         );

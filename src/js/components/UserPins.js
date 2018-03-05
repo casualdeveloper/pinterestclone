@@ -11,7 +11,7 @@ import { bindActionCreators } from "redux";
 import { fetchUserPins } from "../actions";
 
 const getUserData = (users, userId) => {
-    let returnUser = {pins: []}
+    let returnUser = {pins: []};
     let user = users[userId];
 
     if(user && user.pins)
@@ -28,7 +28,7 @@ const getUserData = (users, userId) => {
 
     return returnUser;
 
-}
+};
 
 class UserPins extends React.Component {
     constructor(props){
@@ -45,7 +45,7 @@ class UserPins extends React.Component {
             loading: user.loading,
             error: user.error,
             loadingImages: (user.pins.length > 0) // if there already preloaded pins show loading indicator while images are loading up
-        }
+        };
         
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
@@ -108,7 +108,7 @@ class UserPins extends React.Component {
                 <Message.Error active={!!error} title="Failed to retrieve pins" content={error} />
                 {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
             </div>
-        )
+        );
     }
 }
 
@@ -119,12 +119,12 @@ class GridItem extends React.Component {
         const finishedLoading = this.props.finishedLoading;
         return (
             <div className="thumbnail custom-thumbnail">
-                <ImageWrapper className="grid-image" width={230} height={230} src={url} useImagePlaceholder={true} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
+                <ImageWrapper className="grid-image" width={230} height={230} src={url} useImagePlaceholder={true} onImageLoaded={()=>{ finishedLoading(); }} onImageError={()=>{ finishedLoading(); }} ></ImageWrapper>
                 <div className="caption">
                     <h4>{description}</h4>
                 </div>
             </div>
-        )
+        );
     }
 }
 
@@ -133,7 +133,7 @@ function mapStateToProps(state){
     let users = state.users;
     return {
         users
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ fetchUserPins }, dispatch);

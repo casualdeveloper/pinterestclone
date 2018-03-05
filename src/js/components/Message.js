@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 
 export default class Message extends React.Component {
     constructor(props){
@@ -64,7 +64,7 @@ Message.Error = class MessageError extends React.Component {
                 />
         );
     }
-}
+};
 
 Message.Danger = Message.Error;
 
@@ -79,7 +79,7 @@ Message.Warning = class MessageWarning extends React.Component {
                 />
         );
     } 
-}
+};
 
 Message.Info = class MessageInfo extends React.Component {
     render(){
@@ -92,7 +92,7 @@ Message.Info = class MessageInfo extends React.Component {
                 />
         );
     } 
-}
+};
 
 Message.Success = class MessageSuccess extends React.Component {
     render(){
@@ -105,4 +105,4 @@ Message.Success = class MessageSuccess extends React.Component {
                 />
         );
     } 
-}
+};

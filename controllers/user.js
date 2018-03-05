@@ -7,12 +7,12 @@ exports.addNewPin = (req, res, next) => {
             res.status(401).json({error:"Unauthorized"});
         }
         user.pins.push(req.pin.id);
-        user.save((err, user) => {
+        user.save((err) => {
             if(err) return next(err);
             return next();
         });
     });
-}
+};
 
 exports.deletePin = (req, res, next) => {
     let pinId = req.body.pinId;
@@ -38,4 +38,4 @@ exports.deletePin = (req, res, next) => {
             return next();
         });
     });
-}
+};

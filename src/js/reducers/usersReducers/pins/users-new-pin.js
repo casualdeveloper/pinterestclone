@@ -1,4 +1,4 @@
-import { getUserId, getPins, updateUser } from "../utils";
+import { getPins, updateUser } from "../utils";
 
 export const newPin = (state, action) => {
     let pin = action.payload.pin;
@@ -9,5 +9,5 @@ export const newPin = (state, action) => {
     return {
         ...state,
         [userId]: updateUser(state, userId, { pins, lastPinId })
-    }
-}
+    };
+};

@@ -1,4 +1,4 @@
-import { getUserId, getPins, updateUser } from "../utils";
+import { getPins, updateUser } from "../utils";
 
 export const deletePin = (state, action) => {
     let pinId = action.meta.passedData.pinId;
@@ -15,5 +15,5 @@ export const deletePin = (state, action) => {
     return {
         ...state,
         [ownerId]: updateUser(state, ownerId, { pins, lastPinId })
-    }
-}
+    };
+};

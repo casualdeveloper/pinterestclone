@@ -1,6 +1,5 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Route, Switch, Link, withRouter, Redirect } from "react-router-dom";
-import LinkContainer from "react-router-bootstrap/lib/LinkContainer";
 
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
@@ -55,17 +54,17 @@ const PublicOnlyRoute = ({component:Component, user, location, ...props}) => {
         :"/";
 
         return (
-            <Route {...props} render={(props) => (
+            <Route {...props} render={() => (
                 <Redirect to={redirectTo} />
             )} />
-        )
+        );
     }
     return (
         <Route {...props} render={(props) => (
             <Component {...props}/>
         )} /> 
     );
-}
+};
 
 const PrivateRoute = ({component:Component, user, location, ...props}) => {
     if(user.isAuth){
@@ -77,11 +76,11 @@ const PrivateRoute = ({component:Component, user, location, ...props}) => {
     }
 
     return (
-        <Route {...props} render={(props) => (
+        <Route {...props} render={() => (
             <Redirect to={{ pathname: "/login", state: { from: location }}} />
         )} />
     );
-}
+};
 
 // const Menu = (props) => {
 //     const { isAuth } = props;
@@ -115,7 +114,7 @@ const Menu = (props) => {
             }
         </NavBar>
     );
-}
+};
 
 const PublicNav = () => {
     return (
@@ -124,7 +123,7 @@ const PublicNav = () => {
             <NavItem><Link to="/signup">sign up</Link></NavItem>
         </Nav>
     );
-}
+};
 
 const PrivateNav = (props) => {
     const { userLogout } = props;
@@ -132,23 +131,23 @@ const PrivateNav = (props) => {
         <Nav pullRight>
             <NavItem><Link to="/mypins">My pins</Link></NavItem>
             <NavItem><Link to="/newpin">New pin</Link></NavItem>
-            <NavItem ><Link to="#" onClick={() => { userLogout() }}>Logout</Link></NavItem>
+            <NavItem ><Link to="#" onClick={() => { userLogout(); }}>Logout</Link></NavItem>
         </Nav>
     );
-}
+};
 
 const Footbar = () => {
     return (
         <div className="footbar">
         </div>
     );
-}
+};
 
 function mapStateToProps(state){
     return {
         user: state.user,
         JWT: state.user.JWT
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ userJWTLogin, userLogout } , dispatch);

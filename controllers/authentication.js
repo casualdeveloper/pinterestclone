@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
 const User = require("../models/user");
 const config = require("../config");
-const passportService = require("../setuppassport");
 const passport = require("passport");
 const inputValidation = require("../utils/inputValidation");
 
@@ -161,7 +159,7 @@ exports.localLogin = function(req,res,next){
     const password = req.body.password;
 
     if(!username || !inputValidation.isUsernameValid(username)){
-        return res.status(422).send({ error: "Please provide valid username."})
+        return res.status(422).send({ error: "Please provide valid username."});
     }
 
     if(!password || !inputValidation.isPasswordValid(password)){
@@ -182,8 +180,8 @@ exports.localLogin = function(req,res,next){
 exports.twitterLogin = function(req, res, next){
     let twitterResponse = req.twitterResponse;
     User.findOne({ "twitter.id" : twitterResponse.user_id }, function(err, user) {
-        if(err) { return next(err) };
-        if(user) { req.user = user; return next(); };
+        if(err) { return next(err); }
+        if(user) { req.user = user; return next(); }
         let newUser = new User({
             twitter: {
                 displayName: twitterResponse.screen_name,
@@ -198,4 +196,4 @@ exports.twitterLogin = function(req, res, next){
             return next();
         });
     });
-}
+};

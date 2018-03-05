@@ -3,15 +3,15 @@ import { Image as BootstrapImage } from "react-bootstrap";
 
 const defaultFallbackImage = (width = 180, height = 180) => {
     return `https://dummyimage.com/${width}x${height}/c4c4c4/666666.jpg&text=no+image`;
-}
+};
 
 const defaultLoadingImage = (width = 180, height = 180) => {
     return `https://dummyimage.com/${width}x${height}/c4c4c4/666666.jpg&text=Loading...`;
-}
+};
 
 const defaultErrorImage = (width = 180, height = 180) => {
     return `https://dummyimage.com/${width}x${height}/c4c4c4/666666.jpg&text=Error`;
-}
+};
 
 let loadingImage;
 let errorImage;
@@ -36,14 +36,14 @@ class ImageWrapper extends React.Component {
             useImagePlaceholder: props.useImagePlaceholder || false,
             orgWidth: 0,
             orgHeight: 0
-        }
+        };
 
         //callbacks save preloaded image to variable 
         //in case if its not use browser wouldn't delete it
         if(this.usePictureForLoader)
-            this.preloadImage(this.state.loadingImage, (img) => {loadingImage = img});
+            this.preloadImage(this.state.loadingImage, (img) => {loadingImage = img;});
 
-        this.preloadImage(this.state.errorImage, (img) => {errorImage = img});
+        this.preloadImage(this.state.errorImage, (img) => {errorImage = img;});
 
         this.loadImage = this.loadImage.bind(this);
         this.loadImage(this.state.src);
@@ -78,7 +78,7 @@ class ImageWrapper extends React.Component {
             },() => {
                 if(this.props.onImageLoaded)
                     this.props.onImageLoaded();
-            })
+            });
         };
         
 
@@ -93,7 +93,7 @@ class ImageWrapper extends React.Component {
                 if(this.props.onImageError)
                     this.props.onImageError();
             });
-        }
+        };
         
         newImage.src = src;
     }
@@ -122,7 +122,7 @@ class ImageWrapper extends React.Component {
         }
         
         if(this.state.imageLoading && !this.state.usePictureForLoader)
-            return (<LoadingIndicator height={this.state.height} width={this.state.width} id={this.props.id} />)
+            return (<LoadingIndicator height={this.state.height} width={this.state.width} id={this.props.id} />);
         if(this.state.imageLoading && this.state.usePictureForLoader)
             src = this.state.loadingImage;
         if(this.state.imageLoadingError)
@@ -153,7 +153,7 @@ const ImagePlaceholder = (props) => {
         );
     }
     return props.children;
-}
+};
 
 const LoadingIndicator = (props) =>{
     return (
@@ -163,7 +163,7 @@ const LoadingIndicator = (props) =>{
             </div>
             <i className="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
         </div>
-    )
-}
+    );
+};
 
 export default ImageWrapper;

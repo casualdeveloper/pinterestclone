@@ -13,7 +13,7 @@ class Signup extends React.Component {
             username: "",
             password: "",
             email: ""
-        }
+        };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.signupHandler = this.signupHandler.bind(this);
     }
@@ -91,7 +91,7 @@ function mapStateToProps(state){
     return {
         loading: state.user.signupPending,
         error: state.user.signupError
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ userSignup, userSignupError, userSignupPending }, dispatch);

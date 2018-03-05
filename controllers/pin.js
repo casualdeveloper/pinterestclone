@@ -14,7 +14,7 @@ exports.validateInput = (req, res, next) => {
     }
 
     if(!description || description.replace(/\s/g, "") === "") {
-        return res.status(422).send({ error: "Please provide valid description." })
+        return res.status(422).send({ error: "Please provide valid description." });
     }
 
     //check if url actually exists by sending head request and checking if statusCode is 2xx
@@ -24,21 +24,21 @@ exports.validateInput = (req, res, next) => {
         return next();
     });
 
-}
+};
 
 exports.new = (req, res, next) => {
     let data = {
         url: req.body.url,
         description: req.body.description,
         owner: req.user.id
-    }
+    };
 
     Pin.create(data, (err, pin) => {
         if(err) return next(err);
         req.pin = pin;
         return next();
     });
-}
+};
 //should be called after deleting from users pin list
 //when calling delete function from users controller
 //it checks if user is owner of the pi nand only then proceeds
@@ -52,7 +52,7 @@ exports.delete = (req, res, next) => {
         if(err) return next(err);
         return next();
     });
-}
+};
 
 exports.fetch = (req, res, next) => {
     const lastPinId = req.body.lastPinId;
@@ -76,7 +76,7 @@ exports.fetch = (req, res, next) => {
         req.fetchedPins = results;
         return next();
     });
-}
+};
 
 exports.fetchUserPins = (req, res, next) => {
     const lastPinId = req.body.lastPinId;
@@ -86,7 +86,7 @@ exports.fetchUserPins = (req, res, next) => {
                          ?requestedAmountOfPins
                          :PINS_IN_PAGE_DEFAULT;
     //if no userId provided send error
-    if(!userId) { return res.status(422).json({error: "Invalid user id!"}) };
+    if(!userId) { return res.status(422).json({error: "Invalid user id!"}); }
     
     //see comment about pages in exports.fetch function
 
@@ -108,4 +108,4 @@ exports.fetchUserPins = (req, res, next) => {
         req.fetchedPins = results.pins;
         return next();
     });
-}
+};

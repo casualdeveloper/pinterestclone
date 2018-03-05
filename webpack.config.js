@@ -32,8 +32,8 @@ const cssLoader = function() {
             url: true,
             importLoaders: 1
         }
-    }
-}
+    };
+};
 
 module.exports = {
     entry: {
@@ -70,7 +70,7 @@ module.exports = {
                 test: /\.(png|svg|jpg|ttf|eot|woff|woff2)$/,
                 loader: "file-loader",
                 options: {
-                    name: '[name].[ext]',
+                    name: "[name].[ext]",
                 },
             },
         ]

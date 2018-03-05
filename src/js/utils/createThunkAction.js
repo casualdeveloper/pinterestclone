@@ -10,10 +10,11 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
     //separate payload and meta
     const payloadFunction = (data) => {
         return data.payload;
-    }
+    };
+
     const metaFunction = (data) => {
         return data.meta;
-    }
+    };
 
     const typeAction  = createAction(type, payloadFunction, metaFunction);
     const typePending = createAction(TYPE_PENDING, payloadFunction, metaFunction);
@@ -29,8 +30,8 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
                 ...metadata,
                 passedData
             }
-        }
-    }
+        };
+    };
     
     return (data) => {
         return dispatch => {
@@ -81,6 +82,6 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
                 if(errorCallback && typeof(errorCallback) === "function")
                     errorCallback(error);
             });
-        }
-    }
-}
+        };
+    };
+};

@@ -15,7 +15,7 @@ class NewPin extends React.Component {
             description: "",
             imageLoading: false,
             imageLoadingError: false
-        }
+        };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
@@ -43,7 +43,7 @@ class NewPin extends React.Component {
         this.setState({ imageLoading: false, imageLoadingError: false });
     }
 
-    submitHandler(e) {
+    submitHandler() {
         this.props.newPinError(false);
         this.props.newPinMessage(false);
 
@@ -125,7 +125,7 @@ function mapStateToProps(state){
         loading: state.pin.newPinPending,
         error: state.pin.newPinFailed,
         successMessage: state.pin.newPinSuccessMessage
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ newPin, newPinError, newPinMessage }, dispatch);

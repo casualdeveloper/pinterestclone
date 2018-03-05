@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_SIGNUP, PENDING, FAILED, SUCCESS, USER_LOGOUT } from "../../constants/action-types";
+import { USER_LOGIN, USER_SIGNUP, PENDING, FAILED, USER_LOGOUT } from "../../constants/action-types";
 
 import * as auth from "./user-auth";
 
@@ -21,6 +21,6 @@ export function userReducer (state = defaultState, action) {
         case USER_SIGNUP+PENDING: return ( auth.userSignupPending(state, action) );
         case USER_SIGNUP+FAILED:  return ( auth.userSignupError(state, action) );
 
-        default: return state
+        default: return state;
     }
 }
