@@ -4,6 +4,7 @@ const config = require("../config");
 const passport = require("passport");
 const inputValidation = require("../utils/inputValidation");
 
+
 function generateToken(user) {
     return jwt.sign(user, config.JWT_SECRET, {
         expiresIn: "14d"
@@ -33,8 +34,6 @@ exports.login = function(req, res, next) {
         req.responseObj.user = userInfo;
         return next();
     });
-
-    
 };
 
 //========================================
@@ -52,8 +51,6 @@ exports.loginNoJWT = function(req, res, next) {
         req.responseObj.user = userInfo;
         return next();
     });
-
-    
 };
 
 

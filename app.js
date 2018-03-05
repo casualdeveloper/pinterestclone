@@ -8,6 +8,7 @@ const compression = require("compression");
 const config = require("./config");
 const morgan = require("morgan");
 const routes = require("./routes");
+const passportService = require("./setuppassport");
 
 const mongooseOptions = { promiseLibrary: global.Promise };
 mongoose.connect(config.DB, mongooseOptions);
@@ -32,7 +33,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());  
+app.use(bodyParser.json());
 
 app.use(routes);
 
