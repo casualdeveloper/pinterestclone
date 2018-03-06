@@ -4,21 +4,28 @@
 
 .btn {
     background: $LIGHT;
+    position: relative;
+
     font-family: "Roboto", sans-serif;
     font-size: 13px;
     font-weight: 500;
     text-transform: uppercase;
-    height: 36px;
+
+    height:    36px;
+    min-width: 88px;
+
     border: none;
     border-radius: 2px;
+
     padding-left:  16px;
     padding-right: 16px;
+
     margin: 8px;
-    min-width: 88px;
-    position: relative;
+    
     transition-property: background-color, box-shadow, margin;
     transition-timing-function: ease-out;
     transition-duration: 150ms;
+
     box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.3);
 
 }
@@ -26,6 +33,7 @@
 .btn::after {
     content: "";
     position: absolute;
+
     top:    -6px;
     bottom: -6px;
     left:   -6px;
@@ -38,10 +46,11 @@
 
 .btn:hover {
     background: darken($LIGHT, 12%);
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.3);
+
     transition-property: background-color, box-shadow;
     transition-timing-function: ease-in;
     transition-duration: 150ms;
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.3);
 }
 
 .btn:active {
@@ -50,21 +59,23 @@
 
 .btn:disabled {
     background: rgba(0,0,0, 0.12);
-    color: rgba(0,0,0, 0.26);
+    color:      rgba(0,0,0, 0.26);
 }
 
-//Dark button
+/**
+    Dark button modifier
+*/
 
-.btn.dark {
+.btn.btn--dark {
     background: $DARK;
-    color: WHITE;
+    color:    WHITE;
 }
 
-.btn.dark:hover {
+.btn.btn--dark:hover {
     background: darken($DARK, 12%);
 }
 
-.btn.dark:disabled {
+.btn.btn--dark:disabled {
     background: rgba(255,255,255, 0.12);
-    color: rgba(255,255,255, 0.30);
+    color:      rgba(255,255,255, 0.30);
 }
