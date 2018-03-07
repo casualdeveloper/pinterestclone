@@ -3,7 +3,10 @@ import React from "react";
 export default class Button extends React.Component {
     render(){
         let style = "btn ";
-        const { dark, disabled } = this.props;
+        const { dark, flat, disabled } = this.props;
+
+        if(flat)
+            style += "btn--flat ";
 
         if(dark)
             style += "btn--dark ";

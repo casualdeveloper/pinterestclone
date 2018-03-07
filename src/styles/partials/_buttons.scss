@@ -24,11 +24,16 @@
     
     transition-property: background-color, box-shadow, margin;
     transition-timing-function: ease-out;
-    transition-duration: 150ms;
+    transition-duration: 80ms;
 
     box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.3);
 
 }
+
+/**
+    For better accessibility on phones.
+    Create clickable and invisible area around button.
+*/
 
 .btn::after {
     content: "";
@@ -50,11 +55,19 @@
 
     transition-property: background-color, box-shadow;
     transition-timing-function: ease-in;
-    transition-duration: 150ms;
+    transition-duration: 80ms;
 }
 
+/**
+    1. Reduce top margin by 2px to elevate button.
+    2. Increase bottom margin by exact amount of pixels we reduced from top (look at 1.)
+      to make sure that elements that might be affected by button bottom margin
+      stays in same place.
+*/
+
 .btn:active {
-    margin-top: 6px;
+    margin-top:    6px; // [1]
+    margin-bottom: 10px;// [2]
 }
 
 .btn:disabled {
@@ -68,7 +81,7 @@
 
 .btn.btn--dark {
     background: $DARK;
-    color:    WHITE;
+    color:    white;
 }
 
 .btn.btn--dark:hover {
@@ -78,4 +91,62 @@
 .btn.btn--dark:disabled {
     background: rgba(255,255,255, 0.12);
     color:      rgba(255,255,255, 0.30);
+}
+
+/**
+    Flat button modifier
+*/
+
+.btn.btn--flat {
+    background: transparent;
+    box-shadow: none;
+    
+    padding-left:  8px;
+    padding-right: 8px;
+
+    margin-top: 24px;
+}
+
+.btn.btn--flat:hover {
+    background: rgba(#999999, 0.12);
+}
+
+.btn.btn--flat:active {
+    background: rgba(#999999, 0.4);
+}
+
+/**
+    Make sure to keep background transparent
+    otherwise it will be affected by hover state.
+*/
+
+.btn.btn--flat:disabled {
+    color: rgba(#000000, 0.26);
+    background: transparent;
+}
+
+/**
+    Flat dark button modifier
+*/
+
+.btn.btn--flat.btn--dark{
+    color: white;
+}
+
+.btn.btn--flat.btn--dark:hover{
+    background: rgba(#CCCCCC, 0.12);
+}
+
+.btn.btn--flat.btn--dark:active{
+    background: rgba(#CCCCCC, 0.25);
+}
+
+/**
+    Make sure to keep background transparent
+    otherwise it will be affected by hover state.
+*/
+
+.btn.btn--flat.btn--dark:disabled{
+    color: rgba(white, 0.3);
+    background: transparent;
 }
