@@ -73,6 +73,7 @@
 .btn:disabled {
     background: rgba(0,0,0, 0.12);
     color:      rgba(0,0,0, 0.26);
+    box-shadow: none;
 }
 
 /**
@@ -91,6 +92,7 @@
 .btn.btn--dark:disabled {
     background: rgba(255,255,255, 0.12);
     color:      rgba(255,255,255, 0.30);
+    box-shadow: none;
 }
 
 /**
