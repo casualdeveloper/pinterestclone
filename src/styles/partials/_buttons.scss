@@ -22,7 +22,7 @@
 
     margin: 8px;
     
-    transition-property: background-color, box-shadow, margin;
+    transition-property: background-color, box-shadow, transform;
     transition-timing-function: ease-out;
     transition-duration: 80ms;
 
@@ -53,21 +53,13 @@
     background: darken($LIGHT, 12%);
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.3);
 
-    transition-property: background-color, box-shadow;
+    transition-property: background-color, box-shadow, transform;
     transition-timing-function: ease-in;
     transition-duration: 80ms;
 }
 
-/**
-    1. Reduce top margin by 2px to elevate button.
-    2. Increase bottom margin by exact amount of pixels we reduced from top (look at 1.)
-      to make sure that elements that might be affected by button bottom margin
-      stays in same place.
-*/
-
 .btn:active {
-    margin-top:    6px; // [1]
-    margin-bottom: 10px;// [2]
+    transform: translateY(-2px);
 }
 
 .btn:disabled {
