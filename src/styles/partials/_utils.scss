@@ -32,12 +32,12 @@
 .mr-4 { margin-right: $spacer * 1.50; }
 .mr-5 { margin-right: $spacer * 2.00; }
 
-.mx-0 { margin: initial 0; }
-.mx-1 { margin: initial $spacer * 0.25; }
-.mx-2 { margin: initial $spacer * 0.50; }
-.mx-3 { margin: initial $spacer * 1.00; }
-.mx-4 { margin: initial $spacer * 1.50; }
-.mx-5 { margin: initial $spacer * 2.00; }
+.mx-0 { margin-left: 0; margin-right: 0; }
+.mx-1 { margin-left: $spacer * 0.25; margin-right: $spacer * 0.25; }
+.mx-2 { margin-left: $spacer * 0.50; margin-right: $spacer * 0.50; }
+.mx-3 { margin-left: $spacer * 1.00; margin-right: $spacer * 1.00; }
+.mx-4 { margin-left: $spacer * 1.50; margin-right: $spacer * 1.50; }
+.mx-5 { margin-left: $spacer * 2.00; margin-right: $spacer * 2.00; }
 
 .mt-0 { margin-top: 0; }
 .mt-1 { margin-top: $spacer * 0.25; }
@@ -53,20 +53,20 @@
 .mb-4 { margin-bottom: $spacer * 1.50; }
 .mb-5 { margin-bottom: $spacer * 2.00; }
 
-.my-0 { margin: 0 initial; }
-.my-1 { margin: $spacer * 0.25 initial; }
-.my-2 { margin: $spacer * 0.50 initial; }
-.my-3 { margin: $spacer * 1.00 initial; }
-.my-4 { margin: $spacer * 1.50 initial; }
-.my-5 { margin: $spacer * 2.00 initial; }
+.my-0 { margin-top: 0; margin-bottom: 0; }
+.my-1 { margin-top: $spacer * 0.25; margin-bottom: $spacer * 0.25; }
+.my-2 { margin-top: $spacer * 0.50; margin-bottom: $spacer * 0.50; }
+.my-3 { margin-top: $spacer * 1.00; margin-bottom: $spacer * 1.00; }
+.my-4 { margin-top: $spacer * 1.50; margin-bottom: $spacer * 1.50; }
+.my-5 { margin-top: $spacer * 2.00; margin-bottom: $spacer * 2.00; }
 
-.m-auto { margin: auto; }
+.m-auto  { margin: auto; }
 .ml-auto { margin-left: auto; }
 .mr-auto { margin-right: auto; }
 .mt-auto { margin-top: auto; }
 .mb-auto { margin-bottom: auto; }
-.mx-auto { margin: initial auto; }
-.my-auto { margin: auto initial; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.my-auto { margin-top: auto; margin-bottom: auto; }
 
 /*------------------------------------*\
   #UTILS PADDING
@@ -93,12 +93,12 @@
 .pr-4 { padding-right: $spacer * 1.50; }
 .pr-5 { padding-right: $spacer * 2.00; }
 
-.px-0 { padding: initial 0; }
-.px-1 { padding: initial $spacer * 0.25; }
-.px-2 { padding: initial $spacer * 0.50; }
-.px-3 { padding: initial $spacer * 1.00; }
-.px-4 { padding: initial $spacer * 1.50; }
-.px-5 { padding: initial $spacer * 2.00; }
+.px-0 { padding-left: 0; padding-right: 0; }
+.px-1 { padding-left: $spacer * 0.25; padding-right: $spacer * 0.25; }
+.px-2 { padding-left: $spacer * 0.50; padding-right: $spacer * 0.50; }
+.px-3 { padding-left: $spacer * 1.00; padding-right: $spacer * 1.00; }
+.px-4 { padding-left: $spacer * 1.50; padding-right: $spacer * 1.50; }
+.px-5 { padding-left: $spacer * 2.00; padding-right: $spacer * 2.00; }
 
 .pt-0 { padding-top: 0 }
 .pt-1 { padding-top: $spacer * 0.25; }
@@ -114,17 +114,9 @@
 .pb-4 { padding-bottom: $spacer * 1.50; }
 .pb-5 { padding-bottom: $spacer * 2.00; }
 
-.py-0 { padding: 0 initial; }
-.py-1 { padding: $spacer * 0.25 initial; }
-.py-2 { padding: $spacer * 0.50 initial; }
-.py-3 { padding: $spacer * 1.00 initial; }
-.py-4 { padding: $spacer * 1.50 initial; }
-.py-5 { padding: $spacer * 2.00 initial; }
-
-.p-auto { margin: auto; }
-.pl-auto { margin-left: auto; }
-.pr-auto { margin-right: auto; }
-.pt-auto { margin-top: auto; }
-.pb-auto { margin-bottom: auto; }
-.px-auto { margin: initial auto; }
-.py-auto { margin: auto initial; }
+.py-0 { padding-top: 0; padding-bottom: 0; }
+.py-1 { padding-top: $spacer * 0.25; padding-bottom: $spacer * 0.25; }
+.py-2 { padding-top: $spacer * 0.50; padding-bottom: $spacer * 0.50; }
+.py-3 { padding-top: $spacer * 1.00; padding-bottom: $spacer * 1.00; }
+.py-4 { padding-top: $spacer * 1.50; padding-bottom: $spacer * 1.50; }
+.py-5 { padding-top: $spacer * 2.00; padding-bottom: $spacer * 2.00; }
