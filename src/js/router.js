@@ -9,7 +9,7 @@ import MyPins from "./components/MyPins";
 import NewPin from "./components/NewPin";
 import UserPins from "./components/UserPins";
 
-import { NavBar, Nav, NavItem, NavBrand } from "./style_components/Nav";
+import { NavBar, Nav, NavItem, NavBrand } from "./style_components";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -83,27 +83,6 @@ const PrivateRoute = ({component:Component, user, location, ...props}) => {
     );
 };
 
-// const Menu = (props) => {
-//     const { isAuth } = props;
-//     return (
-//         <Navbar>
-//             <Navbar.Header>
-//                 <Navbar.Brand>
-//                     <Link to="/" style="font-family:Cookie, cursive;font-size:34px;" ><strong><em>techerest</em></strong></Link>
-//                 </Navbar.Brand>
-//                 <Navbar.Toggle />
-//             </Navbar.Header>
-//             <Navbar.Collapse>
-//                 {isAuth
-//                     ?<PrivateNav {...props} />
-//                     :<PublicNav />
-//                 }
-//             </Navbar.Collapse>
-//         </Navbar>
-            
-//     );
-// }
-
 const Menu = (props) => {
     const { isAuth } = props;
     return (
@@ -119,7 +98,6 @@ const Menu = (props) => {
 
 const PublicNav = (props) => {
     const { currentLocation } = props;
-    console.log(currentLocation);
     return (
         <Nav pullRight>
             <NavItem active={currentLocation == "/login"}><Link to="/login">Sign in</Link></NavItem>

@@ -31,9 +31,9 @@
 }
 
 /**
-    For better accessibility on phones.
-    Create clickable and invisible area around button.
-*/
+ * For better accessibility on phones.
+ * Create clickable and invisible area around button.
+ */
 
 .btn::after {
     content: "";
@@ -68,9 +68,7 @@
     box-shadow: none;
 }
 
-/**
-    Dark button modifier
-*/
+/* Dark button modifier */
 
 .btn.btn--dark {
     background: $DARK;
@@ -87,9 +85,7 @@
     box-shadow: none;
 }
 
-/**
-    Flat button modifier
-*/
+/* Flat button modifier */
 
 .btn.btn--flat {
     background: transparent;
@@ -110,18 +106,16 @@
 }
 
 /**
-    Make sure to keep background transparent
-    otherwise it will be affected by hover state.
-*/
+ * Make sure to keep background transparent
+ * otherwise it will be affected by hover state.
+ */
 
 .btn.btn--flat:disabled {
     color: rgba(#000000, 0.26);
     background: transparent;
 }
 
-/**
-    Flat dark button modifier
-*/
+/* Flat dark button modifier */
 
 .btn.btn--flat.btn--dark{
     color: white;
@@ -136,9 +130,9 @@
 }
 
 /**
-    Make sure to keep background transparent
-    otherwise it will be affected by hover state.
-*/
+ * Make sure to keep background transparent
+ * otherwise it will be affected by hover state.
+ */
 
 .btn.btn--flat.btn--dark:disabled{
     color: rgba(white, 0.3);
