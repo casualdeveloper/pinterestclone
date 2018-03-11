@@ -43,11 +43,13 @@ export default class Input extends React.Component {
             helper,
             value,
             required,
+            className,
             placeholder,
             autocomplete
         } = this.props;
 
         let style = "input ";
+        style += className;
         style += (fill)?"fill ":"";
         style += (error)?"error ":"";
 
@@ -106,6 +108,7 @@ Input.propTypes = {
           helper: PropTypes.string,
         required: PropTypes.bool,
         onChange: PropTypes.func,
+       className: PropTypes.string,
      placeholder: PropTypes.string,
     autocomplete: PropTypes.string,
 }
@@ -115,7 +118,8 @@ Input.propTypes = {
 Input.defaultProps = {
     id: generateHash(),
     password: false,
-    type: "text"
+    type: "text",
+    className: ""
 }
 
 export { Input };
