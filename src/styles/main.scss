@@ -3,6 +3,10 @@
 @import "./partials/nav.scss";
 @import "./partials/_buttons.scss";
 @import "./partials/_input.scss";
+@import "./partials/_grid.scss";
+@import "./partials/_utils.scss";
+@import "./partials/_typography.scss";
+@import "./partials/_grid-list.scss";
 
 @mixin gridItemSize(){
     width: 230px;
@@ -13,14 +17,20 @@
 }
 
 html {
-    @import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
+    @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
     font-family: "Roboto", sans-serif;
     font-size: 14px;
     font-weight: 500;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-img {
-    width: 100%;
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 body{
@@ -40,6 +50,7 @@ body{
     @include gridItemSize();
 }
 .grid-item {
+    margin-bottom: 4px;
     float: left;
     @include gridItemSize();
 }
@@ -71,9 +82,6 @@ body{
     position:absolute;
     background-color: rgba(0,0,0,0.04);
     z-index:3;
-}
-.grid-image{
-    min-width: 100%;
 }
 .image-placeholder{
     max-width: 100%;
