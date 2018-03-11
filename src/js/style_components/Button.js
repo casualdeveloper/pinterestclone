@@ -1,9 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export default class Button extends React.Component {
     render(){
         let style = "btn ";
-        const { dark, flat, disabled, onClick } = this.props;
+        const { dark, flat, disabled, className, onClick } = this.props;
+
+        style += className;
 
         if(flat)
             style += "btn--flat ";
@@ -16,5 +19,23 @@ export default class Button extends React.Component {
         );
     }
 }
+
+Button.propTypes = {
+         dark: PropTypes.bool,
+         flat: PropTypes.bool,
+      onClick: PropTypes.func,
+     disabled: PropTypes.bool,
+    className: PropTypes.string
+}
+
+
+
+Button.defaultProps = {
+         dark: false,
+        flast: false,
+     disabled: false,
+    className: ""
+}
+
 
 export { Button };
