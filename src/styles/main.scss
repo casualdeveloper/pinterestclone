@@ -1,12 +1,13 @@
 @import "./modules/all.scss";
 
 @import "./partials/nav.scss";
-@import "./partials/_buttons.scss";
-@import "./partials/_input.scss";
-@import "./partials/_grid.scss";
-@import "./partials/_utils.scss";
-@import "./partials/_typography.scss";
-@import "./partials/_grid-list.scss";
+@import "./partials/buttons.scss";
+@import "./partials/input.scss";
+@import "./partials/grid.scss";
+@import "./partials/utils.scss";
+@import "./partials/typography.scss";
+@import "./partials/grid-list.scss";
+@import "./partials/loader.scss";
 
 @mixin gridItemSize(){
     width: 230px;
@@ -72,9 +73,6 @@ body{
 .footbar{
     width: 100%;
     margin-top: 20px;
-}
-.loader{
-    margin: 10px;
 }
 .loading_screen{
     height:100%;

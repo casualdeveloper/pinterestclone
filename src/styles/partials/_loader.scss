@@ -1,0 +1,64 @@
+/*------------------------------------*\
+  #LOADER
+\*------------------------------------*/
+
+.loader {
+    position: relative;
+    margin: 0 auto;
+    width: 50px;
+    &:before { //set height same as width
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
+}
+
+.loader__circle {
+    animation: rotate 1.5s linear infinite;
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.loader__circle__path {
+    stroke-dasharray: 1, 124;
+    stroke-dashoffset: -0px;
+    animation: dash 1.5s ease-in-out infinite;
+    stroke-linecap: round;
+    stroke: black;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/**
+ * [1] at beginning we have have stroke size of 1 with rest of circle filled with space;
+ * [2] we increase size of stroke to 89 and at the same time offset it by 34px
+ *     creating effect that it is growing and moving at the same time;
+ * [3] we keep stroke at the same size but keep increaseing offset
+ *     making it look like it is shrinking back to it's original size [1];
+ */
+
+
+@keyframes dash {
+    0% { // [1]
+        stroke-dasharray: 1, 124;
+        stroke-dashoffset: 0px;
+    }
+    50% { //[2]
+        stroke-dasharray: 89, 124;
+        stroke-dashoffset: -34px;
+    }
+    100% { //[3]
+        stroke-dasharray: 89, 124;
+        stroke-dashoffset: -124px;
+    }
+}
