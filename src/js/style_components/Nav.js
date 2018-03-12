@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class NavBar extends React.Component {
     render(){
@@ -9,6 +10,7 @@ class NavBar extends React.Component {
         );
     }
 }
+
 
 class Nav extends React.Component {
     render(){
@@ -26,6 +28,10 @@ class Nav extends React.Component {
     }
 }
 
+Nav.propTypes = {
+    pullRight: PropTypes.bool
+}
+
 class NavItem extends React.Component {
     render(){
         let className = "";
@@ -40,6 +46,9 @@ class NavItem extends React.Component {
     }
 }
 
+NavItem.propTypes = {
+    active: PropTypes.bool
+}
 
 class NavBrand extends React.Component {
     render(){

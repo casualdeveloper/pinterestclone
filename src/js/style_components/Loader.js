@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export default class Loader extends React.Component {
     render(){
@@ -16,6 +17,10 @@ export default class Loader extends React.Component {
             </div>
         );
     }
+}
+
+Loader.propTypes = {
+    disabled: PropTypes.bool
 }
 
 export { Loader };
