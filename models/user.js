@@ -18,30 +18,34 @@ const userSchema = mongoose.Schema({
     creationDate: { type: Date, required: true, default: Date.now }
 });
 
+userSchema.pre("save", function(next) {
+    this.displayName = this.username || this.twitter.displayName;
+    next();
+});
 
 const noop = function() {};
-userSchema.pre("save", function(done) {
+userSchema.pre("save", function(next) {
     const user = this;
     if (!user.isModified("password")) {
-        return done();
+        return next();
     }
     bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
         if (err) {
-            return done(err);
+            return next(err);
         }
         bcrypt.hash(user.password, salt, noop, function(err, hashedPassword) {
             if (err) {
-                return done(err);
+                return next(err);
             }
             user.password = hashedPassword;
-            done();
+            next();
         });
     });
 });
 
-userSchema.methods.checkPassword = function(guess, done) {
+userSchema.methods.checkPassword = function(guess, next) {
     bcrypt.compare(guess, this.password, function(err, isMatch) {
-        done(err, isMatch);
+        next(err, isMatch);
     });
 };
 
