@@ -71,7 +71,7 @@ exports.fetch = (req, res, next) => {
         queryFindParams = {_id: {$lt: oid}};
     }
 
-    Pin.find(queryFindParams).sort({ $natural: -1 }).limit(PINS_IN_PAGE).exec((err, results) => {
+    Pin.find(queryFindParams).sort({ $natural: -1 }).limit(PINS_IN_PAGE).populate("owner", "displayName").exec((err, results) => {
         if(err) return next(err);
         req.fetchedPins = results;
         return next();
