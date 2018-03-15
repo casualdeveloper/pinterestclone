@@ -11,54 +11,23 @@
   #UTILS MARGIN
 \*------------------------------------*/
 
-.m-0 { margin: 0; }
-.m-1 { margin: $spacer * 0.25; }
-.m-2 { margin: $spacer * 0.50; }
-.m-3 { margin: $spacer * 1.00; }
-.m-4 { margin: $spacer * 1.50; }
-.m-5 { margin: $spacer * 2.00; }
+@mixin setMargins($index, $multiplier){
+    .m-#{$index} {  margin: $spacer * $multiplier; }
+    .ml-#{$index} { margin-left: $spacer * $multiplier; }
+    .mr-#{$index} { margin-right: $spacer * $multiplier; }
+    .mx-#{$index} { margin-left: $spacer * $multiplier; margin-right: $spacer * $multiplier; }
+    .mt-#{$index} { margin-top: $spacer * $multiplier; }
+    .mb-#{$index} { margin-bottom: $spacer * $multiplier; }
+    .my-#{$index} { margin-top: $spacer * $multiplier; margin-bottom: $spacer * $multiplier; }
+}
 
-.ml-0 { margin-left: 0; }
-.ml-1 { margin-left: $spacer * 0.25; }
-.ml-2 { margin-left: $spacer * 0.50; }
-.ml-3 { margin-left: $spacer * 1.00; }
-.ml-4 { margin-left: $spacer * 1.50; }
-.ml-5 { margin-left: $spacer * 2.00; }
-
-.mr-0 { margin-right: $spacer * 0.00; }
-.mr-1 { margin-right: $spacer * 0.25; }
-.mr-2 { margin-right: $spacer * 0.50; }
-.mr-3 { margin-right: $spacer * 1.00; }
-.mr-4 { margin-right: $spacer * 1.50; }
-.mr-5 { margin-right: $spacer * 2.00; }
-
-.mx-0 { margin-left: 0; margin-right: 0; }
-.mx-1 { margin-left: $spacer * 0.25; margin-right: $spacer * 0.25; }
-.mx-2 { margin-left: $spacer * 0.50; margin-right: $spacer * 0.50; }
-.mx-3 { margin-left: $spacer * 1.00; margin-right: $spacer * 1.00; }
-.mx-4 { margin-left: $spacer * 1.50; margin-right: $spacer * 1.50; }
-.mx-5 { margin-left: $spacer * 2.00; margin-right: $spacer * 2.00; }
-
-.mt-0 { margin-top: 0; }
-.mt-1 { margin-top: $spacer * 0.25; }
-.mt-2 { margin-top: $spacer * 0.50; }
-.mt-3 { margin-top: $spacer * 1.00; }
-.mt-4 { margin-top: $spacer * 1.50; }
-.mt-5 { margin-top: $spacer * 2.00; }
-
-.mb-0 { margin-bottom: 0; }
-.mb-1 { margin-bottom: $spacer * 0.25; }
-.mb-2 { margin-bottom: $spacer * 0.50; }
-.mb-3 { margin-bottom: $spacer * 1.00; }
-.mb-4 { margin-bottom: $spacer * 1.50; }
-.mb-5 { margin-bottom: $spacer * 2.00; }
-
-.my-0 { margin-top: 0; margin-bottom: 0; }
-.my-1 { margin-top: $spacer * 0.25; margin-bottom: $spacer * 0.25; }
-.my-2 { margin-top: $spacer * 0.50; margin-bottom: $spacer * 0.50; }
-.my-3 { margin-top: $spacer * 1.00; margin-bottom: $spacer * 1.00; }
-.my-4 { margin-top: $spacer * 1.50; margin-bottom: $spacer * 1.50; }
-.my-5 { margin-top: $spacer * 2.00; margin-bottom: $spacer * 2.00; }
+@include setMargins(0, 0);
+@include setMargins(1, 0.25);
+@include setMargins(2, 0.5);
+@include setMargins(3, 1);
+@include setMargins(4, 1.5);
+@include setMargins(5, 2);
+@include setMargins(6, 3);
 
 .m-auto  { margin: auto; }
 .ml-auto { margin-left: auto; }
@@ -72,51 +41,21 @@
   #UTILS PADDING
 \*------------------------------------*/
 
-.p-0 { padding: 0; }
-.p-1 { padding: $spacer * 0.25; }
-.p-2 { padding: $spacer * 0.50; }
-.p-3 { padding: $spacer * 1.00; }
-.p-4 { padding: $spacer * 1.50; }
-.p-5 { padding: $spacer * 2.00; }
+@mixin setPaddings($index, $multiplier){
+    .p-#{$index}  { padding: $spacer * $multiplier; }
+    .pl-#{$index} { padding-left: $spacer * $multiplier; }
+    .pr-#{$index} { padding-right: $spacer * $multiplier; }
+    .px-#{$index} { padding-left: $spacer * $multiplier; padding-right: $spacer * $multiplier; }
+    .pt-#{$index} { padding-top: $spacer * $multiplier; }
+    .pb-#{$index} { padding-bottom: $spacer * $multiplier; }
+    .py-#{$index} { padding-top: $spacer * $multiplier; padding-bottom: $spacer * $multiplier; }
+}
 
-.pl-0 { padding-left: 0; }
-.pl-1 { padding-left: $spacer * 0.25; }
-.pl-2 { padding-left: $spacer * 0.50; }
-.pl-3 { padding-left: $spacer * 1.00; }
-.pl-4 { padding-left: $spacer * 1.50; }
-.pl-5 { padding-left: $spacer * 2.00; }
+@include setPaddings(0, 0);
+@include setPaddings(1, 0.25);
+@include setPaddings(2, 0.5);
+@include setPaddings(3, 1);
+@include setPaddings(4, 1.5);
+@include setPaddings(5, 2);
+@include setPaddings(6, 3);
 
-.pr-0 { padding-right: 0; }
-.pr-1 { padding-right: $spacer * 0.25; }
-.pr-2 { padding-right: $spacer * 0.50; }
-.pr-3 { padding-right: $spacer * 1.00; }
-.pr-4 { padding-right: $spacer * 1.50; }
-.pr-5 { padding-right: $spacer * 2.00; }
-
-.px-0 { padding-left: 0; padding-right: 0; }
-.px-1 { padding-left: $spacer * 0.25; padding-right: $spacer * 0.25; }
-.px-2 { padding-left: $spacer * 0.50; padding-right: $spacer * 0.50; }
-.px-3 { padding-left: $spacer * 1.00; padding-right: $spacer * 1.00; }
-.px-4 { padding-left: $spacer * 1.50; padding-right: $spacer * 1.50; }
-.px-5 { padding-left: $spacer * 2.00; padding-right: $spacer * 2.00; }
-
-.pt-0 { padding-top: 0 }
-.pt-1 { padding-top: $spacer * 0.25; }
-.pt-2 { padding-top: $spacer * 0.50; }
-.pt-3 { padding-top: $spacer * 1.00; }
-.pt-4 { padding-top: $spacer * 1.50; }
-.pt-5 { padding-top: $spacer * 2.00; }
-
-.pb-0 { padding-bottom: 0; }
-.pb-1 { padding-bottom: $spacer * 0.25; }
-.pb-2 { padding-bottom: $spacer * 0.50; }
-.pb-3 { padding-bottom: $spacer * 1.00; }
-.pb-4 { padding-bottom: $spacer * 1.50; }
-.pb-5 { padding-bottom: $spacer * 2.00; }
-
-.py-0 { padding-top: 0; padding-bottom: 0; }
-.py-1 { padding-top: $spacer * 0.25; padding-bottom: $spacer * 0.25; }
-.py-2 { padding-top: $spacer * 0.50; padding-bottom: $spacer * 0.50; }
-.py-3 { padding-top: $spacer * 1.00; padding-bottom: $spacer * 1.00; }
-.py-4 { padding-top: $spacer * 1.50; padding-bottom: $spacer * 1.50; }
-.py-5 { padding-top: $spacer * 2.00; padding-bottom: $spacer * 2.00; }
