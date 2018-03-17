@@ -27,6 +27,17 @@ NavBar.propTypes = {
     fixedMobile: PropTypes.bool
 }
 
+NavBar.Loader = (props) => {
+    return (
+        <div className="my-auto ml-auto">
+            <Loader light size="28px" disabled={props.disabled} />
+        </div>
+    );
+}
+
+NavBar.Loader.propTypes = {
+    disabled: PropTypes.bool
+}
 
 class Nav extends React.Component {
     render(){
@@ -48,16 +59,13 @@ Nav.propTypes = {
     pullRight: PropTypes.bool
 }
 
-Nav.Loader = (props) => {
-    return (
-        <div className="nav__loader">
-            <Loader light size="28px" disabled={props.disabled} />
-        </div>
-    );
-}
 
-Nav.Loader.propTypes = {
-    disabled: PropTypes.bool
+
+Nav.Responsive = (props) => {
+    return (
+        <div className="nav__responsive" >
+        </div>
+    )
 }
 
 class NavItem extends React.Component {

@@ -2,6 +2,27 @@
   #LOADER
 \*------------------------------------*/
 
+/**
+ * Loader block takes width and height of parent
+ * applies tint over it and show loading indicator
+ * usually used to prevent any interaction
+ * with parent component
+ */
+.loader-block {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: inherit;
+    background: rgba(black, 0.67);
+    display: flex;
+}
+
+.loader-block.light{
+    background: rgba(white, 0.67);
+}
+
 .loader {
     position: relative;
     margin: 0 auto;
