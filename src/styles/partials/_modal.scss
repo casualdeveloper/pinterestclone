@@ -19,9 +19,11 @@
 
 .modal__close {
     position: absolute;
-    right: 56px;
+    right: 16px;
     top: 16px;
-    opacity: 0.6;
+    opacity: .6;
+    width: 40px;
+    height: 40px;
 }
 
 .modal__close:hover {
@@ -30,10 +32,10 @@
 
 .modal__close::before, .modal__close::after {
     position: absolute;
-    left: 15px;
-    content: ' ';
-    height: 40px;
-    width: 3px;
+    left: 50%;
+    content: " ";
+    height: 100%;
+    width: 4px;
     background-color: #999;
 }
 
