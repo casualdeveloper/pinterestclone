@@ -12,6 +12,11 @@ const defaultProps = {
 export default class Card extends React.Component {
     render() {
         let className = "card__body ";
+
+        if(this.props.fill) {
+            className += "card__body--fill ";
+        }
+        
         className += this.props.className;
 
         return (
@@ -22,7 +27,7 @@ export default class Card extends React.Component {
     }
 }
 
-Card.propTypes = { ...propTypes };
+Card.propTypes = { ...propTypes, fill: PropTypes.bool };
 Card.defaultProps = { ...defaultProps };
 
 
