@@ -22,3 +22,11 @@
 .pin-icon .active {
     color: maroon;
 }
+
+/**
+ * Loader for nav
+ */
+.nav__loader {
+    position: absolute;
+    transform: translate(-100%,50%);
+}

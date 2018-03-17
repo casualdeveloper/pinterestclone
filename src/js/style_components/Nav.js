@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Loader } from "./Loader";
 
 class NavBar extends React.Component {
     render(){
@@ -30,6 +31,18 @@ class Nav extends React.Component {
 
 Nav.propTypes = {
     pullRight: PropTypes.bool
+}
+
+Nav.Loader = (props) => {
+    return (
+        <div className="nav__loader">
+            <Loader light size="28px" disabled={props.disabled} />
+        </div>
+    );
+}
+
+Nav.Loader.propTypes = {
+    disabled: PropTypes.bool
 }
 
 class NavItem extends React.Component {
