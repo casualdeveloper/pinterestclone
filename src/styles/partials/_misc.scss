@@ -1,0 +1,24 @@
+/*------------------------------------*\
+  #MISC
+\*------------------------------------*/
+
+/**
+ * Icon in card header
+ */
+
+.card__header__icon {
+    display: flex;
+}
+
+
+/**
+ * "Pin" icon
+ */
+
+.pin-icon:hover {
+    color: rgba(maroon, 0.8);
+}
+
+.pin-icon .active {
+    color: maroon;
+}
