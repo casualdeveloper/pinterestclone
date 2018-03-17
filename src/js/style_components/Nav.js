@@ -4,12 +4,27 @@ import { Loader } from "./Loader";
 
 class NavBar extends React.Component {
     render(){
+        let className = "nav-bar ";
+
+        if(this.props.fixed)
+            className += "nav-bar--fixed ";
+        else if(this.props.fixedMobile)
+            className += "nav-bar--fixed-mobile ";
+
         return (
-            <div className="nav-bar">
-                {this.props.children}
-            </div>
+            <span>
+                <div className={className}>
+                    {this.props.children}
+                </div>
+                <div className="nav-bar-placeholder" />
+            </span>
         );
     }
+}
+
+NavBar.propTypes = {
+    fixed: PropTypes.bool,
+    fixedMobile: PropTypes.bool
 }
 
 
