@@ -2,14 +2,20 @@ import React from "react";
 import Portal from "preact-portal";
 import PropTypes from "prop-types";
 
-const modalRoot = document.getElementById("modal-root");
+const bodyDOM = document.body;
 
 export default class Modal extends React.Component {
     render() {
         const { open, close } = this.props;
-        if(!open)
+        if(!open){
+            //remove modal open to allow scrolling again
+            bodyDOM.className = bodyDOM.className.replace(/\bmodal-open\b/g, "");
             return null;
-        
+        }
+        //attach modal open to body to remove scrollbar
+        if(bodyDOM.className.indexOf("modal-open") === -1)
+            bodyDOM.className += "modal-open";
+            
         const Close = () => {
             if (!close) return null;
             return (

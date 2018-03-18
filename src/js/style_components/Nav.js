@@ -114,7 +114,7 @@ class NavResponsive extends React.Component {
                     {this.props.children}
                     <NavItem onClick={this.openModal}><Hamburger className="mr-4" /></NavItem>
                     <Modal open={this.state.isModalOpen} close={this.closeModal}>
-                        <ul className="nav-modal text-center">
+                        <ul className="nav-modal text-center m-auto">
                             {this.cildrenWithModifiedOnClick}
                         </ul>
                     </Modal>
