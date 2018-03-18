@@ -32,7 +32,7 @@ router.get("/twitterCallback", function(req, res) {
     res.send("<script>window.twitterCallbackQuery='"+twitterCallbackQuery+"';window.close();</script>");
 });
 
-router.get("/twitterAuth", twitterUtil.getTwitterAccessToken, AuthController.twitterLogin, AuthController.login, function(req, res) {
+router.get("/twitterAuth", twitterUtil.getTwitterAccessToken, twitterUtil.getTwitterProfile, AuthController.twitterLogin, AuthController.login, function(req, res) {
     res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user });
 });
 

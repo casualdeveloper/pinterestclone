@@ -12,16 +12,20 @@ const userSchema = mongoose.Schema({
         id: { type: String, unique: true },
         displayName: { type: String },
         token: { type: String },
-        tokenSecret: { type: String }
+        tokenSecret: { type: String },
+        image: { type: String }
     },
     pins: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
-    creationDate: { type: Date, required: true, default: Date.now }
+    creationDate: { type: Date, required: true, default: Date.now },
+    profileImage: { type: String }
 });
 
 userSchema.pre("save", function(next) {
     this.displayName = this.username || this.twitter.displayName;
+    this.profileImage = this.profileImage || this.twitter.image
     next();
 });
+
 
 const noop = function() {};
 userSchema.pre("save", function(next) {
