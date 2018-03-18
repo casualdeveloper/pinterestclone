@@ -175,16 +175,36 @@ exports.localLogin = function(req,res,next){
 // TwitterLogin Middleware
 //========================================
 exports.twitterLogin = function(req, res, next){
-    let twitterResponse = req.twitterResponse;
+    let twitterResponse = req.twitterResponse;;
     User.findOne({ "twitter.id" : twitterResponse.user_id }, function(err, user) {
         if(err) { return next(err); }
-        if(user) { req.user = user; return next(); }
+        if(user) {
+            //update access token
+            if(user.twitter.token !== twitterResponse.oauth_token){
+
+                user.twitter.token = twitterResponse.oauth_token;
+                user.twitter.tokenSecret = twitterResponse.oauth_token_secret;
+                
+                user.save((err) => {
+                    if(err)
+                        return next(err);
+
+                    req.user = user;
+                    return next();
+                });
+            }
+            
+            req.user = user;
+            return next();
+            
+        }
         let newUser = new User({
             twitter: {
                 displayName: twitterResponse.screen_name,
                 id: twitterResponse.user_id,
                 token: twitterResponse.oauth_token,
-                tokenSecret: twitterResponse.oauth_token_secret
+                tokenSecret: twitterResponse.oauth_token_secret,
+                image: twitterResponse.image
             }
         });
         newUser.save(function(err, user){
