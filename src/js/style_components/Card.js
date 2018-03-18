@@ -2,11 +2,13 @@ import React from "react";
 import PropTypes from "prop-types"
 
 const propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    onClick: PropTypes.func
 }
 
 const defaultProps = {
-    className: ""
+    className: "",
+    onClick: () =>{return;}
 }
 
 export default class Card extends React.Component {
@@ -20,7 +22,7 @@ export default class Card extends React.Component {
         className += this.props.className;
 
         return (
-            <div className={className}>
+            <div onClick={this.props.onClick} className={className}>
                 {this.props.children}
             </div>
         );
@@ -39,7 +41,7 @@ Card.Title = (props) => {
     className += props.className;
 
     return (
-        <div className={className} >
+        <div onClick={props.onClick} className={className} >
             {props.children}
         </div>
     );
@@ -57,7 +59,7 @@ Card.Text = (props) => {
     className += props.className;
 
     return (
-        <div className={className} >
+        <div onClick={props.onClick} className={className} >
             {props.children}
         </div>
     );
@@ -75,7 +77,7 @@ Card.Action = (props) => {
     className += props.className;
 
     return (
-        <div className={className}>
+        <div onClick={props.onClick} className={className}>
             {props.children}
         </div>
     )
@@ -93,7 +95,7 @@ Card.Media = (props) => {
     className += props.className;
 
     return (
-        <div className={className}>
+        <div onClick={props.onClick} className={className}>
             {props.children}
         </div>
     )
@@ -111,7 +113,7 @@ Card.Header = (props) => {
     className += props.className;
 
     return (
-        <div className={className}>
+        <div onClick={props.onClick} className={className}>
             {props.children}
         </div>
     )
@@ -121,28 +123,47 @@ Card.Header.propTypes = { ...propTypes };
 Card.Header.defaultProps = { ...defaultProps };
 
 Card.Header.TextContainer = (props) => {
+    let className = "card__header__text-container ";
+    className += props.className;
+
     return (
-        <div className="card__header__text-container">
+        <div onClick={props.onClick} className={className}>
             {props.children}
         </div>
     );
 }
 
+Card.Header.TextContainer.propTypes = { ...propTypes };
+Card.Header.TextContainer.defaultProps = { ...defaultProps };
+
+
 Card.Header.Title = (props) => {
+    let className = "card__header__title ";
+    className += props.className;
+
     return (
-        <div className="card__header__title">
+        <div onClick={props.onClick} className={className} >
             {props.children}
         </div>
     )
 }
 
+Card.Header.Title.propTypes = { ...propTypes };
+Card.Header.Title.defaultProps = { ...defaultProps };
+
 Card.Header.Subtitle = (props) => {
+    let className = "card__header__subtitle ";
+    className += props.className;
+
     return (
-        <div className="card__header__subtitle">
+        <div onClick={props.onClick} className={className} >
             {props.children}
         </div>
     )
 }
+
+Card.Header.Subtitle.propTypes = { ...propTypes };
+Card.Header.Subtitle.defaultProps = { ...defaultProps };
 
 
 export { Card };
