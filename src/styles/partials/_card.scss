@@ -44,6 +44,8 @@
 
 .card__text {
     padding: 24px 16px;
+    overflow-wrap: break-word;
+    color: rgba(0,0,0, 0.87);
 }
 
 .card__actions {
