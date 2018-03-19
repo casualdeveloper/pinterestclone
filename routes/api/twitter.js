@@ -26,7 +26,7 @@ exports.getTwitterAuthLink = function(req, res, next) {
         //parse response body
         let parsedBody = qs.parse(body);
         if(err || status !== 200 || parsedBody.oauth_callback_confirmed !== "true"){
-            return res.status(422).json({error: "Failed to send request to twitter, please try again later."});
+            return res.status(422).json({error: "Failed to send request to twitter, please try again later"});
         }
 
         req.responseObj.TWITTER_AUTH_URL = TWITTER_AUTH_URL_INCOMPLETE + parsedBody.oauth_token;
@@ -57,7 +57,7 @@ exports.getTwitterAccessToken = function(req, res, next) {
         //parse response body
         let parsedBody = qs.parse(body);
         if(err || status !== 200 || !(parsedBody.oauth_token && parsedBody.oauth_token_secret)){
-            return res.status(422).json({error: "Failed to send request to twitter, please try again later."});
+            return res.status(422).json({error: "Failed to send request to twitter, please try again later"});
         }
 
         req.twitterResponse = parsedBody;
@@ -88,7 +88,7 @@ exports.getTwitterProfile = function(req, res, next) {
         //parse response body
         let parsedBody = JSON.parse(body);
         if(err || status !== 200){
-            return res.status(422).json({error: "Failed to send request to twitter, please try again later."});
+            return res.status(422).json({error: "Failed to send request to twitter, please try again later"});
         }
         req.twitterResponse.image = parsedBody.profile_image_url_https;
         
