@@ -15,11 +15,18 @@ const jwtOptions = {
 const localLogin = new LocalStrategy(function(username, password, done) {  
     User.findOne({ username: username }, function(err, user) {
         if(err) { return done(err); }
-        if(!user) { return done(null, false, { error: "Your login details could not be verified. Please try again." }); }
+        let error = {};
+        if(!user) {
+            error.username = "Sorry couldn't find any user with this username";
+            return done(null, false, { error, generalMessage:"Failed to sign in, please try again" });
+        }
 
         user.checkPassword(password, function(err, isMatch) {
             if (err) { return done(err); }
-            if (!isMatch) { return done(null, false, { error: "Your login details could not be verified. Please try again." }); }
+            if (!isMatch) {
+                error.password = "Invalid password"
+                return done(null, false, { error, generalMessage: "Failed to sign in, please try again" });
+            }
 
             return done(null, user);
         });

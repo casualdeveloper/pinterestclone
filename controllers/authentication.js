@@ -175,9 +175,10 @@ exports.localLogin = function(req,res,next){
         error.password = "Invalid password";
     }
 
-    if(Objecy.keys(error).length > 0)
-        return res.status(422).send({ error, generalMessage: "Failed to sign in, please try again" });
+    if(Object.keys(error).length > 0)
+        return res.status(422).json({ error: error, generalMessage: "Failed to sign in, please try again" });
 
+        
     passport.authenticate("local", function(err, user, message){
         if(err) { return next(err); }
         if(!user) { return res.status(422).send(message); }

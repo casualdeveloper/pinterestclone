@@ -78,8 +78,8 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
                 let errorMessage;
 
                 if(error.response && error.response.data){
-                    if(error.response.data.message)
-                        message = error.response.data.message;
+                    if(error.response.data.message || error.response.data.generalMessage)
+                        message = error.response.data.message || error.response.data.generalMessage;
                     if(error.response.data.error)
                         errorMessage = error.response.data.error;
                 }
