@@ -8,19 +8,25 @@ exports.validateInput = (req, res, next) => {
     const url = req.body.url;
     const description = req.body.description;
 
+    let error = {};
+
     // /\s/ matches whitespaces
     if(!url || url.replace(/\s/g,"") === ""){
-        return res.status(422).send({ error: "Please provide valid url." });
+        error.url = "Invalid image url";
     }
 
     if(!description || description.replace(/\s/g, "") === "") {
-        return res.status(422).send({ error: "Please provide valid description." });
+        error.description = "Invalid description";
     }
 
     //check if url actually exists by sending head request and checking if statusCode is 2xx
     request({ url: url, method: "HEAD"}, function(err, urlRes){
         if(err || /2\d\d/.test(urlRes.statusCode) === false) 
-            return res.status(422).send({ error: "Please provide valid url." });
+            error.url = "Invalid image url";
+
+        if(Object.keys(error).length > 0){
+            return res.status(422).send({ error, generalMessage: "Failed to create new pin, please try again" })
+        }
         return next();
     });
 
@@ -46,7 +52,7 @@ exports.new = (req, res, next) => {
 //user is owner of the pin and we don't have to worry about it.
 exports.delete = (req, res, next) => {
     let pinId = req.body.pinId;
-    if(!pinId) return res.status(422).json({error:"Inavlid pin id!"});
+    if(!pinId) return res.status(422).json({ generalMessage:"Failed to delete pin, please try again"});
     
     Pin.findByIdAndRemove(pinId, err => {
         if(err) return next(err);
@@ -86,7 +92,7 @@ exports.fetchUserPins = (req, res, next) => {
                          ?requestedAmountOfPins
                          :PINS_IN_PAGE_DEFAULT;
     //if no userId provided send error
-    if(!userId) { return res.status(422).json({error: "Invalid user id!"}); }
+    if(!userId) { return res.status(422).json({generalMessage:"Failed to retrieve any pins, please try again"}); }
     
     //see comment about pages in exports.fetch function
 

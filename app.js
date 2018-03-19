@@ -39,7 +39,7 @@ app.use(routes);
 
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.json({"error": err.message});
+    res.json({"generalMessage": "Error response from server, please try again later"});
 });
 
 let server = app.listen(app.get("port"), err => {

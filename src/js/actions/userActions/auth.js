@@ -1,8 +1,10 @@
-import { USER_LOGIN, USER_SIGNUP, USER_LOGOUT, FAILED, PENDING } from "../../constants/action-types";
+import { USER_LOGIN, USER_SIGNUP, USER_LOGOUT, FAILED, PENDING, SNACKBAR_ADD_MESSAGE } from "../../constants/action-types";
 import { createThunkPromiseAction } from "../../utils/createThunkAction";
 import { createAction } from "redux-actions";
 import { WebAPI, setAxiosAuthHeader } from "../../utils/WebAPI";
 import { saveJWTLocally, removeJWTFromLocalStorage } from "../../utils/localData"; 
+import { newSnackbarMessage } from "../index"
+import { snackbarReducer } from "../../reducers/snackbarReducers";
 
 const _saveJWT = (response) => {
     if(response && response.data && response.data.token){
@@ -37,10 +39,10 @@ export const userLoginError = createAction(USER_LOGIN+FAILED);
 export const userLoginSuccess = createAction(USER_LOGIN);
 
 const getErrorFromResponse = (error) => {
-    let message = "Something went wrong, please try again later.";
+    let message;
 
     if(error.response && error.response.data && error.response.data.error){
-        message = error.response.data.error;
+        message = error.response.data.error || error.response.data.generalMessage;
     }
 
     return message;
@@ -79,11 +81,16 @@ const requestTwitterAuth = (dispatch, twitterCallbackQuery) => {
     WebAPI.loginTwitter(twitterCallbackQuery)
     .then(response => {
         dispatch(userLoginSuccess(response.data));
+
+        if(response.data.generalMessage)
+            dispatch(newSnackbarMessage(response.data.generalMessage));
+
         _saveJWT(response);
         dispatch(userLoginPending(false));
     })
     .catch(error => {
         dispatch(userLoginError(getErrorFromResponse(error)));
+        dispatch(snackbarReducer("Sorry we couldn't log you in."));
         dispatch(userLoginPending(false));
     });
 };

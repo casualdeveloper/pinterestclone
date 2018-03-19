@@ -64,20 +64,27 @@ exports.register = function(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
 
+
+    let error = {};
     // Return error if invalid email provided
     //note: its close to impossible to check if email address is valid with regex, preferably confirmation letter should be sent to email address
     if (!email || !inputValidation.isEmailValid(email)) {
-        return res.status(422).send({ error: "Please provide valid email address."});
+        error.email = "Invalid email address";
     }
 
     // Return error if invalid username provided
     if (!username || !inputValidation.isUsernameValid(username)) {
-        return res.status(422).send({ error: "Please provide valid username."});
+        error.username = "Invalid username"
     }
 
     // Return error if invalid password provided
     if (!password || !inputValidation.isPasswordValid(password)) {
-        return res.status(422).send({ error: "Please provide valid password." });
+        error.password = "Invalid password"
+    }
+    
+    //check if error has any properties
+    if(Object.keys(error).length > 0){
+        return res.status(422).send({ error, generalMessage: "Failed to sign up, please try again" });
     }
 
     User.findOne({$or:[{ email: email}, {username: username}] }, function(err, existingUser) {
@@ -85,12 +92,16 @@ exports.register = function(req, res, next) {
 
         // If user is not unique, return errors
         if (existingUser && existingUser.email === email) {
-            return res.status(422).send({ error: "Email address or username is already in use." });
+            error.email = "Email address is already in use";
         }
 
 
         if(existingUser && existingUser.username === username) {
-            return res.status(422).send({ error: "Email address or username is already in use." });
+            error.username = "Username is already in use";
+        }
+
+        if(Object.keys(error).length > 0){
+            return res.status(422).send({ error, generalMessage: "Failed to sign up, please try again" });
         }
 
         // If email and username is unique and password was provided, create account
@@ -155,13 +166,17 @@ exports.localLogin = function(req,res,next){
     const username = req.body.username;
     const password = req.body.password;
 
+    let error = {};
     if(!username || !inputValidation.isUsernameValid(username)){
-        return res.status(422).send({ error: "Please provide valid username."});
+        error.username = "Invalid username";
     }
 
     if(!password || !inputValidation.isPasswordValid(password)){
-        return res.status(422).send({ error: "Please provide valid password" });
+        error.password = "Invalid password";
     }
+
+    if(Objecy.keys(error).length > 0)
+        return res.status(422).send({ error, generalMessage: "Failed to sign in, please try again" });
 
     passport.authenticate("local", function(err, user, message){
         if(err) { return next(err); }
@@ -195,6 +210,8 @@ exports.twitterLogin = function(req, res, next){
             }
             
             req.user = user;
+            //attach welcome back if user already exists
+            req.generalMessage = "Welcome back!";
             return next();
             
         }

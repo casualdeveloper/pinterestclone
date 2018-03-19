@@ -1,4 +1,4 @@
-import { SUCCESS, FAILED, PENDING } from "../constants/action-types";
+import { SUCCESS, FAILED, PENDING, SNACKBAR_ADD_MESSAGE } from "../constants/action-types";
 import { createAction } from "redux-actions";
 
 //successCallback, errorCallback optional callback funcitons that returns axios default responses
@@ -16,10 +16,11 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
         return data.meta;
     };
 
-    const typeAction  = createAction(type, payloadFunction, metaFunction);
-    const typePending = createAction(TYPE_PENDING, payloadFunction, metaFunction);
-    const typeSuccess = createAction(TYPE_SUCCESS, payloadFunction, metaFunction);
-    const typeFailed  = createAction(TYPE_FAILED, payloadFunction, metaFunction);
+    const typeAction     = createAction(type, payloadFunction, metaFunction);
+    const typePending    = createAction(TYPE_PENDING, payloadFunction, metaFunction);
+    const typeSuccess    = createAction(TYPE_SUCCESS, payloadFunction, metaFunction);
+    const typeFailed     = createAction(TYPE_FAILED, payloadFunction, metaFunction);
+    const generalMessage = createAction(SNACKBAR_ADD_MESSAGE);
 
     let passedData;
     //wrapper to setup data object to be passed to action while dispatching
@@ -60,6 +61,10 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
                 if(payload && payload.message)
                     dispatch(typeSuccess(dispatchActionDataWrapper(payload.message)));
 
+                //dispatch snackbar messages if there are any
+                if(payload && payload.generalMessage)
+                    dispatch(generalMessage(payload.generalMessage));
+
                 //call sucess callback if there is one
                 if(successCallback && typeof(successCallback === "function"))
                     successCallback(response);
@@ -69,14 +74,21 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
                 dispatch(typePending(dispatchActionDataWrapper(false)));
 
                 //default message
-                let message = "Something went wrong, please try again later.";
+                let message = "Couldn't complete action, please try again later";
+                let errorMessage;
 
-                if(error.response && error.response.data && ( error.response.data.error || error.response.data.message )){
-                    message = error.response.data.error || error.response.data.message;
+                if(error.response && error.response.data){
+                    if(error.response.data.message)
+                        message = error.response.data.message;
+                    if(error.response.data.error)
+                        errorMessage = error.response.data.error;
                 }
 
+                //dispatch snackbar messages if there are any
+                 dispatch(generalMessage(message));
+
                 //dispatch error message
-                dispatch(typeFailed(dispatchActionDataWrapper(message)));
+                dispatch(typeFailed(dispatchActionDataWrapper(errorMessage)));
 
                 //call error callback if there is one
                 if(errorCallback && typeof(errorCallback) === "function")
