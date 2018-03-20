@@ -73,7 +73,7 @@ input:focus::-moz-placeholder {
 
 .input:focus ~ .label, input[value]:not([value=""]) ~ .label {
     font-size: 12px;
-    top: -28px;
+    transform: translateY(-20px);
     cursor: default;
 }
 
@@ -86,7 +86,7 @@ input:focus::-moz-placeholder {
     font-size: 16px;
     color: rgba(0, 0, 0, 0.54);
     cursor: text;
-
+    will-change: transform;
     transition: 0.15s ease-out all;
 }
 
