@@ -14,6 +14,9 @@
 /**
  * "Pin" icon
  */
+.pin-icon {
+    cursor: pointer;
+}
 
 .pin-icon:hover {
     color: rgba(maroon, 0.8);

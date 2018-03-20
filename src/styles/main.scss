@@ -60,6 +60,7 @@ body{
     margin-bottom: 4px;
     float: left;
     @include gridItemSize();
+    cursor: pointer;
 }
 .loading-image-parent {
     margin-left: auto;
