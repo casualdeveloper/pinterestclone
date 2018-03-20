@@ -70,7 +70,7 @@ module.exports = {
                 test: /\.(png|svg|jpg|ttf|eot|woff|woff2)$/,
                 loader: "file-loader",
                 options: {
-                    name: "[name].[ext]",
+                    name: (process.env.NODE_ENV !== "production")?"/[name].[ext]":"/[name].[hash].[ext]",
                 },
             },
         ]
