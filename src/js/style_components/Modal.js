@@ -5,8 +5,8 @@ import { CSSTransitionGroup } from "react-transition-group";
 
 const bodyDOM = document.body;
 
-const EnterAnimationTime = 200;
-const LeaveAnimationTime = 200;
+const EnterAnimationTime = 150;
+const LeaveAnimationTime = 150;
 
 
 export default class Modal extends React.Component {
