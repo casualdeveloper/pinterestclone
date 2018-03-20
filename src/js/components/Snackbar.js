@@ -7,8 +7,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { deleteSnackbarMessage } from "../actions";
 
-const EnterAnimationTime = 400;
-const LeaveAnimationTime = 300;
+const EnterAnimationTime = 200;
+const LeaveAnimationTime = 200;
 const OnScreenTime = 3000;
 
 /**
@@ -139,6 +139,9 @@ class SnackbarWrapper extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({ item: nextProps.itemStack[0]});
+        //remove currently shown snackbar if new ones have been pushed to the stack
+        if(this.props.itemStackLength < nextProps.itemStackLength)
+            this.removeItemOnlyAfterEnterAnimation();
     }
 
     render() {
