@@ -3,7 +3,7 @@
 \*------------------------------------*/
 
 .btn {
-    background: $LIGHT;
+    background: $LIGHT-BUTTON;
     position: relative;
 
     font-family: "Roboto", sans-serif;
@@ -26,7 +26,8 @@
     transition-timing-function: ease-out;
     transition-duration: 80ms;
 
-    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 1px 0px rgba(0,0,0,0.42);
+    color: rgba(black, 0.87);
 
 }
 
@@ -50,8 +51,8 @@
 }
 
 .btn:hover {
-    background: darken($LIGHT, 12%);
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.3);
+    background: darken($LIGHT-BUTTON, 12%);
+    box-shadow: 0px 2px 1px 0px rgba(0,0,0,0.42);
 
     transition-property: background-color, box-shadow, transform;
     transition-timing-function: ease-in;
@@ -72,7 +73,7 @@
 
 .btn.btn--dark {
     background: $DARK;
-    color:    white;
+    color: rgba(white, 0.87);;
 }
 
 .btn.btn--dark:hover {
