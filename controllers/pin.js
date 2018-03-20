@@ -108,9 +108,11 @@ exports.fetchUserPins = (req, res, next) => {
         options: { 
             limit: PINS_IN_PAGE,
             sort: { $natural: -1 }
-         }
+        },
+        populate : {path: "owner", select: "displayName profileImage"}
     }).lean().exec((err, results) => {
         if(err) return next(err);
+        console.log(results);
         req.fetchedPins = results.pins;
         return next();
     });
