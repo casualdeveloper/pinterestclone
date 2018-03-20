@@ -20,7 +20,7 @@
     width: 100%;
     
     padding: 16px;
-    bottom: -48px;
+    transform: translateY(0);
 
     text-align: left;
     
@@ -28,13 +28,21 @@
     color: rgba(#fff, 0.87);
     font-weight: 400;
 
-    transition: 0.15s cubic-bezier(0.4, 0.0, 1, 1) all;
+    transition: transform 0.15s cubic-bezier(0.4, 0.0, 1, 1);
+    will-change: transform;
     
 }
 
 .grid-cell:hover .grid-cell--footer{
-    bottom: 0px;
-    transition: 0.15s cubic-bezier(0.0, 0.0, 0.2, 1) all;
+    transform: translateY(-48px);
+    transition: transform 0.15s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+//disable hover effect on mobile phones
+@media (hover: none) {
+    .grid-cell:hover .grid-cell--footer {
+        transform: translateY(0);
+    }
 }
 
 //text container to set all lines in column

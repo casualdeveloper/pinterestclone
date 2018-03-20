@@ -13,6 +13,7 @@
     z-index: $z-index-modal;
     overflow-y: auto;
     transition: opacity 0.15s linear;
+    will-change: opacity;
 }
 
 .modal-open {
