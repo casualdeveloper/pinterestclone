@@ -105,7 +105,7 @@ class SnackbarWrapper extends React.Component {
         this.setMinTimePassedTimer(); 
 
         //[2] 
-        if(this.props.itemStackLength > 1) { 
+        if(this.props.itemStackLength > 1 && !this.state.removeItemOnMinTimePassed) { 
             this.removeItemOnlyAfterEnterAnimation();
         }
     }
@@ -138,9 +138,11 @@ class SnackbarWrapper extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ item: nextProps.itemStack[0]});
+        if(!this.state.item)
+            this.setState({ item: nextProps.itemStack[0]});
+        
         //remove currently shown snackbar if new ones have been pushed to the stack
-        if(this.props.itemStackLength < nextProps.itemStackLength)
+        if(this.props.itemStackLength < nextProps.itemStackLength && this.props.itemStackLength !== 0 && !this.state.removeItemOnMinTimePassed)
             this.removeItemOnlyAfterEnterAnimation();
     }
 
