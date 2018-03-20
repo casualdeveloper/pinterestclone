@@ -112,7 +112,6 @@ exports.fetchUserPins = (req, res, next) => {
         populate : {path: "owner", select: "displayName profileImage"}
     }).lean().exec((err, results) => {
         if(err) return next(err);
-        console.log(results);
         req.fetchedPins = results.pins;
         return next();
     });
