@@ -20,9 +20,9 @@ class Grid extends React.Component {
         this.resetMasonryLayout = this.resetMasonryLayout.bind(this);
         //recollects items (eg. more images have been added to dom after initial masonry collection)
         this.reloadItems = this.reloadItems.bind(this);
-        //appends element
+
         this.appendElement = this.appendElement.bind(this);
-        //destryos grid
+
         this.destroyGrid = this.destroyGrid.bind(this);
     }
 
@@ -63,7 +63,7 @@ class Grid extends React.Component {
             itemSelector: ".grid-item",
             columnWidth: ".grid-sizer",
             transitionDuration: "0.3s",
-            gutter: 15,
+            gutter: 4,
             fitWidth: true,
             horizontalOrder: true
         });

@@ -1,10 +1,9 @@
 import React from "react";
-import { PageHeader, Grid, Col, Button, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { userSignup, userSignupError, userSignupPending } from "../actions";
-import Message from "./Message";
 import { usernameInputCheck, passowrdInputCheck, emailInputCheck } from "../utils/inputCheck";
+import { Button, Input, Loader, Card } from "../style_components";
 
 class Signup extends React.Component {
     constructor(props) {
@@ -25,15 +24,14 @@ class Signup extends React.Component {
         let email = this.state.email;
 
         userSignupPending(true);
-        let errorString = "";
 
-        errorString+=emailInputCheck(email);
-        errorString+=usernameInputCheck(username);
-        errorString+=passowrdInputCheck(password);
+        let    emailError = emailInputCheck(email);
+        let usernameError = usernameInputCheck(username);
+        let passwordError = passowrdInputCheck(password);
         
-        if(errorString !== ""){
+        if(usernameError !== "" || passwordError !== "" || emailError !== ""){
             userSignupPending(false);
-            userSignupError(errorString);
+            userSignupError({username: usernameError, password: passwordError, email: emailError});
             return;
         }
     
@@ -45,42 +43,85 @@ class Signup extends React.Component {
         let id = e.target.id;
         let value = e.target.value;
         this.setState({ [id]:value });
+
+        //remove errors if field has changed
+        let error = {...this.props.error}
+        if(id === "username"){
+            error.username = null;
+        }
+
+        if(id === "password"){
+            error.password = null;
+        }
+
+        if(id === "email"){
+            error.email = null;
+        }
+
+        this.props.userSignupError(error);
     }
 
     render() {
         const { loading } = this.props;
+        const    emailError = (this.props.error)?this.props.error.email   : null;
+        const usernameError = (this.props.error)?this.props.error.username: null;
+        const passwordError = (this.props.error)?this.props.error.password: null;
         return (
             <div>
-                <PageHeader classname="text-center">
-                    <h1 className="text-center">Sign Up</h1>
-                </PageHeader>
                 <div className="container">
-                    <Grid>
-                        <Col lg={4} lgOffset={4} md={6} mdOffset={3} sm={8} smOffset={2} xs={12}>
-                            <Message.Error active={this.props.error} title="Failed to signup" content={this.props.error} />
-                            <form>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroup.Addon><i className="fa fa-envelope"></i></InputGroup.Addon>
-                                        <FormControl id="email" placeholder="Email address" type="email" onChange={this.handleInputChange} value={this.state.email}/>
-                                    </InputGroup>                                
-                                </FormGroup>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroup.Addon><i className="fa fa-user"></i></InputGroup.Addon>
-                                        <FormControl id="username" placeholder="Username" type="text" onChange={this.handleInputChange} value={this.state.username}/>
-                                    </InputGroup>                                
-                                </FormGroup>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroup.Addon><i className="fa fa-lock"></i></InputGroup.Addon>
-                                        <FormControl id="password" placeholder="Password" type="password" onChange={this.handleInputChange} value={this.state.password}/>
-                                    </InputGroup>                                
-                                </FormGroup>
-                                <Button onClick={this.signupHandler} disabled={loading}>{loading?"Loading...":"Signup"}</Button>
-                            </form>
-                        </Col>
-                    </Grid>
+                    <div className="row">
+                        <div className="[ col-lg-4 col-lg-offset-4 ] [ col-md-6 col-md-offset-3 ] [ col-sm-8 col-sm-offset-2 ] [ col-xs-12 ]">
+                            <Card className="p-6" fill>
+                                <Card.Title className="pb-5">
+                                    <span className="headline">Sign up</span>
+                                </Card.Title>
+                                <form>
+                                    <Card.Text className="py-5">
+                                        <Input
+                                            id="email"
+                                            fill
+                                            label="Email"
+                                            autocomplete="email"
+                                            error={emailError}
+                                            placeholder="Youremail@mail.com"
+                                            onChange={this.handleInputChange}
+                                            value={this.state.email}
+                                            helper="Your email address will not be shared with any third party"
+                                        />
+
+                                        <Input
+                                            id="username"
+                                            fill
+                                            label="Username"
+                                            autocomplete="username"
+                                            helper="Username can contain letters, numbers and must be in range 6 &ndash; 32"
+                                            error={usernameError}
+                                            placeholder="Username123"
+                                            onChange={this.handleInputChange}
+                                            value={this.state.username}
+                                        />
+
+                                        <Input
+                                            type="password"
+                                            fill
+                                            id="password"
+                                            autocomplete="new-password"
+                                            label="Password"
+                                            helper="Password can contain letters, numbers, special characters and must be in range 8 &ndash; 32"
+                                            error={passwordError}
+                                            placeholder="Password123!@#$%^&*()"
+                                            value={this.state.password}
+                                            onChange={this.handleInputChange}
+                                        />
+                                    </Card.Text>
+                                    <Card.Action>
+                                        <Button className="m-0" onClick={this.signupHandler} disabled={loading}>{loading?"Loading...":"Sign up"}</Button>
+                                    </Card.Action>
+                                </form>
+                                <Loader disabled={!loading} block blockLight />
+                            </Card> 
+                        </div>
+                    </div>
                 </div>
             </div>
         );

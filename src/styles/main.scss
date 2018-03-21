@@ -12,6 +12,7 @@
 @import "./partials/misc.scss";
 @import "./partials/hamburger.scss";
 @import "./partials/snackbar.scss";
+@import "./partials/image.scss";
 @import "./partials/utils.scss";
 
 @mixin gridItemSize(){
@@ -40,20 +41,14 @@ html {
     box-sizing: inherit;
 }
 
-body{
+body {
     margin: 0px;
 }
 
-#newPicImage{
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-.grid{
+.grid {
     margin: 0 auto;
 }
-.grid-sizer{
+.grid-sizer {
     @include gridItemSize();
 }
 .grid-item {
@@ -61,37 +56,4 @@ body{
     float: left;
     @include gridItemSize();
     cursor: pointer;
-}
-.loading-image-parent {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-.loading-image {
-    position: absolute;
-    background-color: rgba(0,0,0,0.1);
-}
-.custom-thumbnail{
-    padding: 0px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    overflow: hidden;
-}
-.footbar{
-    width: 100%;
-    margin-top: 20px;
-}
-.loading_screen{
-    height:100%;
-    width:100%;
-    position:absolute;
-    background-color: rgba(0,0,0,0.04);
-    z-index:3;
-}
-.image-placeholder{
-    max-width: 100%;
-    position: relative;
-}
-.image-wrap{
-    white-space: pre-wrap;
 }

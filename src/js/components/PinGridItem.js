@@ -23,7 +23,6 @@ class PinGridItem extends React.Component {
                     className="grid-cell--image"
                     width={230}
                     height={230}
-                    useImagePlaceholder={true}
                     src={url}
                     onImageLoaded={()=>{ finishedLoading(); }}
                     onImageError={()=>{ finishedLoading(); }}

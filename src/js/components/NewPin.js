@@ -1,10 +1,9 @@
 import React from "react";
-import { PageHeader, Grid, Col, Button, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import ImageWrapper from "./Image";
-import Message from "./Message";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { newPin, newPinError, newPinMessage } from "../actions/pinActions";
+import { newPin, newPinError, newPinMessage, newSnackbarMessage } from "../actions";
+import { Button, Loader, Card, Input } from "../style_components";
 
 class NewPin extends React.Component {
     constructor(props){
@@ -29,6 +28,18 @@ class NewPin extends React.Component {
         let id = e.target.id;
         let value = e.target.value;
         this.setState({ [id]:value });
+        
+        //remove errors if field has changed
+        let error = {...this.props.error}
+        if(id === "url"){
+            error.url = null;
+        }
+
+        if(id === "description"){
+            error.description = null;
+        }
+
+        this.props.newPinError(error);
     }
 
     handleImageLoading(){
@@ -44,17 +55,21 @@ class NewPin extends React.Component {
     }
 
     submitHandler() {
-        this.props.newPinError(false);
-        this.props.newPinMessage(false);
+        let error = {};
 
         if(this.state.description === "" || this.state.description.replace(/\s/g, "") === "")
-            return this.props.newPinError("Please enter valid description.");
+            error.description = "Please enter valid description";
 
         if(this.state.url === "" || this.state.url.replace(/\s/g, "") === "")
-            return this.props.newPinError("Please enter valid image url.");
+            error.url = "Please enter valid image url";
 
-        if(this.state.imageLoadingError)
-            return this.props.newPinError("Sorry, image failed to load.");
+        if(this.state.imageLoadingError || this.state.imageLaoding){
+            return this.props.newSnackbarMessage("Failed to load image, please try again");
+        }
+
+        if(error.description || error.url){
+            return this.props.newPinError(error);
+        }
 
         const { url, description } = this.state;
         return this.props.newPin({ url, description });
@@ -63,7 +78,6 @@ class NewPin extends React.Component {
     componentWillUnmount() {
         //reset error/messages if there are any
         this.props.newPinError(false);
-        this.props.newPinMessage(false);
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -73,47 +87,62 @@ class NewPin extends React.Component {
         || this.state.imageLoading !== nextState.imageLoading
         || this.state.imageLoadingError !== nextState.imageLoadingError
         || this.state.imageLoadingSuccess !== nextState.imageLoadingSuccess
-        || this.props.error !== nextProps.error
-        || this.props.successMessage !== nextProps.successMessage)
+        || this.props.error !== nextProps.error)
             return true;
         return false;
     }
 
     render(){
         const loading = this.props.loading || this.state.imageLoading;
+        let urlError         = (this.props.error)?this.props.error.url:"";
+        let descriptionError = (this.props.error)?this.props.error.description:"";
         return (
             <div>
-                <PageHeader classname="text-center">
-                    <h1 className="text-center">New Pin</h1>
-                </PageHeader>
-                <div className="container">
-                    <Grid>
-                        <Col lg={4} lgOffset={4} md={6} mdOffset={3} sm={8} smOffset={2} xs={12}>
-                            <Message.Error active={this.props.error} title="Failed to create new pin" content={this.props.error} />
-                            <Message.Success active={this.props.successMessage} title="New pin" content={this.props.successMessage} />
-                            <ImageWrapper id="newPicImage" src={this.state.url}
-                                onImageError={this.handleImageLoadingError}
-                                onImageLoaded={this.handleImageLoadingSuccess}
-                                onImageLoading={this.handleImageLoading}
-                            >
-                            </ImageWrapper>
-                            <form>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroup.Addon><i className="fa fa-link"></i></InputGroup.Addon>
-                                        <FormControl id="url" placeholder="Image url" type="text" onChange={this.handleInputChange} value={this.state.url}/>
-                                    </InputGroup>
-                                </FormGroup>
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputGroup.Addon><i className="fa fa-file-text-o"></i></InputGroup.Addon>
-                                        <FormControl id="description" placeholder="Description" type="text" onChange={this.handleInputChange} value={this.state.description}/>
-                                    </InputGroup>
-                                </FormGroup>
-                                <Button bsStyle="success" onClick={this.submitHandler} disabled={loading}>{loading?"Loading...":(<span><i className="fa fa-plus"></i> Save </span>)}</Button>
-                            </form>
-                        </Col>
-                    </Grid>
+                <div className="container my-auto">
+                    <div className="row">
+                        <div className="[ col-lg-4 col-lg-offset-4 ] [ col-md-6 col-md-offset-3 ] [ col-sm-8 col-sm-offset-2 ] [ col-xs-12 ]">
+                            <Card fill>
+                                <Card.Header>
+                                    <Card.Header.TextContainer>
+                                        <Card.Header.Title className="headline"> New Pin </Card.Header.Title>
+                                </Card.Header.TextContainer>
+                                </Card.Header>
+                                <Card.Media>
+                                    <ImageWrapper src={this.state.url}
+                                        onImageError={this.handleImageLoadingError}
+                                        onImageLoaded={this.handleImageLoadingSuccess}
+                                        onImageLoading={this.handleImageLoading}
+                                    />
+                                </Card.Media>
+                                <Card.Text className="py-5">
+                                    <Input
+                                        id="url"
+                                        fill
+                                        label="Image url"
+                                        error={urlError}
+                                        placeholder="Image url"
+                                        onChange={this.handleInputChange}
+                                        value={this.state.url}
+                                    />
+
+                                    <Input
+                                        fill
+                                        id="description"
+                                        label="Description"
+                                        error={descriptionError}
+                                        placeholder="Description"
+                                        value={this.state.description}
+                                        onChange={this.handleInputChange}
+                                    />
+                                </Card.Text>
+                                <Card.Action>
+                                    <Button disabled={loading} className="m-0" flat onClick={this.submitHandler}>
+                                        {loading?"Loading...":(<span><i className="fa fa-plus mr-2"></i> Save </span>)}
+                                    </Button>
+                                </Card.Action>
+                            </Card>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -123,12 +152,11 @@ class NewPin extends React.Component {
 function mapStateToProps(state){
     return {
         loading: state.pin.newPinPending,
-        error: state.pin.newPinFailed,
-        successMessage: state.pin.newPinSuccessMessage
+        error: state.pin.newPinFailed
     };
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ newPin, newPinError, newPinMessage }, dispatch);
+    return bindActionCreators({ newPin, newPinError, newPinMessage, newSnackbarMessage }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPin);

@@ -1,14 +1,14 @@
 import React from "react";
-import ImageWrapper from "./Image";
 import Grid from "./Grid";
-import Loader from "./Loader";
-import { Button } from "react-bootstrap";
-import Message from "./Message";
+import { Button, Loader, Modal, Card } from "../style_components";
 import { PINS_IN_PAGE_DEFAULT } from "../constants/defaults";
+import { PinGridItem } from "./PinGridItem";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchPins } from "../actions/pinActions";
+
+import PinModal from "./PinModal";
 
 class Home extends React.Component {
     constructor(props){
@@ -19,17 +19,12 @@ class Home extends React.Component {
 
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
-        this.onClickHandler = this.onClickHandler.bind(this);
         
         if(!this.props.lastPinId)
             this.props.fetchPins();
         
         if(this.props.lastPinId && this.props.pins.length < PINS_IN_PAGE_DEFAULT)
             this.handleLoadMore(this, PINS_IN_PAGE_DEFAULT - this.props.pins.length);
-    }
-
-    onClickHandler(userId){
-        this.props.history.push("/user/"+userId);
     }
 
     handleLoadMore(e, amountOfPins){
@@ -49,34 +44,14 @@ class Home extends React.Component {
     render(){
         const pins = this.props.pins;
         const isLoading = (this.props.loading || this.state.loadingImages);
-        const error = this.props.error;
         return(
-            <div className="text-center">
-                <Grid gridItem={GridItem} data={pins} onClickHandler={this.onClickHandler} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
+            <div className="text-center mt-6">
+                <Grid {...this.props} gridItem={PinGridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
                 <Loader disabled={!isLoading}/>
-                <Message.Error active={!!error} title="Failed to retrieve pins" content={error} />
-                {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
+                {(!isLoading)?<Button dark onClick={this.handleLoadMore}>Load More</Button>:null}
             </div>
         );
     }
-}
-
-
-class GridItem extends React.Component {
-    render(){
-        const { url, description, owner } = this.props.data;
-        const finishedLoading = this.props.finishedLoading;
-        const onClickHandler = () => {this.props.onClickHandler(owner);};
-        return (
-            <div className="thumbnail custom-thumbnail" onClick={onClickHandler}>
-                <ImageWrapper className="grid-image" width={230} height={230} useImagePlaceholder={true} src={url} onImageLoaded={()=>{ finishedLoading(); }} onImageError={()=>{ finishedLoading(); }} ></ImageWrapper>
-                <div className="caption">
-                    <h4>{description}</h4>
-                </div>
-            </div>
-        );
-    }
-
 }
 
 
