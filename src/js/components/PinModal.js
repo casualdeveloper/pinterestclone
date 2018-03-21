@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
+const Identicon = require("identicon.js");
 
 class PinModal extends React.Component {
     constructor(props){
@@ -39,6 +40,11 @@ class PinModal extends React.Component {
         let day   = (date.getDate() < 10 ) ? "0" +  date.getDate()       : date.getDate();
         let dateString = `${year}-${month}-${day}`;
 
+        const identicon = new Identicon(owner._id, { size: 50, margin: 0.15, format: "svg" }).toString();
+        const identiconImage = `data:image/svg+xml;base64,${identicon}`;
+
+        let avatar = owner.profileImage || identiconImage;
+
         return (
             <Modal open={this.props.open} >
                 <div className="container my-auto">
@@ -49,7 +55,7 @@ class PinModal extends React.Component {
                                     <ImageWrapper src={url} ></ImageWrapper>
                                 </Card.Media>
                                 <Card.Header>
-                                    <img className="pin__modal__avatar" onClick={this.redirectToUser} src={owner.profileImage || DefaultAvatar} />
+                                    <img className="pin__modal__avatar" onClick={this.redirectToUser} src={avatar} alt={DefaultAvatar} />
                                     <Card.Header.TextContainer>
                                         <Card.Header.Title className="pin__modal__title" onClick = {this.redirectToUser} > {owner.displayName} </Card.Header.Title>
                                         <Card.Header.Subtitle> {dateString} </Card.Header.Subtitle>
