@@ -1,0 +1,21 @@
+/*------------------------------------*\
+  #IMAGE
+\*------------------------------------*/
+
+
+.image-fallback {
+    padding-top: 100%;
+    display: flex;
+    background: rgb(240, 240, 240);
+    position: relative;
+    justify-content: center;
+}
+
+.image-fallback .image-fallback-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+}
