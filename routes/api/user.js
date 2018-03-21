@@ -12,15 +12,15 @@ router.all("*", function(req, res, next){
 });
 
 router.post("/login", AuthController.localLogin, AuthController.login, function(req, res){
-    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user });
+    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user, generalMessage: "Welcome back!" });
 });
 //login user from JWT
 router.post("/JWTLogin", AuthController.JWTLogin, AuthController.login, function(req, res){
-    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user });
+    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user ,generalMessage: "Welcome back!" });
 });
 
 router.post("/signup", AuthController.register, function(req, res){
-    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user });
+    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user, generalMessage: "Welcome!" });
 });
 
 router.get("/twitterAuthRequest", twitterUtil.getTwitterAuthLink, function(req, res){
@@ -32,8 +32,8 @@ router.get("/twitterCallback", function(req, res) {
     res.send("<script>window.twitterCallbackQuery='"+twitterCallbackQuery+"';window.close();</script>");
 });
 
-router.get("/twitterAuth", twitterUtil.getTwitterAccessToken, AuthController.twitterLogin, AuthController.login, function(req, res) {
-    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user });
+router.get("/twitterAuth", twitterUtil.getTwitterAccessToken, twitterUtil.getTwitterProfile, AuthController.twitterLogin, AuthController.login, function(req, res) {
+    res.status(200).json({ token: req.responseObj.JWT, user: req.responseObj.user, generalMessage: (req.generalMessage || "Welcome!") });
 });
 
 

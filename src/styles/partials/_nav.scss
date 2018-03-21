@@ -1,0 +1,159 @@
+/*------------------------------------*\
+  #NAVIGATION
+\*------------------------------------*/
+
+$nav-height: 56px;
+
+.nav-bar {
+    background: $DARK;
+
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    overflow: hidden;
+
+    max-height: $nav-height;
+    width: 100%;
+    z-index: $z-index-nav;
+}
+
+/**
+ * [1] Set nav bar to fixed
+ * [2] Set placeholder behind nav bar
+ * So contenct below would stay in same position
+ * and would not go under nav.
+ */
+
+.nav-bar.nav-bar--fixed {
+    position: fixed;//[1]
+    top: 0;
+
+    +.nav-bar-placeholder { //[2]
+        display: block;
+    }
+}
+
+//set nav to fixed only on mobiles
+
+.nav-bar.nav-bar--fixed-mobile {
+    @media only screen and(max-width: 600px) { //[1]
+        position: fixed;
+        top: 0;
+
+        +.nav-bar-placeholder { //[2]
+            display: block;
+        }
+    }
+}
+
+
+/**
+ * Placeholder for nav in case nav bar is set to fixed
+ * with placeholder in place we prevent content moving up under nav bar
+ * initially we set display to none
+ * display should be changed to block only when nav istelf is set to fixed 
+ */
+.nav-bar-placeholder {
+    content: "";
+    height: $nav-height;
+    display: none;
+}
+
+.nav-bar .title {
+    font-weight: 500;
+    font-size: 20px;
+    text-transform: none;
+}
+
+.nav-bar .nav ul {
+    display: inline-block;
+    margin:  0;
+    padding: 0;
+}
+
+.nav-bar .nav li {
+    display: inline-block;
+    padding: 0;
+    list-style: none;
+    text-transform: uppercase;
+}
+
+.nav-bar a {
+    vertical-align: middle;
+    color: #999;
+    text-decoration: none;
+    
+    padding: 3px 12px;
+    line-height: 56px;
+    
+}
+.nav-bar a:hover {
+    color: rgb(201, 201, 201);
+}
+.nav-bar .current a {
+    color: rgba(white, 0.87);
+}
+
+/**
+ * If ul has responsive class attached
+ * with react we add last li component hamburger
+ * [1] by default we set it to be hidden
+ * if client is using mobile device
+ * [2] we set all li items to invisible
+ * [3] and reveal previously hidden hamburger
+ */
+
+
+.nav-bar .nav ul.responsive li:nth-last-child(1) {
+    display: none; //[1]
+}
+
+@media only screen and (max-width:600px) {
+    .nav-bar .nav ul.responsive li {
+        display: none; //[2]
+    }
+    .nav-bar .nav ul.responsive li:nth-last-child(1) {
+        display: initial; //[3]
+    }
+}
+
+/**
+ * Nav items in modal
+ */
+
+ul.nav-modal {
+    padding: 0px;
+}
+
+ul.nav-modal li {
+    font-size: 40px;
+    font-weight: 400;
+    color: #999;
+    text-transform: capitalize;
+    list-style: none;
+    padding: 12px;
+    position: relative;
+}
+
+ul.nav-modal li:hover {
+    color: white;
+}
+
+// include padding to clickable area
+
+ul.nav-modal li a::before {
+    content: "";
+    position: absolute;
+    cursor: pointer;
+    top:    0;
+    bottom: 0;
+    left:   0;
+    right:  0;
+}
+
+ul.nav-modal li a {
+    text-decoration: none;
+    color: inherit;
+}
+
+

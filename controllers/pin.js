@@ -8,37 +8,43 @@ exports.validateInput = (req, res, next) => {
     const url = req.body.url;
     const description = req.body.description;
 
+    let error = {};
+
     // /\s/ matches whitespaces
     if(!url || url.replace(/\s/g,"") === ""){
-        return res.status(422).send({ error: "Please provide valid url." });
+        error.url = "Invalid image url";
     }
 
     if(!description || description.replace(/\s/g, "") === "") {
-        return res.status(422).send({ error: "Please provide valid description." })
+        error.description = "Invalid description";
     }
 
     //check if url actually exists by sending head request and checking if statusCode is 2xx
     request({ url: url, method: "HEAD"}, function(err, urlRes){
         if(err || /2\d\d/.test(urlRes.statusCode) === false) 
-            return res.status(422).send({ error: "Please provide valid url." });
+            error.url = "Invalid image url";
+
+        if(Object.keys(error).length > 0){
+            return res.status(422).send({ error, generalMessage: "Failed to create new pin, please try again" })
+        }
         return next();
     });
 
-}
+};
 
 exports.new = (req, res, next) => {
     let data = {
         url: req.body.url,
         description: req.body.description,
         owner: req.user.id
-    }
+    };
 
     Pin.create(data, (err, pin) => {
         if(err) return next(err);
         req.pin = pin;
         return next();
     });
-}
+};
 //should be called after deleting from users pin list
 //when calling delete function from users controller
 //it checks if user is owner of the pi nand only then proceeds
@@ -46,13 +52,13 @@ exports.new = (req, res, next) => {
 //user is owner of the pin and we don't have to worry about it.
 exports.delete = (req, res, next) => {
     let pinId = req.body.pinId;
-    if(!pinId) return res.status(422).json({error:"Inavlid pin id!"});
+    if(!pinId) return res.status(422).json({ generalMessage:"Failed to delete pin, please try again"});
     
     Pin.findByIdAndRemove(pinId, err => {
         if(err) return next(err);
         return next();
     });
-}
+};
 
 exports.fetch = (req, res, next) => {
     const lastPinId = req.body.lastPinId;
@@ -71,12 +77,12 @@ exports.fetch = (req, res, next) => {
         queryFindParams = {_id: {$lt: oid}};
     }
 
-    Pin.find(queryFindParams).sort({ $natural: -1 }).limit(PINS_IN_PAGE).exec((err, results) => {
+    Pin.find(queryFindParams).sort({ $natural: -1 }).limit(PINS_IN_PAGE).populate("owner", "displayName profileImage").exec((err, results) => {
         if(err) return next(err);
         req.fetchedPins = results;
         return next();
     });
-}
+};
 
 exports.fetchUserPins = (req, res, next) => {
     const lastPinId = req.body.lastPinId;
@@ -86,7 +92,7 @@ exports.fetchUserPins = (req, res, next) => {
                          ?requestedAmountOfPins
                          :PINS_IN_PAGE_DEFAULT;
     //if no userId provided send error
-    if(!userId) { return res.status(422).json({error: "Invalid user id!"}) };
+    if(!userId) { return res.status(422).json({generalMessage:"Failed to retrieve any pins, please try again"}); }
     
     //see comment about pages in exports.fetch function
 
@@ -102,10 +108,11 @@ exports.fetchUserPins = (req, res, next) => {
         options: { 
             limit: PINS_IN_PAGE,
             sort: { $natural: -1 }
-         }
+        },
+        populate : {path: "owner", select: "displayName profileImage"}
     }).lean().exec((err, results) => {
         if(err) return next(err);
         req.fetchedPins = results.pins;
         return next();
     });
-}
+};

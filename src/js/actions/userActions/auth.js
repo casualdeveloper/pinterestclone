@@ -1,15 +1,17 @@
-import { USER_LOGIN, USER_SIGNUP, USER_LOGOUT, SUCCESS, FAILED, PENDING } from "../../constants/action-types";
+import { USER_LOGIN, USER_SIGNUP, USER_LOGOUT, FAILED, PENDING, SNACKBAR_ADD_MESSAGE } from "../../constants/action-types";
 import { createThunkPromiseAction } from "../../utils/createThunkAction";
 import { createAction } from "redux-actions";
 import { WebAPI, setAxiosAuthHeader } from "../../utils/WebAPI";
 import { saveJWTLocally, removeJWTFromLocalStorage } from "../../utils/localData"; 
+import { newSnackbarMessage } from "../index"
+import { snackbarReducer } from "../../reducers/snackbarReducers";
 
 const _saveJWT = (response) => {
     if(response && response.data && response.data.token){
         saveJWTLocally(response.data.token);
         setAxiosAuthHeader(response.data.token);
     }
-}
+};
 
 const _userLogoutAction = createAction(USER_LOGOUT);
 
@@ -26,8 +28,8 @@ export const userLogout = () => {
     return dispatch => {
         dispatch(_userLogoutAction());
         removeJWTFromLocalStorage();
-    }
-}
+    };
+};
 
 export const userSignupPending = createAction(USER_SIGNUP + PENDING);
 export const userSignupError = createAction(USER_SIGNUP + FAILED);
@@ -37,14 +39,14 @@ export const userLoginError = createAction(USER_LOGIN+FAILED);
 export const userLoginSuccess = createAction(USER_LOGIN);
 
 const getErrorFromResponse = (error) => {
-    let message = "Something went wrong, please try again later.";
+    let message;
 
     if(error.response && error.response.data && error.response.data.error){
-        message = error.response.data.error;
+        message = error.response.data.error || error.response.data.generalMessage;
     }
 
     return message;
-}
+};
 //pass reference to window that will redirect user to twitter page
 export const twitterLogin = (windowRef) => {
     return dispatch => {
@@ -55,14 +57,14 @@ export const twitterLogin = (windowRef) => {
             let twitterAuthUrl = response.data.twitter_auth_url;
             windowRef.location.href = twitterAuthUrl;
 
-            getUserAuthorizationFromTwitter(windowRef, (twitterCallbackQuery) => { requestTwitterAuth(dispatch, twitterCallbackQuery) } )
+            getUserAuthorizationFromTwitter(windowRef, (twitterCallbackQuery) => { requestTwitterAuth(dispatch, twitterCallbackQuery); } );
         })
         .catch(error => {
-            disaptch(userLoginError(getErrorFromResponse(error)));
+            dispatch(userLoginError(getErrorFromResponse(error)));
             dispatch(userLoginPending(false));
         });
-    }
-}
+    };
+};
 
 const getUserAuthorizationFromTwitter = (windowRef, cb) => {
     let twitterCallbackQuery;
@@ -73,17 +75,22 @@ const getUserAuthorizationFromTwitter = (windowRef, cb) => {
             return cb(twitterCallbackQuery);
         }
     },50);
-}
+};
 
 const requestTwitterAuth = (dispatch, twitterCallbackQuery) => {
     WebAPI.loginTwitter(twitterCallbackQuery)
     .then(response => {
         dispatch(userLoginSuccess(response.data));
+
+        if(response.data.generalMessage)
+            dispatch(newSnackbarMessage(response.data.generalMessage));
+
         _saveJWT(response);
         dispatch(userLoginPending(false));
     })
     .catch(error => {
         dispatch(userLoginError(getErrorFromResponse(error)));
+        dispatch(snackbarReducer("Sorry we couldn't log you in."));
         dispatch(userLoginPending(false));
     });
-}
+};

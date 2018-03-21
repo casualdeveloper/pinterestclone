@@ -30,8 +30,8 @@ export const WebAPI = {
     loginTwitter(twitterCallback) {
         return axios.get("/api/user/twitterAuth"+twitterCallback);
     }
-}
+};
 
 export const setAxiosAuthHeader = (AUTH_TOKEN) => {
     axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
-}
+};

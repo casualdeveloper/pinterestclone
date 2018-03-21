@@ -1,0 +1,87 @@
+/*------------------------------------*\
+  #SNACKBAR
+\*------------------------------------*/
+
+/**
+ * On mobile devices snackbar fill be 100% width
+ * will hide under the screen
+ * and to hide again we will bring snackbar under bottom of screen
+ */
+
+.snackbar {
+    position: fixed;
+    height: 48px;
+    background: #323232;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(white, 0.87);
+    line-height: 48px;
+    font-weight: 400;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+.snackbar-appear,.snackbar-enter {
+    transform: translateY(100%);
+}
+
+.snackbar-appear-active,.snackbar-enter-active {
+    transform: translateY(0);
+    transition: 0.2s ease-in;
+    transition-property: bottom transform;
+}
+
+.snackbar-leave {
+    transform: translateY(0);
+}
+  
+.snackbar-leave.snackbar-leave-active {
+    transform: translateY(100%);
+    transition: transform .2s ease-out;
+}
+
+/**
+ * On larger devices snackbar fill be between 288px and 568px width
+ * active position will be on the left of the screen with 24px offset 
+ * from left and bottom
+ * initially snackbar will be hidden under the screen
+ * but to hide snackbar again we will push it towards left until its hidden.
+ */
+
+@media only screen and (min-width: 600px) {
+    .snackbar {
+        min-width: 288px;
+        width: auto;
+        max-width: 568px;
+        border-radius: 2px;
+        left: 24px;
+        bottom: 24px;
+        right: initial;
+    }
+    .snackbar.snackbar-appear,.snackbar-enter {
+        bottom: 0px;
+        transform: trasnlateY(100%);
+    }
+
+    .snackbar.snackbar-appear-active,.snackbar-enter-active {
+        bottom: 24px;
+        transform: translateY(0);
+    }
+
+    .snackbar.snackbar-leave {
+        transform: translateX(0);
+    }
+    
+    .snackbar.snackbar-leave.snackbar-leave-active {
+        transform: translateX(-100%);
+        left: 0;
+        transition: .2s ease-out;
+        transition-property: left transform;
+    }
+
+}
+

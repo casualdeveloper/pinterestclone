@@ -1,0 +1,59 @@
+@import "./modules/all.scss";
+
+@import "./partials/nav.scss";
+@import "./partials/buttons.scss";
+@import "./partials/input.scss";
+@import "./partials/grid.scss";
+@import "./partials/typography.scss";
+@import "./partials/grid-list.scss";
+@import "./partials/loader.scss";
+@import "./partials/modal.scss";
+@import "./partials/card.scss";
+@import "./partials/misc.scss";
+@import "./partials/hamburger.scss";
+@import "./partials/snackbar.scss";
+@import "./partials/image.scss";
+@import "./partials/utils.scss";
+
+@mixin gridItemSize(){
+    width: 230px;
+    @media only screen and (max-width: 600px) {
+        width: 150px;
+    }
+
+}
+
+html {
+    @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: $BACKGROUND;
+}
+
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0px;
+}
+
+.grid {
+    margin: 0 auto;
+}
+.grid-sizer {
+    @include gridItemSize();
+}
+.grid-item {
+    margin-bottom: 4px;
+    float: left;
+    @include gridItemSize();
+    cursor: pointer;
+}

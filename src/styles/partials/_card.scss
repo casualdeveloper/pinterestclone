@@ -1,0 +1,83 @@
+/*------------------------------------*\
+  #CARD
+\*------------------------------------*/
+
+.card__body {
+    box-shadow: 0px 2px 4px 1px rgba(0,0,0,0.3);
+    background-color: $BACKGROUND;
+    margin: 16px;
+}
+
+/**
+ * remove margin and box shadow
+ * to completely fill and blend card with screen
+ * **useful for mobile phones**
+ */
+@media only screen and(max-width: 600px) {
+    .card__body.card__body--fill {
+        margin: 0px;
+        box-shadow: none;
+        background-color: $BACKGROUND;
+    }
+}
+
+
+.card__header {
+    padding: 16px;
+}
+
+.card__media {
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+}
+
+.card__media > img {
+    display: block;
+    width: 100%;
+}
+
+.card__title {
+    padding: 24px 16px;
+
+}
+
+.card__text {
+    padding: 24px 16px;
+    overflow-wrap: break-word;
+    color: rgba(0,0,0, 0.87);
+}
+
+.card__actions {
+    padding: 8px;
+    display: flex;
+}
+
+.card__header {
+    height: 72px;
+    padding: 16px;
+    display: flex;
+}
+
+.card__header > img {
+    display: block;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: top center;
+}
+
+.card__header .card__header__text-container {
+    flex-direction: column;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 12px;
+}
+
+.card__header .card__header__title {
+    color: rgba(#000, 0.87);
+}
+
+.card__header .card__header__subtitle {
+    color: rgba(#000, 0.54);
+}

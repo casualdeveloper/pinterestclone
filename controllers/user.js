@@ -4,21 +4,21 @@ exports.addNewPin = (req, res, next) => {
     User.findById(req.user.id, (err, user) => {
         if(err) return next(err);
         if(!user){
-            res.status(401).json({error:"Unauthorized"});
+            res.status(401).json({generalMessage:"Unauthorized"});
         }
         user.pins.push(req.pin.id);
-        user.save((err, user) => {
+        user.save((err) => {
             if(err) return next(err);
             return next();
         });
     });
-}
+};
 
 exports.deletePin = (req, res, next) => {
     let pinId = req.body.pinId;
 
     if(!pinId)
-        return res.status(422).json({error:"Inavlid pin id!"});
+        return res.status(422).json({generalMessage:"Failed to delete pin, please try again"});
 
     User.findById(req.user.id, (err, user) => {
         if(err) return next(err);
@@ -29,7 +29,7 @@ exports.deletePin = (req, res, next) => {
         //send error since user that requested delete
         //is not owner of the pin
         if(pinIndex === -1)
-            return res.status(401).json({error:"Unauthorized"});
+            return res.status(401).json({generalMessage:"Unauthorized"});
             
         user.pins.splice(pinIndex, 1);
 
@@ -38,4 +38,4 @@ exports.deletePin = (req, res, next) => {
             return next();
         });
     });
-}
+};

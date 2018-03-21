@@ -10,21 +10,21 @@ export const fetchPins = (state, action) => {
     return {
         ...state,
         [userId]: updateUser(state, userId, {pins, lastPinId})
-    }
-}
+    };
+};
 
 export const fetchPinsPending = (state, action) => {
     let userId = getUserId(action);
     return {
         ...state,
         [userId]: updateUser(state, userId, { fetchPinsPending: action.payload })
-    }
-}
+    };
+};
 
 export const fetchPinsFailed = (state, action) => {
     let userId = getUserId(action);
     return {
         ...state,
         [userId]: updateUser(state, userId, { fetchPinsFailed: action.payload })
-    }
-}
+    };
+};

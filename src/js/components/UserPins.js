@@ -1,17 +1,16 @@
 import React from "react";
-import ImageWrapper from "./Image";
 import Grid from "./Grid";
-import Loader from "./Loader";
-import { Button } from "react-bootstrap";
-import Message from "./Message";
 import { PINS_IN_PAGE_DEFAULT } from "../constants/defaults";
+import { Loader, Button } from "../style_components";
+import PinModal from "./PinModal";
+import { PinGridItem } from "./PinGridItem";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchUserPins } from "../actions";
 
 const getUserData = (users, userId) => {
-    let returnUser = {pins: []}
+    let returnUser = {pins: []};
     let user = users[userId];
 
     if(user && user.pins)
@@ -28,7 +27,7 @@ const getUserData = (users, userId) => {
 
     return returnUser;
 
-}
+};
 
 class UserPins extends React.Component {
     constructor(props){
@@ -41,11 +40,10 @@ class UserPins extends React.Component {
             pins: user.pins,
             userId: userId,
             lastPinId: user.lastPinId,
-            gridItem: props.gridItem || GridItem,
             loading: user.loading,
             error: user.error,
             loadingImages: (user.pins.length > 0) // if there already preloaded pins show loading indicator while images are loading up
-        }
+        };
         
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
@@ -76,7 +74,6 @@ class UserPins extends React.Component {
             loadingImages: (nextUserId !== this.state.userId)
                             ?user.pins.length>0 //if this is a different user we set same value as we usually would do
                             :this.state.pins.length < user.pins.length,//if this is a same user we check if we are fetching more pins
-            gridItem: nextProps.gridItem || GridItem
         });
     }
 
@@ -87,8 +84,7 @@ class UserPins extends React.Component {
             nextState.loading !== this.state.loading ||
             nextState.error !== this.state.error ||
             nextState.lastPinId !== this.state.lastPinId ||
-            nextState.loadingImages !== this.state.loadingImages ||
-            nextState.gridItem !== this.state.gridItem)
+            nextState.loadingImages !== this.state.loadingImages)
             return true;
         return false;
     }
@@ -100,31 +96,13 @@ class UserPins extends React.Component {
     render(){
         const pins = this.state.pins;
         const isLoading = (this.state.loading || this.state.loadingImages);
-        const error = (this.state.error)?this.state.error:null;
         return(
-            <div className="text-center">
-                <Grid gridItem={this.state.gridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
+            <div className="text-center mt-6">
+                <Grid {...this.props} gridItem={PinGridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
                 <Loader disabled={!isLoading}/>
-                <Message.Error active={!!error} title="Failed to retrieve pins" content={error} />
-                {(!isLoading)?<Button onClick={this.handleLoadMore}>Load More</Button>:null}
+                {(!isLoading)?<Button dark onClick={this.handleLoadMore}>Load More</Button>:null}
             </div>
-        )
-    }
-}
-
-
-class GridItem extends React.Component {
-    render(){
-        const { url, description } = this.props.data;
-        const finishedLoading = this.props.finishedLoading;
-        return (
-            <div className="thumbnail custom-thumbnail">
-                <ImageWrapper className="grid-image" width={230} height={230} src={url} useImagePlaceholder={true} onImageLoaded={()=>{ finishedLoading() }} onImageError={()=>{ finishedLoading() }} ></ImageWrapper>
-                <div className="caption">
-                    <h4>{description}</h4>
-                </div>
-            </div>
-        )
+        );
     }
 }
 
@@ -133,7 +111,7 @@ function mapStateToProps(state){
     let users = state.users;
     return {
         users
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ fetchUserPins }, dispatch);

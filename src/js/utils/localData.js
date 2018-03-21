@@ -9,7 +9,7 @@ const _parseJson = (json) => {
         res = "";
     }
     return res;
-}
+};
 
 export const saveJWTLocally = (JWT) => {
     if(typeof(Storage) !== "undefined"){
@@ -17,17 +17,17 @@ export const saveJWTLocally = (JWT) => {
             JWT = JSON.stringify(JWT);
         window.localStorage.setItem("JWT", JWT);
     }
-}
+};
 
 export const getLocalJWT = () => {
     if(typeof(Storage) !== "undefined"){
         return window.localStorage.getItem("JWT");
     }
     return "";
-}
+};
 
 export const removeJWTFromLocalStorage = () => {
     if(typeof(Storage) !== "undefined"){
         return window.localStorage.removeItem("JWT");
     }
-}
+};

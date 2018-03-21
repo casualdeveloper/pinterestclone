@@ -1,0 +1,44 @@
+/*------------------------------------*\
+  #MISC
+\*------------------------------------*/
+
+/**
+ * Icon in card header
+ */
+
+.card__header__icon {
+    display: flex;
+}
+
+
+/**
+ * "Pin" icon
+ */
+.pin-icon {
+    cursor: pointer;
+}
+
+.pin-icon:hover {
+    color: rgba(maroon, 0.8);
+}
+
+.pin-icon .active {
+    color: maroon;
+}
+
+/**
+ * Modal card title and img(avatar)
+ */
+
+.pin__modal__title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.pin__modal__avatar {
+    cursor: pointer;
+}
+// add underline on owners name while hovering avatar
+.pin__modal__avatar:hover + .card__header__text-container .pin__modal__title {
+    text-decoration: underline;
+}

@@ -1,10 +1,9 @@
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
 const User = require("../models/user");
 const config = require("../config");
-const passportService = require("../setuppassport");
 const passport = require("passport");
 const inputValidation = require("../utils/inputValidation");
+
 
 function generateToken(user) {
     return jwt.sign(user, config.JWT_SECRET, {
@@ -35,8 +34,6 @@ exports.login = function(req, res, next) {
         req.responseObj.user = userInfo;
         return next();
     });
-
-    
 };
 
 //========================================
@@ -54,8 +51,6 @@ exports.loginNoJWT = function(req, res, next) {
         req.responseObj.user = userInfo;
         return next();
     });
-
-    
 };
 
 
@@ -69,20 +64,27 @@ exports.register = function(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
 
+
+    let error = {};
     // Return error if invalid email provided
     //note: its close to impossible to check if email address is valid with regex, preferably confirmation letter should be sent to email address
     if (!email || !inputValidation.isEmailValid(email)) {
-        return res.status(422).send({ error: "Please provide valid email address."});
+        error.email = "Invalid email address";
     }
 
     // Return error if invalid username provided
     if (!username || !inputValidation.isUsernameValid(username)) {
-        return res.status(422).send({ error: "Please provide valid username."});
+        error.username = "Invalid username"
     }
 
     // Return error if invalid password provided
     if (!password || !inputValidation.isPasswordValid(password)) {
-        return res.status(422).send({ error: "Please provide valid password." });
+        error.password = "Invalid password"
+    }
+    
+    //check if error has any properties
+    if(Object.keys(error).length > 0){
+        return res.status(422).send({ error, generalMessage: "Failed to sign up, please try again" });
     }
 
     User.findOne({$or:[{ email: email}, {username: username}] }, function(err, existingUser) {
@@ -90,12 +92,16 @@ exports.register = function(req, res, next) {
 
         // If user is not unique, return errors
         if (existingUser && existingUser.email === email) {
-            return res.status(422).send({ error: "Email address or username is already in use." });
+            error.email = "Email address is already in use";
         }
 
 
         if(existingUser && existingUser.username === username) {
-            return res.status(422).send({ error: "Email address or username is already in use." });
+            error.username = "Username is already in use";
+        }
+
+        if(Object.keys(error).length > 0){
+            return res.status(422).send({ error, generalMessage: "Failed to sign up, please try again" });
         }
 
         // If email and username is unique and password was provided, create account
@@ -160,14 +166,19 @@ exports.localLogin = function(req,res,next){
     const username = req.body.username;
     const password = req.body.password;
 
+    let error = {};
     if(!username || !inputValidation.isUsernameValid(username)){
-        return res.status(422).send({ error: "Please provide valid username."})
+        error.username = "Invalid username";
     }
 
     if(!password || !inputValidation.isPasswordValid(password)){
-        return res.status(422).send({ error: "Please provide valid password" });
+        error.password = "Invalid password";
     }
 
+    if(Object.keys(error).length > 0)
+        return res.status(422).json({ error: error, generalMessage: "Failed to sign in, please try again" });
+
+        
     passport.authenticate("local", function(err, user, message){
         if(err) { return next(err); }
         if(!user) { return res.status(422).send(message); }
@@ -180,16 +191,38 @@ exports.localLogin = function(req,res,next){
 // TwitterLogin Middleware
 //========================================
 exports.twitterLogin = function(req, res, next){
-    let twitterResponse = req.twitterResponse;
+    let twitterResponse = req.twitterResponse;;
     User.findOne({ "twitter.id" : twitterResponse.user_id }, function(err, user) {
-        if(err) { return next(err) };
-        if(user) { req.user = user; return next(); };
+        if(err) { return next(err); }
+        if(user) {
+            //update access token
+            if(user.twitter.token !== twitterResponse.oauth_token){
+
+                user.twitter.token = twitterResponse.oauth_token;
+                user.twitter.tokenSecret = twitterResponse.oauth_token_secret;
+                
+                user.save((err) => {
+                    if(err)
+                        return next(err);
+
+                    req.user = user;
+                    return next();
+                });
+            }
+            
+            req.user = user;
+            //attach welcome back if user already exists
+            req.generalMessage = "Welcome back!";
+            return next();
+            
+        }
         let newUser = new User({
             twitter: {
                 displayName: twitterResponse.screen_name,
                 id: twitterResponse.user_id,
                 token: twitterResponse.oauth_token,
-                tokenSecret: twitterResponse.oauth_token_secret
+                tokenSecret: twitterResponse.oauth_token_secret,
+                image: twitterResponse.image
             }
         });
         newUser.save(function(err, user){
@@ -198,4 +231,4 @@ exports.twitterLogin = function(req, res, next){
             return next();
         });
     });
-}
+};

@@ -7,26 +7,26 @@ export const newPin = (state, action) => {
         ...state,
         pins,
         lastPinId
-    }
-}
+    };
+};
 
 export const newPinSuccess = (state, action) => {
     return {
         ...state,
         newPinSuccessMessage: action.payload
-    }
-}
+    };
+};
 
 export const newPinPending = (state, action) => {
     return {
         ...state,
         newPinPending: action.payload
-    }
-}
+    };
+};
 
 export const newPinFailed = (state, action) => {
     return {
         ...state,
         newPinFailed: action.payload
-    }
-}
+    };
+};

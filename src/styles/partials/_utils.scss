@@ -1,0 +1,61 @@
+/*------------------------------------*\
+  #UTILS
+\*------------------------------------*/
+
+.text-center {
+    text-align: center;
+}
+
+
+/*------------------------------------*\
+  #UTILS MARGIN
+\*------------------------------------*/
+
+@mixin setMargins($index, $multiplier){
+    .m-#{$index} {  margin: $spacer * $multiplier; }
+    .ml-#{$index} { margin-left: $spacer * $multiplier; }
+    .mr-#{$index} { margin-right: $spacer * $multiplier; }
+    .mx-#{$index} { margin-left: $spacer * $multiplier; margin-right: $spacer * $multiplier; }
+    .mt-#{$index} { margin-top: $spacer * $multiplier; }
+    .mb-#{$index} { margin-bottom: $spacer * $multiplier; }
+    .my-#{$index} { margin-top: $spacer * $multiplier; margin-bottom: $spacer * $multiplier; }
+}
+
+@include setMargins(0, 0);
+@include setMargins(1, 0.25);
+@include setMargins(2, 0.5);
+@include setMargins(3, 1);
+@include setMargins(4, 1.5);
+@include setMargins(5, 2);
+@include setMargins(6, 3);
+
+.m-auto  { margin: auto; }
+.ml-auto { margin-left: auto; }
+.mr-auto { margin-right: auto; }
+.mt-auto { margin-top: auto; }
+.mb-auto { margin-bottom: auto; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.my-auto { margin-top: auto; margin-bottom: auto; }
+
+/*------------------------------------*\
+  #UTILS PADDING
+\*------------------------------------*/
+
+@mixin setPaddings($index, $multiplier){
+    .p-#{$index}  { padding: $spacer * $multiplier; }
+    .pl-#{$index} { padding-left: $spacer * $multiplier; }
+    .pr-#{$index} { padding-right: $spacer * $multiplier; }
+    .px-#{$index} { padding-left: $spacer * $multiplier; padding-right: $spacer * $multiplier; }
+    .pt-#{$index} { padding-top: $spacer * $multiplier; }
+    .pb-#{$index} { padding-bottom: $spacer * $multiplier; }
+    .py-#{$index} { padding-top: $spacer * $multiplier; padding-bottom: $spacer * $multiplier; }
+}
+
+@include setPaddings(0, 0);
+@include setPaddings(1, 0.25);
+@include setPaddings(2, 0.5);
+@include setPaddings(3, 1);
+@include setPaddings(4, 1.5);
+@include setPaddings(5, 2);
+@include setPaddings(6, 3);
+

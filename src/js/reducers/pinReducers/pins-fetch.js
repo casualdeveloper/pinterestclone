@@ -7,19 +7,19 @@ export const fetchPins = (state, action) => {
         ...state,
         pins,
         lastPinId
-    }
-}
+    };
+};
 
 export const fetchPinsPending = (state, action) => {
     return {
         ...state,
         fetchingPins: action.payload
-    }
-}
+    };
+};
 
 export const fetchPinsFailed = (state, action) => {
     return {
         ...state,
         fetchPinsFailed: action.payload
-    }
-}
+    };
+};

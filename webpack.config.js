@@ -10,7 +10,7 @@ const BundleAnalyzerPlugin      = require("webpack-bundle-analyzer").BundleAnaly
 
 const PATHS = {
     app:path.join(__dirname,"src/js/app.js"),
-    style:path.join(__dirname,"src/styles/style.scss"),
+    style:path.join(__dirname,"src/styles/main.scss"),
     build:path.join(__dirname, "/public") 
 };
 
@@ -32,8 +32,8 @@ const cssLoader = function() {
             url: true,
             importLoaders: 1
         }
-    }
-}
+    };
+};
 
 module.exports = {
     entry: {
@@ -70,7 +70,7 @@ module.exports = {
                 test: /\.(png|svg|jpg|ttf|eot|woff|woff2)$/,
                 loader: "file-loader",
                 options: {
-                    name: '[name].[ext]',
+                    name: (process.env.NODE_ENV !== "production")?"/[name].[ext]":"/[name].[hash].[ext]",
                 },
             },
         ]

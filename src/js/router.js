@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch, Link, withRouter, Redirect } from "react-router-dom";
-import LinkContainer from "react-router-bootstrap/lib/LinkContainer";
 
 import Home from "./components/Home";
 import NotFound from "./components/NotFound";
@@ -10,7 +9,8 @@ import MyPins from "./components/MyPins";
 import NewPin from "./components/NewPin";
 import UserPins from "./components/UserPins";
 
-import { Navbar, Nav, NavItem } from "react-bootstrap";
+import { NavBar, Nav, NavItem, NavBrand, Loader } from "./style_components";
+import SnackbarWrapper from "./components/Snackbar";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -26,9 +26,10 @@ class App extends React.Component {
     }
 
     render(){
+        let currentLocation = this.props.location.pathname;
         return(
             <div>
-                <Menu isAuth={this.props.user.isAuth} userLogout={this.props.userLogout} />
+                <Menu {...this.props} isAuth={this.props.user.isAuth} userLogout={this.props.userLogout} currentLocation={currentLocation} />
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/user/:userId" component={UserPins}/>
@@ -39,6 +40,7 @@ class App extends React.Component {
                     <Route component={NotFound} />
                 </Switch>
                 <Footbar />
+                <SnackbarWrapper />
             </div>
         );
     }
@@ -55,17 +57,17 @@ const PublicOnlyRoute = ({component:Component, user, location, ...props}) => {
         :"/";
 
         return (
-            <Route {...props} render={(props) => (
+            <Route {...props} render={() => (
                 <Redirect to={redirectTo} />
             )} />
-        )
+        );
     }
     return (
         <Route {...props} render={(props) => (
             <Component {...props}/>
         )} /> 
     );
-}
+};
 
 const PrivateRoute = ({component:Component, user, location, ...props}) => {
     if(user.isAuth){
@@ -77,73 +79,63 @@ const PrivateRoute = ({component:Component, user, location, ...props}) => {
     }
 
     return (
-        <Route {...props} render={(props) => (
+        <Route {...props} render={() => (
             <Redirect to={{ pathname: "/login", state: { from: location }}} />
         )} />
     );
-}
+};
 
 const Menu = (props) => {
     const { isAuth } = props;
-    return (
-        <Navbar>
-            <Navbar.Header>
-                <Navbar.Brand>
-                    <Link to="/" style="font-family:Cookie, cursive;font-size:34px;" ><strong><em>techerest</em></strong></Link>
-                </Navbar.Brand>
-                <Navbar.Toggle />
-            </Navbar.Header>
-            <Navbar.Collapse>
-                {isAuth
-                    ?<PrivateNav {...props} />
-                    :<PublicNav />
-                }
-            </Navbar.Collapse>
-        </Navbar>
-            
-    );
-}
+    //show loading indicator only when user is NOT in login or signup page
+    const loading = props.user.loginPending
+    && ( props.currentLocation != "/login" && props.currentLocation != "/signup" );
 
-const PublicNav = () => {
     return (
-        <Nav pullRight>
-            <LinkContainer to="/login">
-                <NavItem>Sign in</NavItem>
-            </LinkContainer>
-            <LinkContainer to="/signup">
-                <NavItem>Sign up</NavItem>
-            </LinkContainer>
+        <NavBar fixedMobile >
+            <NavBar.NavBrand><Link to="/" >Pinterest</Link></NavBar.NavBrand>
+            <Loader block light size="28px" disabled={!loading} />
+            {isAuth
+                ?<PrivateNav {...props} />
+                :<PublicNav {...props} />
+            }
+        </NavBar>
+    );
+};
+
+const PublicNav = (props) => {
+    const { currentLocation } = props;
+    return (
+        <Nav pullRight responsive>
+            <NavItem active={currentLocation == "/login"}><Link to="/login">Sign in</Link></NavItem>
+            <NavItem active={currentLocation == "/signup"}><Link to="/signup">sign up</Link></NavItem>
         </Nav>
     );
-}
+};
 
 const PrivateNav = (props) => {
-    const { userLogout } = props;
+    const { userLogout, currentLocation } = props;
     return (
-        <Nav pullRight>
-            <LinkContainer to="/mypins">
-                <NavItem>My pins</NavItem>
-            </LinkContainer>
-            <LinkContainer to="/newpin">
-                <NavItem>New pin</NavItem>
-            </LinkContainer>
-            <NavItem onClick={() => { userLogout() }}>Logout</NavItem>
+        <Nav pullRight responsive>
+            <NavItem active={currentLocation == "/mypins"}><Link to="/mypins">My pins</Link></NavItem>
+            <NavItem active={currentLocation == "/newpin"}><Link to="/newpin">New pin</Link></NavItem>
+            <NavItem><Link to="#" onClick={() => { userLogout(); }}>Logout</Link></NavItem>
         </Nav>
     );
-}
+};
 
 const Footbar = () => {
     return (
         <div className="footbar">
         </div>
     );
-}
+};
 
 function mapStateToProps(state){
     return {
         user: state.user,
         JWT: state.user.JWT
-    }
+    };
 }
 function mapDispatchToProps(dispatch){
     return bindActionCreators({ userJWTLogin, userLogout } , dispatch);

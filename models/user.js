@@ -12,36 +12,44 @@ const userSchema = mongoose.Schema({
         id: { type: String, unique: true },
         displayName: { type: String },
         token: { type: String },
-        tokenSecret: { type: String }
+        tokenSecret: { type: String },
+        image: { type: String }
     },
     pins: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
-    creationDate: { type: Date, required: true, default: Date.now }
+    creationDate: { type: Date, required: true, default: Date.now },
+    profileImage: { type: String }
+});
+
+userSchema.pre("save", function(next) {
+    this.displayName = this.username || this.twitter.displayName;
+    this.profileImage = this.profileImage || this.twitter.image
+    next();
 });
 
 
 const noop = function() {};
-userSchema.pre("save", function(done) {
+userSchema.pre("save", function(next) {
     const user = this;
     if (!user.isModified("password")) {
-        return done();
+        return next();
     }
     bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
         if (err) {
-            return done(err);
+            return next(err);
         }
         bcrypt.hash(user.password, salt, noop, function(err, hashedPassword) {
             if (err) {
-                return done(err);
+                return next(err);
             }
             user.password = hashedPassword;
-            done();
+            next();
         });
     });
 });
 
-userSchema.methods.checkPassword = function(guess, done) {
+userSchema.methods.checkPassword = function(guess, next) {
     bcrypt.compare(guess, this.password, function(err, isMatch) {
-        done(err, isMatch);
+        next(err, isMatch);
     });
 };
 

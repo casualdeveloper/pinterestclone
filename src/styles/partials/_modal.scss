@@ -1,0 +1,71 @@
+/*------------------------------------*\
+  #MODAL
+\*------------------------------------*/
+
+.modal {
+    background-color: rgba(0,0,0,0.75);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    z-index: $z-index-modal;
+    overflow-y: auto;
+    transition: opacity 0.15s linear;
+    will-change: opacity;
+}
+
+.modal-open {
+    overflow: hidden;
+}
+
+//Modal close button
+
+.modal__close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    opacity: .6;
+    width: 40px;
+    height: 40px;
+}
+
+.modal__close:hover {
+    opacity: 1;
+}
+
+.modal__close::before, .modal__close::after {
+    position: absolute;
+    left: 50%;
+    content: " ";
+    height: 100%;
+    width: 4px;
+    background-color: #999;
+}
+
+.modal__close::before {
+    transform: rotate(45deg);
+}
+
+.modal__close::after {
+    transform: rotate(-45deg);
+}
+
+//modal fade animation
+
+.modal-fade-enter {
+    opacity: 0;
+}
+
+.modal-fade-enter.modal-fade-enter-active {
+    opacity: 1;
+}
+
+.modal-fade-leave {
+    opacity: 1;
+}
+
+.modal-fade-leave.modal-fade-leave-active{
+    opacity: 0;
+}
