@@ -42,7 +42,7 @@ const getErrorFromResponse = (error) => {
     let message;
 
     if(error.response && error.response.data && error.response.data.error){
-        message = error.response.data.error || error.response.data.generalMessage;
+        message = error.response.data.error;
     }
 
     return message;
@@ -80,6 +80,7 @@ const getUserAuthorizationFromTwitter = (windowRef, cb) => {
 const requestTwitterAuth = (dispatch, twitterCallbackQuery) => {
     WebAPI.loginTwitter(twitterCallbackQuery)
     .then(response => {
+        console.log(response);
         dispatch(userLoginSuccess(response.data));
 
         if(response.data.generalMessage)
