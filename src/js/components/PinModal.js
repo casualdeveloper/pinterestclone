@@ -7,18 +7,37 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { deletePin } from "../actions";
+import { deletePin, likePin, unlikePin } from "../actions";
 
 const Identicon = require("identicon.js");
 
 class PinModal extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
+        const pinId = this.props.data._id;
+        const pinnedByUser = this.props.pinned;
+
+        let isPinnedByUser = false;
+        if(pinnedByUser && pinnedByUser instanceof Array)
+            isPinnedByUser = pinnedByUser.indexOf(pinId) !== -1
+        
+        
+        let pinnedByCounter = 0;
+        if(this.props.data.pinnedBy && this.props.data.pinnedBy instanceof Array)
+            pinnedByCounter = this.props.data.pinnedBy.length;
+
+        this.state = {
+            isPinnedByUser: isPinnedByUser,
+            pinnedByCounter: pinnedByCounter
+        }
+
         this.redirectToUser = this.redirectToUser.bind(this);
+        this.deletePin = this.deletePin.bind(this);
+        this.onPinClickHandler = this.onPinClickHandler.bind(this);
     }
 
-    redirectToUser(){
+    redirectToUser() {
         const userId = this.props.data.owner._id;
         if((this.props.match.params && this.props.match.params.userId === userId) || this.props.match.url === "/mypins") return;
 
@@ -26,31 +45,59 @@ class PinModal extends React.Component {
         this.props.hideModal();
     }
 
-    shouldComponentUpdate(nextProps){
+    deletePin() {
+        const pinId = this.props.data._id;
+        const owner = this.props.data.owner;
+        this.props.deletePin({ pinId, owner });
+    }
+
+    onPinClickHandler() {
+        const pinId = this.props.data._id;
+        const owner = this.props.data.owner;
+        const userId = this.props.userId;
+
+        if(owner._id === userId)
+            return;
+
+        if(!this.state.isPinnedByUser){
+            this.props.likePin({ pinId, owner });
+            this.setState({ isPinnedByUser: !this.state.isPinnedByUser, pinnedByCounter: this.state.pinnedByCounter + 1 });
+            return;
+        }
+        
+        this.props.unlikePin({ pinId, owner });
+        this.setState({ isPinnedByUser: !this.state.isPinnedByUser, pinnedByCounter: this.state.pinnedByCounter - 1 });
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
         if(nextProps.open !== this.props.open
-        || nextProps.data._id !== this.props.data._id)
+        || nextProps.data._id !== this.props.data._id
+        || this.state.isPinnedByUser !== nextState.isPinnedByUser
+        || this.state.pinnedByCounter !== nextState.pinnedByCounter)
             return true;
         return false;
     }
 
     render() {
         const { url, description, owner } = this.props.data;
+        const userId = this.props.userId;
 
-        const date = new Date(this.props.data.creationDate);
-        const year  = date.getFullYear();
-        const month = (date.getMonth() < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-        const day   = (date.getDate() < 10 ) ? "0" +  date.getDate()       : date.getDate();
-        const dateString = `${year}-${month}-${day}`;
+        const { isPinnedByUser } = this.state;
 
-        const identicon = new Identicon(owner._id, { size: 50, margin: 0.15, format: "svg" }).toString();
-        const identiconImage = `data:image/svg+xml;base64,${identicon}`;
+        const dateString = getDate(this.props.data.creationDate);
+        
+        let avatar = owner.profileImage;
+        if(!avatar){
+            const identicon = new Identicon(owner._id, { size: 50, margin: 0.15, format: "svg" }).toString();
+            avatar = `data:image/svg+xml;base64,${identicon}`;
+        }
 
-        const avatar = owner.profileImage || identiconImage;
+        let deleteButton = null;
+        if(userId === owner._id)
+            deleteButton = (<i onClick={this.deletePin} className="ml-6 delete-icon fa fa-trash fa-2x" />);
 
-
-        const deletePin = () => { this.props.deletePin({ pinId:this.props.data._id, owner }) };
-        const deleteButton = (this.props.userId === owner._id)?(<i onClick={deletePin} className="ml-6 delete-icon fa fa-trash fa-2x" />):null;
-
+        const pinIconClass = getPinIconClass(this.state.isPinnedByUser, owner._id, userId);
+        
         return (
             <Modal open={this.props.open} >
                 <div className="container my-auto">
@@ -67,10 +114,9 @@ class PinModal extends React.Component {
                                         <Card.Header.Subtitle> {dateString} </Card.Header.Subtitle>
                                     </Card.Header.TextContainer>
                                     <div className="card__header__icon ml-auto my-auto">
-                                        <i className="pin-icon fa fa-pinterest-p fa-2x" aria-hidden="true">
-                                        </i>
+                                        <i onClick={this.onPinClickHandler} className={pinIconClass} aria-hidden="true" />
                                         <div className="my-auto ml-3">
-                                            654
+                                            {this.state.pinnedByCounter}
                                         </div>
                                         {deleteButton}
                                     </div>
@@ -90,23 +136,42 @@ class PinModal extends React.Component {
     }
 };
 
+const getPinIconClass = (isPinnedByUser, pinOwnerId, userId) => {
+    let pinIconClass = "pin-icon fa fa-pinterest-p fa-2x ";
+    if(pinOwnerId === userId)
+        return pinIconClass += "disabled"
+    if(isPinnedByUser)
+        return pinIconClass += "active";
+    return pinIconClass;
+}
+
+const getDate = (str) => {
+    const date  = new Date(str);
+    const year  = date.getFullYear();
+    const month = (date.getMonth() < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+    const day   = (date.getDate() < 10 ) ? "0" +  date.getDate()       : date.getDate();
+    return `${year}-${month}-${day}`;
+}
+
 PinModal.propTypes = {
     data: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     hideModal: PropTypes.func.isRequired,
     userId: PropTypes.string,
-    deletePin: PropTypes.func
+    deletePin: PropTypes.func,
+    pinned: PropTypes.array
 }
 
 
 function mapStateToProps(state){
     return {
-        userId: state.user.id
+        userId: state.user.id,
+        pinned: state.user.pinned
     };
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ deletePin }, dispatch);
+    return bindActionCreators({ deletePin, likePin, unlikePin }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PinModal);

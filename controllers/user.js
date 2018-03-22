@@ -39,3 +39,58 @@ exports.deletePin = (req, res, next) => {
         });
     });
 };
+
+exports.likePin = (req, res, next) => {
+    let pinId = req.body.pinId;
+    let pinOwnerId = req.body.owner._id;
+    let userId = req.user.id;
+
+    if(!pinId || !pinOwnerId || userId === pinOwnerId)
+        return res.status(422).end();
+
+    User.findById(userId, (err, user) => {
+        if(err) return next(err);
+
+        let pinIndex = user.pinned.indexOf(pinId);
+
+        //if pinIndex is already in array
+        //return error since pin has already been pinned by user
+        if(pinIndex !== -1){
+            return res.status(422).end();
+        }
+
+        user.pinned.push(pinId);
+        user.save(err => {
+            if(err) return next(err);
+
+            return next();
+        })
+
+    });
+}
+
+exports.unlikePin = (req, res, next) => {
+    let pinId = req.body.pinId;
+    let pinOwnerId = req.body.owner._id;
+    let userId = req.user.id;
+
+    if(!pinId || !pinOwnerId || userId === pinOwnerId)
+        return res.status(422).end();
+
+    User.findById(userId, (err, user) => {
+        if(err) return next(err);
+
+        let pinIndex = user.pinned.indexOf(pinId);
+        
+        if(pinIndex === -1){
+            return res.status(422).end();
+        }
+
+        user.pinned.splice(pinIndex, 1);
+        user.save(err => {
+            if(err) return next(err);
+
+            return next();
+        })
+    });
+}

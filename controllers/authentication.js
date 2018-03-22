@@ -14,7 +14,8 @@ function generateToken(user) {
 function setUserInfo(user) {  
     return {
         username: user.username || user.twitter.displayName,
-        id: user._id
+        id: user._id,
+        pinned: user.pinned
     };
 }
 

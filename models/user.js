@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema({
     },
     pins: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
     creationDate: { type: Date, required: true, default: Date.now },
-    profileImage: { type: String }
+    profileImage: { type: String },
+    pinned: [{ type: Schema.Types.ObjectId, ref: "Pin" }]
 });
 
 userSchema.pre("save", function(next) {

@@ -1,4 +1,4 @@
-import { PIN_NEW, PIN_DELETE, PINS_FETCH, SUCCESS, FAILED } from "../../constants/action-types";
+import { PIN_NEW, PIN_DELETE, PINS_FETCH, SUCCESS, FAILED, PIN_LIKE, PIN_UNLIKE } from "../../constants/action-types";
 import { createThunkPromiseAction } from "../../utils/createThunkAction";
 import { createAction } from "redux-actions";
 import { WebAPI } from "../../utils/WebAPI";
@@ -18,3 +18,6 @@ export const newPinMessage = createAction(PIN_NEW+SUCCESS);
 export const deletePinError = createAction(PIN_DELETE+FAILED);
 export const deletePinSuccess = createAction(PIN_DELETE+SUCCESS);
 
+// { pinId: "STRING", owner: "OBJ" }
+export const likePin = createThunkPromiseAction(PIN_LIKE, WebAPI.likePin);
+export const unlikePin = createThunkPromiseAction(PIN_UNLIKE, WebAPI.unlikePin);

@@ -116,3 +116,51 @@ exports.fetchUserPins = (req, res, next) => {
         return next();
     });
 };
+
+exports.likePin = (req, res, next) => {
+    let pinId = req.body.pinId;
+    let userId = req.user.id;
+    let pinOwnerId = req.body.owner._id;
+
+    if(!pinId || !pinOwnerId || userId === pinOwnerId)
+        return res.status(422).end();
+
+    Pin.findById(pinId, (err, pin) => {
+        let userIndex = pin.pinnedBy.indexOf(userId);
+
+        //if user index already in array
+        //return error since user has already pinned this pin
+        if(userIndex !== -1){
+            return res.status(422).end();
+        }
+
+        pin.pinnedBy.push(userId);
+        pin.save(err => {
+            if(err) return next(err);
+            return next();
+        })
+    });
+}
+
+exports.unlikePin = (req, res, next) => {
+    let pinId = req.body.pinId;
+    let userId = req.user.id;
+    let pinOwnerId = req.body.owner._id;
+
+    if(!pinId || !pinOwnerId || userId === pinOwnerId)
+        return res.status(422).end();
+
+    Pin.findById(pinId, (err, pin) => {
+        let userIndex = pin.pinnedBy.indexOf(userId);
+
+        if(userIndex === -1){
+            return res.status(422).end();
+        }
+
+        pin.pinnedBy.splice(userIndex, 1);
+        pin.save(err => {
+            if(err) return next(err);
+            return next();
+        })
+    });
+}

@@ -26,12 +26,17 @@
     color: maroon;
 }
 
+.pin-icon.disabled {
+    color: rgba(0,0,0, 0.37);
+    cursor: default;
+}
+
 /**
  * Delete icon
  */
 
 .delete-icon {
- cursor: pointer;
+    cursor: pointer;
 }
 
 .delete-icon:hover {

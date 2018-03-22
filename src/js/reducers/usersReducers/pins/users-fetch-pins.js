@@ -5,6 +5,10 @@ export const fetchPins = (state, action) => {
     //get users pins
     let oldPins = getPins(state, userId);
     let pins = oldPins.concat(action.payload.pins);
+
+    if(pins && pins instanceof Array && pins.length === 0)
+        return { ...state };
+
     //get last pin id
     let lastPinId = pins[pins.length - 1]._id;
     return {

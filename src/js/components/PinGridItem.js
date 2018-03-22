@@ -31,7 +31,6 @@ class PinGridItem extends React.Component {
                     <div className="text-container">
                         <div className="line-1">{description}</div>
                     </div>
-                    <div className="icon"><i class="pin-icon fa fa-pinterest-p fa-lg" aria-hidden="true"></i></div>
                 </div>
                 <PinModal {...this.props} data={this.props.data} open={this.state.showModal} hideModal={hideModal}/>
             </div>

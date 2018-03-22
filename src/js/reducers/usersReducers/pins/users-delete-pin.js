@@ -4,6 +4,10 @@ export const deletePin = (state, action) => {
     let pinId = action.meta.passedData.pinId;
     let ownerId = action.meta.passedData.owner._id;
     let pins = getPins(state, ownerId);
+
+    if(pins && pins instanceof Array && pins.length === 0)
+        return { ...state };
+
     let lastPinId;
     for(let i = 0; i < pins.length; i++){
         if(pins[i]._id === pinId){

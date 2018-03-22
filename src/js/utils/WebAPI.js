@@ -18,6 +18,12 @@ export const WebAPI = {
     deletePin(data) {
         return axios.post("/api/pin/deletePin", {...data});
     },
+    likePin(data) {
+        return axios.post("/api/pin/likePin", {...data});
+    },
+    unlikePin(data) {
+        return axios.post("/api/pin/unlikePin", {...data});
+    },
     fetchPins(data) {
         return axios.post("/api/pin/fetchAll", {...data});
     },
