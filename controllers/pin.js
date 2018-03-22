@@ -39,7 +39,13 @@ exports.new = (req, res, next) => {
         owner: req.user.id
     };
 
-    Pin.create(data, (err, pin) => {
+    Pin.findOneAndUpdate({_id: mongoose.Types.ObjectId()}, data, {
+        new: true,
+        upsert: true,
+        runValidators: true,
+        setDefaultsOnInsert: true,
+        populate: { path: "owner", select: "displayName profileImage" }
+    }, (err, pin) => {
         if(err) return next(err);
         req.pin = pin;
         return next();

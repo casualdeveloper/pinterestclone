@@ -72,8 +72,7 @@ export const createThunkPromiseAction = (type, promise, successCallback, errorCa
             .catch(error => {
                 //dispatch typePending while false value indicating that loading is finished
                 dispatch(typePending(dispatchActionDataWrapper(false)));
-                console.log(error);
-                console.log(error.response);
+
                 //default message
                 let message = "Couldn't complete action, please try again later";
                 let errorMessage;

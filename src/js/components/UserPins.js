@@ -80,6 +80,7 @@ class UserPins extends React.Component {
     shouldComponentUpdate(nextProps, nextState){
         let nextUserId = nextProps.userId || nextProps.match.params.userId;
         if( nextUserId !== this.state.userId ||
+            nextState.pins && !this.state.pins ||
             nextState.pins.length !== this.state.pins.length ||
             nextState.loading !== this.state.loading ||
             nextState.error !== this.state.error ||
