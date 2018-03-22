@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
+import { deletePin } from "../actions";
+
 const Identicon = require("identicon.js");
 
 class PinModal extends React.Component {
@@ -34,16 +36,20 @@ class PinModal extends React.Component {
     render() {
         const { url, description, owner } = this.props.data;
 
-        let date = new Date(this.props.data.creationDate);
-        let year  = date.getFullYear();
-        let month = (date.getMonth() < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-        let day   = (date.getDate() < 10 ) ? "0" +  date.getDate()       : date.getDate();
-        let dateString = `${year}-${month}-${day}`;
+        const date = new Date(this.props.data.creationDate);
+        const year  = date.getFullYear();
+        const month = (date.getMonth() < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        const day   = (date.getDate() < 10 ) ? "0" +  date.getDate()       : date.getDate();
+        const dateString = `${year}-${month}-${day}`;
 
         const identicon = new Identicon(owner._id, { size: 50, margin: 0.15, format: "svg" }).toString();
         const identiconImage = `data:image/svg+xml;base64,${identicon}`;
 
-        let avatar = owner.profileImage || identiconImage;
+        const avatar = owner.profileImage || identiconImage;
+
+
+        const deletePin = () => { this.props.deletePin({ pinId:this.props.data._id, owner }) };
+        const deleteButton = (this.props.userId === owner._id)?(<i onClick={deletePin} className="ml-6 delete-icon fa fa-trash fa-2x" />):null;
 
         return (
             <Modal open={this.props.open} >
@@ -61,11 +67,12 @@ class PinModal extends React.Component {
                                         <Card.Header.Subtitle> {dateString} </Card.Header.Subtitle>
                                     </Card.Header.TextContainer>
                                     <div className="card__header__icon ml-auto my-auto">
-                                        <i class="pin-icon fa fa-pinterest-p fa-2x" aria-hidden="true">
+                                        <i className="pin-icon fa fa-pinterest-p fa-2x" aria-hidden="true">
                                         </i>
                                         <div className="my-auto ml-3">
                                             654
                                         </div>
+                                        {deleteButton}
                                     </div>
                                 </Card.Header>
                                 <Card.Text className="py-5">
@@ -86,7 +93,9 @@ class PinModal extends React.Component {
 PinModal.propTypes = {
     data: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
-    hideModal: PropTypes.func.isRequired
+    hideModal: PropTypes.func.isRequired,
+    userId: PropTypes.string,
+    deletePin: PropTypes.func
 }
 
 
@@ -96,6 +105,10 @@ function mapStateToProps(state){
     };
 }
 
-export default connect(mapStateToProps)(PinModal);
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({ deletePin }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PinModal);
 
 export { PinModal };

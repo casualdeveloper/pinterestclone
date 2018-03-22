@@ -18,13 +18,26 @@
     cursor: pointer;
 }
 
-.pin-icon:hover {
+.pin-icon:hover, .pin-icon:hover.active {
     color: rgba(maroon, 0.8);
 }
 
-.pin-icon .active {
+.pin-icon.active {
     color: maroon;
 }
+
+/**
+ * Delete icon
+ */
+
+.delete-icon {
+ cursor: pointer;
+}
+
+.delete-icon:hover {
+    color: red;
+}
+
 
 /**
  * Modal card title and img(avatar)

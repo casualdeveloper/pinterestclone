@@ -6,7 +6,7 @@ import { WebAPI } from "../../utils/WebAPI";
 //data provided should be object { url: "STRING..", description: "STRING.." };
 export const newPin = createThunkPromiseAction(PIN_NEW, WebAPI.newPin);
 
-//data provided should be object { pinId: "STRING.." };
+//data provided should be object { pinId: "STRING.." owner: "OBJ" };
 export const deletePin = createThunkPromiseAction(PIN_DELETE, WebAPI.deletePin);
 
 //data can be provided as object { lastPinId: "STRING..", amountOfPins: "INT" };
