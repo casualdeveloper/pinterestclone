@@ -11,26 +11,31 @@ import { deletePin, likePin, unlikePin } from "../actions";
 
 const Identicon = require("identicon.js");
 
+const defaultState = (props) => {
+    const pinId = props.data._id;
+    const pinnedByUser = props.pinned;
+
+    let isPinnedByUser = false;
+    if(pinnedByUser && pinnedByUser instanceof Array)
+        isPinnedByUser = pinnedByUser.indexOf(pinId) !== -1
+    
+    
+    let pinnedByCounter = 0;
+    if(props.data.pinnedBy && props.data.pinnedBy instanceof Array)
+        pinnedByCounter = props.data.pinnedBy.length;
+
+
+    return {
+        isPinnedByUser,
+        pinnedByCounter
+    }
+}
+
 class PinModal extends React.Component {
     constructor(props) {
         super(props);
 
-        const pinId = this.props.data._id;
-        const pinnedByUser = this.props.pinned;
-
-        let isPinnedByUser = false;
-        if(pinnedByUser && pinnedByUser instanceof Array)
-            isPinnedByUser = pinnedByUser.indexOf(pinId) !== -1
-        
-        
-        let pinnedByCounter = 0;
-        if(this.props.data.pinnedBy && this.props.data.pinnedBy instanceof Array)
-            pinnedByCounter = this.props.data.pinnedBy.length;
-
-        this.state = {
-            isPinnedByUser: isPinnedByUser,
-            pinnedByCounter: pinnedByCounter
-        }
+        this.state = defaultState(props);
 
         this.redirectToUser = this.redirectToUser.bind(this);
         this.deletePin = this.deletePin.bind(this);
@@ -97,6 +102,8 @@ class PinModal extends React.Component {
             deleteButton = (<i onClick={this.deletePin} className="ml-6 delete-icon fa fa-trash fa-2x" />);
 
         const pinIconClass = getPinIconClass(this.state.isPinnedByUser, owner._id, userId);
+
+        //console.log(this.props);
         
         return (
             <Modal open={this.props.open} >

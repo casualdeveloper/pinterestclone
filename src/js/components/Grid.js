@@ -76,10 +76,19 @@ class Grid extends React.Component {
         return false;
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(this.props.data.length !== prevProps.data.length ){
+            this.resetMasonryLayout();
+        }
+    }
+
+    componentWillUnmount(){
+        this.destroyGrid();
+    }
+
 
     render() {
         let data = this.props.data;
-
         if(this.state.finishedLoading){
             if(this.state.lastAppended + 1 === this.props.data.length && this.state.lastAppended >= 0)
                 this.state.finishedLoading();
@@ -91,7 +100,7 @@ class Grid extends React.Component {
                 {data.map((data, index) => {
                     let canBeAppended = (this.state.sequentialLoad)?(index <= this.state.lastAppended+1):true;
                     return (
-                        <GridItemWrapper {...this.props} data={data} key={index} gridItem={this.props.gridItem} canBeAppended={canBeAppended} append={(el) => { this.appendElement(el, index); }}/>
+                        <GridItemWrapper {...this.props} data={data} key={data._id} gridItem={this.props.gridItem} canBeAppended={canBeAppended} append={(el) => { this.appendElement(el, index); }}/>
                     );
                 })}
             </div>
