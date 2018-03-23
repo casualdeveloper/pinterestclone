@@ -1,8 +1,11 @@
+import { defaultState } from "./index";
+
 export const userLogin = (state, action) => {
     if(!action.payload || !action.payload.token || !action.payload.user)
         return {...state};
         
     return {
+        ...defaultState,
         ...state,
         JWT: action.payload.token,
         ...action.payload.user,

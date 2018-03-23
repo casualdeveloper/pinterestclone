@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
-    "start_prod": "export NODE_ENV=production|| set NODE_ENV=production&&forever app.js",
+    "start_prod": "export NODE_ENV=production|| set NODE_ENV=production&&node app.js",
     "build": "webpack --watch",
     "build_prod": "export NODE_ENV=production|| set NODE_ENV=production&&webpack",
     "test": "mocha --timeout 10000"

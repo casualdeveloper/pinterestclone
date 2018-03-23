@@ -7,7 +7,7 @@ import * as fetchLikedPins from "./user-fetch-liked-pins";
 
 import { getLocalJWT } from "../../utils/localData";
 
-const defaultState = { 
+export const defaultState = { 
     isAuth: false,
     JWT: getLocalJWT(),
     pinnedData: {
