@@ -15,6 +15,8 @@ $nav-height: 56px;
     max-height: $nav-height;
     width: 100%;
     z-index: $z-index-nav;
+
+    box-shadow: 0 2px 2px 0px rgba(0,0,0,.3);
 }
 
 /**
