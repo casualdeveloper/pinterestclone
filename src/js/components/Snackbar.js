@@ -18,6 +18,7 @@ const OnScreenTime = 3000;
  * 2. - minTimePassed = bool value that tells if minimum amount of time passed before
  *    - possible deletion of item message (in case we want to remove snackbar ASAP)
  * 3. - removeItemOnMinTimePassed = bool value that will determine if snackbar should be removed ASAP
+ * 4. - itemRemoved: value that tells if current item has completely dismounted
  * 
  * Taking first one(0) item from array and assign it to state.item
  * In render we check if we have valid state.item and if so
@@ -39,7 +40,8 @@ const OnScreenTime = 3000;
  * 
  * In OnUnmount:
  * 1. - We clear up all timers
- * 2. - and call redux action to remove message from the stack.
+ * 2. - We set itemRemoved to true to allow other messages to appear
+ * 3. - and call redux action to remove message from the stack.
  *      After redux removes message component get updated array as prop
  *      and once again we set item to the first item in a stack.
  */
@@ -51,7 +53,8 @@ class SnackbarWrapper extends React.Component {
         this.state = {
             item: props.itemStack[0],
             minTimePassed: false,
-            removeItemOnMinTimePassed: false
+            removeItemOnMinTimePassed: false,
+            itemRemoved: !!(this.item) || true
         }
 
         this.removeItem = this.removeItem.bind(this);
@@ -114,10 +117,11 @@ class SnackbarWrapper extends React.Component {
         /**
          * Once snackbar unmounts do following:
          * [1] Clear both timers 
-         * [2] Call redux action to delete current message and update message list
+         * [2] Set itemRemoved to true
+         * [3] Call redux action to delete current message and update message list
          */
         this.clearTimers();//[1]
-        this.props.deleteSnackbarMessage();//[2]
+        this.setState({ itemRemoved: true }, this.props.deleteSnackbarMessage);//[2], [3]
     }
 
     removeItem() {
@@ -138,8 +142,8 @@ class SnackbarWrapper extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(!this.state.item)
-            this.setState({ item: nextProps.itemStack[0]});
+        if(this.state.itemRemoved && nextProps.itemStackLength !== 0)
+            this.setState({ item: nextProps.itemStack[0], itemRemoved: false});
         
         //remove currently shown snackbar if new ones have been pushed to the stack
         if(this.props.itemStackLength < nextProps.itemStackLength && this.props.itemStackLength !== 0 && !this.state.removeItemOnMinTimePassed)
@@ -169,13 +173,13 @@ class SnackbarWrapper extends React.Component {
     }
 }
 
-Snackbar.propTypes = {
+SnackbarWrapper.propTypes = {
     itemStack: PropTypes.array,
     itemStackLength: PropTypes.number,
     deleteSnackbarMessage: PropTypes.func
 }
 
-Snackbar.defaultProps = {
+SnackbarWrapper.defaultProps = {
     itemStack: [],
     itemStackLength: 0,
     deleteSnackbarMessage: () => {}
