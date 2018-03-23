@@ -1,0 +1,19 @@
+/*------------------------------------*\
+  #FOOTBAR
+\*------------------------------------*/
+
+.footbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.footbar__text {
+    color: rgba(black, 0.67);
+    text-decoration: none;
+}
+
+.footbar__text:hover {
+    text-decoration: underline;
+}

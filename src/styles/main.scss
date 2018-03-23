@@ -13,6 +13,7 @@
 @import "./partials/hamburger.scss";
 @import "./partials/snackbar.scss";
 @import "./partials/image.scss";
+@import "./partials/footbar.scss";
 @import "./partials/utils.scss";
 
 @mixin gridItemSize(){
@@ -32,6 +33,7 @@ html {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     background-color: $BACKGROUND;
+    height: 100%;
 }
 
 
@@ -42,8 +44,20 @@ html {
 }
 
 body {
+    height: 100%;
     margin: 0px;
     color: rgba(0,0,0,0.87);
+}
+
+#root {
+    height: 100%;
+}
+
+#root > div{
+    min-height: 100%;
+    position: relative;
+    /* height: 100%; */
+    padding-bottom: 50px;
 }
 
 .grid {

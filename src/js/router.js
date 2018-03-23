@@ -129,7 +129,8 @@ const PrivateNav = (props) => {
 
 const Footbar = () => {
     return (
-        <div className="footbar">
+        <div className="footbar text-center m-3">
+            <a href="https://github.com/casualdeveloper/pinterestclone" target="_blank" className="footbar__text"><i className="fa fa-github mr-3" aria-hidden="true"></i>GitHub</a>
         </div>
     );
 };
