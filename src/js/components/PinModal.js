@@ -38,6 +38,7 @@ class PinModal extends React.Component {
         this.state = defaultState(props);
 
         this.redirectToUser = this.redirectToUser.bind(this);
+        this.redirectToLogin = this.redirectToLogin.bind(this);
         this.deletePin = this.deletePin.bind(this);
         this.onPinClickHandler = this.onPinClickHandler.bind(this);
     }
@@ -50,6 +51,10 @@ class PinModal extends React.Component {
         this.props.hideModal();
     }
 
+    redirectToLogin() {
+        this.props.history.push("/login");
+    }
+
     deletePin() {
         const pinId = this.props.data._id;
         const owner = this.props.data.owner;
@@ -60,6 +65,9 @@ class PinModal extends React.Component {
         const pinId = this.props.data._id;
         const owner = this.props.data.owner;
         const userId = this.props.userId;
+
+        if(!userId)
+            return this.redirectToLogin();
 
         if(owner._id === userId)
             return;
@@ -102,9 +110,7 @@ class PinModal extends React.Component {
             deleteButton = (<i onClick={this.deletePin} className="ml-6 delete-icon fa fa-trash fa-2x" />);
 
         const pinIconClass = getPinIconClass(this.state.isPinnedByUser, owner._id, userId);
-
-        //console.log(this.props);
-        
+      
         return (
             <Modal open={this.props.open} >
                 <div className="container my-auto">
