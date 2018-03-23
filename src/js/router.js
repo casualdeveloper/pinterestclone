@@ -8,6 +8,7 @@ import Signup from "./components/Signup";
 import MyPins from "./components/MyPins";
 import NewPin from "./components/NewPin";
 import UserPins from "./components/UserPins";
+import Pinned from "./components/Pinned";
 
 import { NavBar, Nav, NavItem, NavBrand, Loader } from "./style_components";
 import SnackbarWrapper from "./components/Snackbar";
@@ -35,6 +36,7 @@ class App extends React.Component {
                     <Route exact path="/user/:userId" component={UserPins}/>
                     <PublicOnlyRoute exact path="/login" component={Login} {...this.props}/>
                     <PublicOnlyRoute exact path="/signup" component={Signup} {...this.props}/>
+                    <PrivateRoute exact path="/pinned" component={Pinned} {...this.props} />
                     <PrivateRoute exact path="/mypins" component={MyPins} {...this.props}/>
                     <PrivateRoute exact path="/newpin" component={NewPin} {...this.props}/>
                     <Route component={NotFound} />
@@ -117,6 +119,7 @@ const PrivateNav = (props) => {
     const { userLogout, currentLocation } = props;
     return (
         <Nav pullRight responsive>
+            <NavItem active={currentLocation == "/pinned"}><Link to="/pinned">Pinned</Link></NavItem>
             <NavItem active={currentLocation == "/mypins"}><Link to="/mypins">My pins</Link></NavItem>
             <NavItem active={currentLocation == "/newpin"}><Link to="/newpin">New pin</Link></NavItem>
             <NavItem><Link to="#" onClick={() => { userLogout(); }}>Logout</Link></NavItem>

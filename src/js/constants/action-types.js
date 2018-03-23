@@ -1,6 +1,7 @@
 export const USER_LOGIN = "USER_LOGIN";
 export const USER_LOGOUT = "USER_LOGOUT";
 export const USER_SIGNUP = "USER_SIGNUP";
+export const USER_FETCH_LIKED_PINS = "USER_FETCH_LIKED_PINS";
 
 export const PIN_NEW = "PIN_NEW";
 export const PIN_DELETE = "PIN_DELETE";

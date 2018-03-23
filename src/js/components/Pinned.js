@@ -6,11 +6,11 @@ import { PinGridItem } from "./PinGridItem";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchPins } from "../actions/pinActions";
+import { fetchLikedPins } from "../actions";
 
 import PinModal from "./PinModal";
 
-class Home extends React.Component {
+class Pinned extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -20,16 +20,16 @@ class Home extends React.Component {
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleFinishedLoadingImages = this.handleFinishedLoadingImages.bind(this);
         
-        if(!this.props.lastPinId)
-            this.props.fetchPins();
+        if(!this.props.lastPinIndex)
+            this.props.fetchLikedPins();
         
-        if(this.props.lastPinId && this.props.pins.length < PINS_IN_PAGE_DEFAULT)
+        if(this.props.lastPinIndex && this.props.pins.length < PINS_IN_PAGE_DEFAULT)
             this.handleLoadMore(this, PINS_IN_PAGE_DEFAULT - this.props.pins.length);
     }
 
     handleLoadMore(e, amountOfPins){
-        const { lastPinId } = this.props;
-        this.props.fetchPins({ lastPinId, amountOfPins });
+        const { lastPinIndex } = this.props;
+        this.props.fetchLikedPins({ lastPinIndex, amountOfPins });
     }
 
     componentWillReceiveProps(nextProps){
@@ -44,6 +44,7 @@ class Home extends React.Component {
     render(){
         const pins = this.props.pins;
         const isLoading = (this.props.loading || this.state.loadingImages);
+
         return(
             <div className="text-center mt-6">
                 <Grid {...this.props} gridItem={PinGridItem} data={pins} sequentialLoad={true} finishedLoading={this.handleFinishedLoadingImages} />
@@ -57,13 +58,13 @@ class Home extends React.Component {
 
 function mapStateToProps(state){
     return {
-        pins: state.pin.pins,
-        loading: state.pin.fetchingPins,
-        lastPinId: state.pin.lastPinId
+        pins: state.user.pinnedData.pins,
+        loading: state.user.pinnedData.fetchingPins,
+        lastPinIndex: state.user.pinnedData.lastPinIndex
     };
 }
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ fetchPins }, dispatch);
+    return bindActionCreators({ fetchLikedPins }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Pinned);

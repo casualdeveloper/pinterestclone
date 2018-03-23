@@ -19,12 +19,14 @@ router.post("/userPins", PinController.fetchUserPins, (req, res) => {
 });
 
 router.post("/likePin",AuthController.JWTLogin, UserController.likePin, PinController.likePin, (req, res) => {
-    console.log("===========L I K E D============");
-    res.status(200).json({ generalMessage: "Pinned", pinId: req.body.pinId, userId: req.user.id });
+    res.status(200).json({ generalMessage: "Pinned", pinId: req.body.pinId, userId: req.user.id, pin: req.pin });
 });
 router.post("/unlikePin",AuthController.JWTLogin, UserController.unlikePin, PinController.unlikePin, (req, res) => {
-    console.log("===========U N L I K E D========");
     res.status(200).json({ generalMessage: "Unpinned", pinId: req.body.pinId, userId: req.user.id });
+});
+
+router.post("/fetchLikedPins", AuthController.JWTLogin, PinController.fetchLikedPins, (req, res) => {
+    res.status(200).json({pins: req.fetchedPins});
 });
 
 module.exports = router;

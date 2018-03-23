@@ -123,6 +123,28 @@ exports.fetchUserPins = (req, res, next) => {
     });
 };
 
+exports.fetchLikedPins = (req, res, next) => {
+    const lastPinIndex = req.body.lastPinIndex || 0;
+    const userId = req.user.id;
+    const requestedAmountOfPins = parseInt(req.body.amountOfPins, 10);
+    const PINS_IN_PAGE = (requestedAmountOfPins && requestedAmountOfPins <= PINS_IN_PAGE_DEFAULT)
+                         ?requestedAmountOfPins
+                         :PINS_IN_PAGE_DEFAULT;
+    
+    //if no userId provided send error
+    if(!userId) { return res.status(422).json({generalMessage:"Failed to retrieve any pins, please try again"}); }
+
+    User.findById(userId, { pinned: { $slice: [lastPinIndex, PINS_IN_PAGE] } }).populate({
+        path: "pinned",
+        populate : {path: "owner", select: "displayName profileImage"}
+    }).lean().exec((err, results) => {
+        if(err) return next(err);
+        
+        req.fetchedPins = results.pinned;
+        return next();
+    });
+}
+
 exports.likePin = (req, res, next) => {
     let pinId = req.body.pinId;
     let userId = req.user.id;
@@ -131,18 +153,22 @@ exports.likePin = (req, res, next) => {
     if(!pinId || !pinOwnerId || userId === pinOwnerId)
         return res.status(422).end();
 
-    Pin.findById(pinId, (err, pin) => {
-        let userIndex = pin.pinnedBy.indexOf(userId);
+    Pin.findById(pinId)
+    .populate({path: "owner", select: "displayName profileImage"})
+    .exec((err, pin) => {
+        if(err) return next(err);
 
+        let userIndex = pin.pinnedBy.indexOf(userId);
         //if user index already in array
         //return error since user has already pinned this pin
         if(userIndex !== -1){
             return res.status(422).end();
         }
 
-        pin.pinnedBy.push(userId);
+        pin.pinnedBy.splice(0,0, userId);
         pin.save(err => {
             if(err) return next(err);
+            req.pin = pin;
             return next();
         })
     });
@@ -157,6 +183,8 @@ exports.unlikePin = (req, res, next) => {
         return res.status(422).end();
 
     Pin.findById(pinId, (err, pin) => {
+        if(err) return next(err);
+
         let userIndex = pin.pinnedBy.indexOf(userId);
 
         if(userIndex === -1){

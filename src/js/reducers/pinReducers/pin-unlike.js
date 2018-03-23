@@ -21,13 +21,20 @@ export const unlikePin = (state, action) => {
         return  {...state };
     }
 
-    let userIndex = pin.pinnedBy.indexOf(userId);
+    let pinnedBy = [];
+
+    if(pin.pinnedBy && pin.pinnedBy instanceof Array)
+        pinnedBy = pin.pinnedBy.slice(0);
+
+    let userIndex = pinnedBy.indexOf(userId);
 
     if(userIndex === -1) {
         return { ...state };
     }
 
-    pin.pinnedBy.splice(userIndex, 1);
+    pinnedBy.splice(userIndex, 1);
+    pin.pinnedBy = pinnedBy;
+    
     pins[pinIndex] = pin;
 
     return {

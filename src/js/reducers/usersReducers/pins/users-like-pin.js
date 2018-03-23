@@ -30,7 +30,7 @@ export const likePin = (state, action) => {
     if(userIndex !== -1)
         return { ...state };
 
-    pinnedBy.push(userId);
+    pinnedBy.splice(0, 0, userId);
     pin.pinnedBy = pinnedBy;
 
     pins[pinIndex] = pin;

@@ -3,7 +3,7 @@ export const userUnlikePin = (state, action) => {
     if(!state.pinned || state.pinned.length === 0)
         return { ...state };
 
-    let pinned = state.pinned.splice(0);
+    let pinned = state.pinned.slice(0);
     let pinIndex = pinned.indexOf(pinId);
 
     if(pinIndex === -1)
@@ -11,8 +11,18 @@ export const userUnlikePin = (state, action) => {
 
     pinned.splice(pinIndex, 1);
 
+    let pins = state.pinnedData.pins.slice(0);
+    pins.splice(pinIndex, 1);
+
+    let pinnedData = {
+        ...state.pinnedData,
+        pins,
+        lastPinIndex: state.pinnedData.lastPinIndex - 1
+    }
+
     return {
         ...state,
-        pinned
+        pinned,
+        pinnedData
     }
 }

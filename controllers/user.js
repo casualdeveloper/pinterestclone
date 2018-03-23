@@ -59,7 +59,7 @@ exports.likePin = (req, res, next) => {
             return res.status(422).end();
         }
 
-        user.pinned.push(pinId);
+        user.pinned.splice(0,0, pinId);
         user.save(err => {
             if(err) return next(err);
 

@@ -30,6 +30,9 @@ export const WebAPI = {
     fetchUserPins(data) {
         return axios.post("/api/pin/userPins", {...data});
     },
+    fetchUserLikedPins(data) {
+        return axios.post("/api/pin/fetchLikedPins", {...data});
+    },
     getTwitterRequestToken() {
         return axios.get("/api/user/twitterAuthRequest");
     },

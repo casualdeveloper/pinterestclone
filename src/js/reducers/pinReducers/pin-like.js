@@ -17,10 +17,12 @@ export const likePin = (state, action) => {
 
     let pin = pins[pinIndex];
 
-    if(!pin.pinnedBy)
-        pin.pinnedBy = [];
+    let pinnedBy = [];
 
-    pin.pinnedBy.push(userId);
+    if(pin.pinnedBy && pin.pinnedBy instanceof Array)
+        pinnedBy = pin.pinnedBy.slice(0);
+
+    pin.pinnedBy.splice(0, 0, userId);
     pins[pinIndex] = pin;
 
     return {
