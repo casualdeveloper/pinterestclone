@@ -1,5 +1,5 @@
 import React from "react";
-import { CSSTransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import PropTypes from "prop-types";
 import { Snackbar } from "../style_components";
 
@@ -13,19 +13,20 @@ const OnScreenTime = 3000;
 
 /**
  * Snackbar takes array of messages as props
- * Snackbar has 3 values in state: 
+ * Snackbar has 5 values in state:
  * 1. - item = item/message that will be displayed in snackbar
  * 2. - minTimePassed = bool value that tells if minimum amount of time passed before
  *    - possible deletion of item message (in case we want to remove snackbar ASAP)
  * 3. - removeItemOnMinTimePassed = bool value that will determine if snackbar should be removed ASAP
  * 4. - itemRemoved: value that tells if current item has completely dismounted
+ * 5. - showItem: bool value to determine if snackbar should be shown
  * 
  * Taking first one(0) item from array and assign it to state.item
- * In render we check if we have valid state.item and if so
- * Snackbar Component is mounted to DOM.
+ * We set itemRemoved to false, and showModal to true
+ * CSSTranition will get updated and start appear/enter animation
  * 
  * When Snackbar Component is mounted we start these events:
- * 1. - CSSTransitionGroup starts animating entrance of snackbar
+ * 1. - CSSTransition starts animating entrance of snackbar
  * 2. - We start timer how long snackbar will be on screen (default 3000)
  * 3. - We start timer how long it will take to finish animating snackbar into its position
  * 
@@ -34,8 +35,7 @@ const OnScreenTime = 3000;
  * so the next item in stack could be shown.
  * 
  * In removeItem:
- * 1. - We set item to null to start component umounting
- *      so that CSSTransitionGroup could start animating component leaving
+ * 1. - We set showItem to false so that CSSTransition could start animating component leaving
  * 2. - We reset rest of the state to default values
  * 
  * In OnUnmount:
@@ -54,7 +54,8 @@ class SnackbarWrapper extends React.Component {
             item: props.itemStack[0],
             minTimePassed: false,
             removeItemOnMinTimePassed: false,
-            itemRemoved: !!(this.item) || true
+            itemRemoved: !!(this.item) || true,
+            showItem: !!(this.item) || false
         }
 
         this.removeItem = this.removeItem.bind(this);
@@ -125,8 +126,9 @@ class SnackbarWrapper extends React.Component {
     }
 
     removeItem() {
-        //set item to null to unmount snackbar, reset rest of the state
-        this.setState({ item: null, minTimePassed: false, removeItemOnMinTimePassed: false });
+        //set itemShow to false to unmount snackbar, reset minTimer bool values
+        if(this.state.showItem)
+            this.setState({ showItem: false, minTimePassed: false, removeItemOnMinTimePassed: false });
     }
     
     removeItemOnlyAfterEnterAnimation() {
@@ -143,7 +145,7 @@ class SnackbarWrapper extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if(this.state.itemRemoved && nextProps.itemStackLength !== 0)
-            this.setState({ item: nextProps.itemStack[0], itemRemoved: false});
+            this.setState({ item: nextProps.itemStack[0], showItem: true, itemRemoved: false});
         
         //remove currently shown snackbar if new ones have been pushed to the stack
         if(this.props.itemStackLength < nextProps.itemStackLength && this.props.itemStackLength !== 0 && !this.state.removeItemOnMinTimePassed)
@@ -152,23 +154,17 @@ class SnackbarWrapper extends React.Component {
 
     render() {
         let item = this.state.item;
-        let RenderItem = (
-            (item)
-            ?<Snackbar onClick={this.removeItemOnlyAfterEnterAnimation} onUnmount={this.onUnmount} onMount={this.onMount}>{item}</Snackbar>
-            :null
-        );
         
         return (
-            <CSSTransitionGroup
-                transitionName="snackbar"
-                transitionAppear={true}
-                transitionAppearTimeout={EnterAnimationTime}
-                transitionEnter={true}
-                transitionEnterTimeout={EnterAnimationTime}
-                transitionLeave={true}
-                transitionLeaveTimeout={LeaveAnimationTime}>
-                {RenderItem}
-            </CSSTransitionGroup>
+            <CSSTransition
+            classNames="snackbar"
+            appear={true}
+            timeout={{ appear: EnterAnimationTime, enter: EnterAnimationTime, exit: LeaveAnimationTime }}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            in={this.state.showItem}>
+                <Snackbar onClick={this.removeItemOnlyAfterEnterAnimation} onMount={this.onMount} onUnmount={this.onUnmount}>{item}</Snackbar>
+            </CSSTransition>
         );
     }
 }

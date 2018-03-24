@@ -1,7 +1,7 @@
 import React from "react";
 import Portal from "preact-portal";
 import PropTypes from "prop-types";
-import { CSSTransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 
 const bodyDOM = document.body;
 
@@ -27,35 +27,25 @@ export default class Modal extends React.Component {
             );
         }
 
-        const RenderItem = (
-            (!open)
-            ?null
-            :<div className="modal">
-                <Close />
-                {this.props.children}
-            </div>
-        )
-
         return (
             <Portal into="#modal-root">
-                <CSSTransitionGroup component={FirstChild}
-                    transitionName="modal-fade"
-                    transitionAppear={false}
-                    transitionEnter={true}
-                    transitionEnterTimeout={EnterAnimationTime}
-                    transitionLeave={true}
-                    transitionLeaveTimeout={LeaveAnimationTime}>
-                    {RenderItem}
-                </CSSTransitionGroup>
+                <CSSTransition
+                classNames="modal-fade"
+                appear={true}
+                timeout={{ appear:EnterAnimationTime, enter: EnterAnimationTime, exit: LeaveAnimationTime }}
+                mountOnEnter={true}
+                unmountOnExit={true}
+                in={this.props.open}>
+                    <div className="modal">
+                        <Close />
+                        {this.props.children}
+                    </div>
+                </CSSTransition>
             </Portal>
         );
     }
 }
 
-const FirstChild = (props) => {
-    const childrenArray = React.Children.toArray(props.children);
-    return childrenArray[0] || null;
-}
 
 Modal.propTypes = {
     open: PropTypes.bool,

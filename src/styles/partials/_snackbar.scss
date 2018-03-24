@@ -35,11 +35,11 @@
     transition-property: bottom transform;
 }
 
-.snackbar-leave {
+.snackbar-exit {
     transform: translateY(0);
 }
   
-.snackbar-leave.snackbar-leave-active {
+.snackbar-exit.snackbar-exit-active {
     transform: translateY(100%);
     transition: transform .2s ease-out;
 }
@@ -62,21 +62,21 @@
         bottom: 24px;
         right: initial;
     }
-    .snackbar.snackbar-appear,.snackbar-enter {
+    .snackbar-appear,.snackbar-enter {
         bottom: 0px;
         transform: trasnlateY(100%);
     }
 
-    .snackbar.snackbar-appear-active,.snackbar-enter-active {
+    .snackbar-appear-active,.snackbar-enter-active {
         bottom: 24px;
         transform: translateY(0);
     }
 
-    .snackbar.snackbar-leave {
+    .snackbar-exit {
         transform: translateX(0);
     }
     
-    .snackbar.snackbar-leave.snackbar-leave-active {
+    .snackbar-exit.snackbar-exit-active {
         transform: translateX(-100%);
         left: 0;
         transition: .2s ease-out;

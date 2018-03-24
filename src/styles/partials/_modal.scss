@@ -54,18 +54,18 @@
 
 //modal fade animation
 
-.modal-fade-enter {
+.modal-fade-enter, .modal-fade-appear {
     opacity: 0;
 }
 
-.modal-fade-enter.modal-fade-enter-active {
+.modal-fade-enter.modal-fade-enter-active,.modal-fade-appear.modal-fade-appear-active {
     opacity: 1;
 }
 
-.modal-fade-leave {
+.modal-fade-exit {
     opacity: 1;
 }
 
-.modal-fade-leave.modal-fade-leave-active{
+.modal-fade-exit.modal-fade-exit-active{
     opacity: 0;
 }
