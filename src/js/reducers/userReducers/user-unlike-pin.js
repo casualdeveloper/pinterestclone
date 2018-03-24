@@ -17,7 +17,7 @@ export const userUnlikePin = (state, action) => {
     let pinnedData = {
         ...state.pinnedData,
         pins,
-        lastPinIndex: state.pinnedData.lastPinIndex - 1
+        lastPinIndex: (state.pinnedData.lastPinIndex > 0)?state.pinnedData.lastPinIndex - 1:0
     }
 
     return {
