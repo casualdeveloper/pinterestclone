@@ -5,11 +5,11 @@ const Schema = mongoose.Schema;
 const SALT_FACTOR = 10;
 
 const userSchema = mongoose.Schema({
-    username: { type: String, unique: true },
+    username: { type: String, unique: true, sparse: true },
     password: { type: String, },
-    email: { type: String, unique: true },
+    email: { type: String, unique: true, sparse: true },
     twitter: {
-        id: { type: String, unique: true },
+        id: { type: String, unique: true, sparse: true },
         displayName: { type: String },
         token: { type: String },
         tokenSecret: { type: String },
@@ -18,12 +18,13 @@ const userSchema = mongoose.Schema({
     pins: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
     creationDate: { type: Date, required: true, default: Date.now },
     profileImage: { type: String },
-    pinned: [{ type: Schema.Types.ObjectId, ref: "Pin" }]
+    pinned: [{ type: Schema.Types.ObjectId, ref: "Pin" }],
+    displayName: { type: String },
 });
 
 userSchema.pre("save", function(next) {
     this.displayName = this.username || this.twitter.displayName;
-    this.profileImage = this.profileImage || this.twitter.image
+    this.profileImage = this.profileImage || this.twitter.image;
     next();
 });
 
