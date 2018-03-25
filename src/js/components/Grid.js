@@ -24,6 +24,8 @@ class Grid extends React.Component {
         this.appendElement = this.appendElement.bind(this);
 
         this.destroyGrid = this.destroyGrid.bind(this);
+
+        this.initializeMasonry = this.initializeMasonry.bind(this);
     }
 
     componentDidMount() {
@@ -78,6 +80,7 @@ class Grid extends React.Component {
 
     componentDidUpdate(prevProps, prevState){
         if(this.props.data.length !== prevProps.data.length ){
+            this.reloadItems();
             this.resetMasonryLayout();
         }
     }
