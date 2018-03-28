@@ -118,7 +118,7 @@ const FallbackElement = (props) => {
         let style = "";
         if(props.state.width){
             style += "width:" + props.state.width + "px;";
-            style += "padding-top:" + props.state.width + "px;";
+            style += "padding-top:100%";
         }
 
         if(props.state.height){

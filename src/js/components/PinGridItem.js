@@ -21,8 +21,6 @@ class PinGridItem extends React.Component {
             <div className="grid-cell" onClick={onClickHandler}>
                 <ImageWrapper
                     className="grid-cell--image"
-                    width={230}
-                    height={230}
                     src={url}
                     onImageLoaded={()=>{ finishedLoading(); }}
                     onImageError={()=>{ finishedLoading(); }}
